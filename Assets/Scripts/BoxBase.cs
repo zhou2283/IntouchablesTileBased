@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class BoxBase : MonoBehaviour {
-
+public class BoxBase : MonoBehaviour
+{
+    private bool test;
     float gridSize = 0.4f;
 
     float unitMoveTime = 0.15f;
