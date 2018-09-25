@@ -76,11 +76,12 @@ public class PlayerBase : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (isRewinding || Input.GetKey(KeyCode.Space))//if it is in rewinding, ignore all
+        if (isRewinding || rewindControlScript.isRewinding)//if it is in rewinding, ignore all
         {
             return;
         }
-
+        
+	    //detect update
         if (prewarmTimeCount < prewarmTime)
         {
             prewarmTimeCount += Time.deltaTime;
