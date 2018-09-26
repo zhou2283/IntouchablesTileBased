@@ -83,10 +83,15 @@ public class PlayerBase : MonoBehaviour {
 	        return;
 	    }
 	    
-        if (isRewinding || rewindControlScript.isRewinding)//if it is in rewinding, ignore all
+        if (rewindControlScript.isRewinding)//if it is in rewinding, ignore all
         {
             return;
         }
+	    
+	    if (playerControlScript.isDead)//if it is in rewinding, ignore all
+	    {
+	        return;
+	    }
         
 	    //detect update
         if (prewarmTimeCount < prewarmTime)
@@ -369,7 +374,7 @@ public class PlayerBase : MonoBehaviour {
             }
             else
             {
-                //nothing happend
+                //nothing happened
             }
         }
     }
@@ -382,6 +387,10 @@ public class PlayerBase : MonoBehaviour {
 
     void CheckFallingInUpdate()
     {
+        if (playerControlScript.isDead)
+        {
+            return;
+        }
         //use two rays to avoid small gap
         RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2.1f, 0), Vector2.down, gridSize/2f + 0.01f, downDetectableLayer);
         //RaycastHit2D downcenterDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(0, 0), Vector2.down, gridSize / 2f + 0.01f, downDetectableLayer);
@@ -450,7 +459,7 @@ public class PlayerBase : MonoBehaviour {
     public virtual void PlayerDead()
     {
         KillTweening();
-        GameObject.Find("PlayerControl").GetComponent<PlayerControl>().isDead = true;
+        playerControlScript.isDead = true;
         transform.GetComponent<SpriteRenderer>().enabled = false;
         Instantiate(deadEffect, transform.position, Quaternion.identity);
     }
@@ -479,15 +488,17 @@ public class PlayerBase : MonoBehaviour {
         isTweening = false;
         transform.DOKill();
     }
+    /*
     public void RewindingDisable(float delaySeconds)
     {
         isRewinding = true;
         StartCoroutine(DelayToDisactiveIsRewinding(delaySeconds));
     }
-
+    
     public IEnumerator DelayToDisactiveIsRewinding(float delaySeconds)
     {
         yield return new WaitForSeconds(delaySeconds);
         isRewinding = false;
     }
+    */
 }

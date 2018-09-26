@@ -4,30 +4,36 @@ using UnityEngine;
 
 public class ButtonBase : MonoBehaviour {
 
+    protected RewindControl rewindControlScript;
     public Transform connectedLight;
-    int count = 0;
-    int countLastFrame = 0;
+    private int count = 0;
+    private int _countLastFrame = 0;
 
     public bool isRewinding = false;
 	// Use this for initialization
 	void Start () {
-		
+	    rewindControlScript = GameObject.Find("RewindControl").GetComponent<RewindControl>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (!isRewinding)
-        {
-            if (countLastFrame == 0 && count > 0)
-            {
-                connectedLight.GetComponent<Light2DBaseControl>().LightSwitch();
-            }
-            else if (countLastFrame > 0 && count == 0)
-            {
-                connectedLight.GetComponent<Light2DBaseControl>().LightSwitch();
-            }
-        }
-        countLastFrame = count;
+		//print(count);
+		//print(rewindControlScript.isRewinding);
+		//if is rewinding
+	    if (rewindControlScript.isRewinding)
+	    {
+	        _countLastFrame = count;
+	        return;
+	    }
+		if (_countLastFrame == 0 && count > 0)
+		{
+			connectedLight.GetComponent<Light2DBaseControl>().LightSwitch();
+		}
+		else if (_countLastFrame > 0 && count == 0)
+		{
+			connectedLight.GetComponent<Light2DBaseControl>().LightSwitch();
+		}
+        _countLastFrame = count;
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -38,18 +44,5 @@ public class ButtonBase : MonoBehaviour {
     private void OnTriggerExit2D(Collider2D col)
     {
         count--;
-    }
-
-    //rewind part
-    public void RewindingDisable(float delaySeconds)
-    {
-        isRewinding = true;
-        StartCoroutine(DelayToDisactiveIsRewinding(delaySeconds));
-    }
-
-    public IEnumerator DelayToDisactiveIsRewinding(float delaySeconds)
-    {
-        yield return new WaitForSeconds(delaySeconds);
-        isRewinding = false;
     }
 }
