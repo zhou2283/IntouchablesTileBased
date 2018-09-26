@@ -8,6 +8,8 @@ TagManager:
   - Rocker
   - Button
   - Box
+  - PlayerLight
+  - PlayerDark
   layers:
   - Default
   - TransparentFX
@@ -25,7 +27,7 @@ TagManager:
   - Ladder
   - PlayerTrigger
   - Interactable
-  - 
+  - Goal
   - 
   - 
   - 

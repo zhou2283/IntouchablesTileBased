@@ -317,18 +317,22 @@
           <e p="BoxBase.cs" t="Include" />
           <e p="BoxGroup.cs" t="Include" />
           <e p="ButtonBase.cs" t="Include" />
+          <e p="GoalBase.cs" t="Include" />
+          <e p="GoalGroup.cs" t="Include" />
           <e p="Light2DBaseControl.cs" t="Include" />
           <e p="PlayerBase.cs" t="Include" />
           <e p="PlayerControl.cs" t="Include" />
           <e p="PlayerDark.cs" t="Include" />
           <e p="PlayerLight.cs" t="Include" />
-          <e p="RewindBox.cs" t="Include" />
-          <e p="RewindButton.cs" t="Include" />
-          <e p="RewindControl.cs" t="Include" />
-          <e p="RewindLight.cs" t="Include" />
-          <e p="RewindObjectBase.cs" t="Include" />
-          <e p="RewindPlayer.cs" t="Include" />
-          <e p="RewindSwitch.cs" t="Include" />
+          <e p="RewindClass" t="Include">
+            <e p="RewindBox.cs" t="Include" />
+            <e p="RewindButton.cs" t="Include" />
+            <e p="RewindControl.cs" t="Include" />
+            <e p="RewindLight.cs" t="Include" />
+            <e p="RewindObjectBase.cs" t="Include" />
+            <e p="RewindPlayer.cs" t="Include" />
+            <e p="RewindSwitch.cs" t="Include" />
+          </e>
           <e p="SelfDestroy.cs" t="Include" />
           <e p="SelfRotation.cs" t="Include" />
           <e p="SwitchBase.cs" t="Include" />

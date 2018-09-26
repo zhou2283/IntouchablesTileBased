@@ -10,12 +10,13 @@ public class PlayerControl : MonoBehaviour {
     Transform playerLight;
     Transform playerDark;
     Transform playerIndicator;
+    
 
     Transform boxGroup;
     Transform lightGroup;
     //rewind part
-    RewindControl rewindControlScript;
-
+    private RewindControl rewindControlScript;
+    private GoalGroup goalGroupScript;
 
     public bool isWaiting = false; // this is used for waiting for tweening and animation
     bool _isWaitingLastFrame = false;
@@ -46,13 +47,19 @@ public class PlayerControl : MonoBehaviour {
         boxGroup = GameObject.Find("BoxGroup").transform;
         lightGroup = GameObject.Find("LightGroup").transform;
         rewindControlScript = GameObject.Find("RewindControl").GetComponent<RewindControl>();
-
+	    goalGroupScript = GameObject.Find("GoalGroup").GetComponent<GoalGroup>();
         //rewind part
         //rewindControlScript.Record();
     }
 	
 	// Update is called once per frame
 	void Update () {
+
+	    if (goalGroupScript.levelIsCleared)
+	    {
+	        return;
+	    }
+	    
         //update part
         UpdateIsWaiting();
         //reload scene test part

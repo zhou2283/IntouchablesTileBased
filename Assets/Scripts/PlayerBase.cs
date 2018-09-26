@@ -8,6 +8,7 @@ public class PlayerBase : MonoBehaviour {
     //find part
     protected PlayerControl playerControlScript;
     protected RewindControl rewindControlScript;
+    protected GoalGroup goalGroupScript;
     public GameObject deadEffect;
     public GameObject reviveEffect;
 
@@ -64,6 +65,7 @@ public class PlayerBase : MonoBehaviour {
         //find part
         playerControlScript = GameObject.Find("PlayerControl").GetComponent<PlayerControl>();
         rewindControlScript = GameObject.Find("RewindControl").GetComponent<RewindControl>();
+        goalGroupScript = GameObject.Find("GoalGroup").GetComponent<GoalGroup>();
         //layer mask part
         downDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | ladderLayer;
         sideDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer;
@@ -76,6 +78,11 @@ public class PlayerBase : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+	    if (goalGroupScript.levelIsCleared)
+	    {
+	        return;
+	    }
+	    
         if (isRewinding || rewindControlScript.isRewinding)//if it is in rewinding, ignore all
         {
             return;
@@ -412,7 +419,7 @@ public class PlayerBase : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        print(col.tag);
+        //print(col.tag);
         if (col.tag == "Switch")
         {
             isInSwitch = true;
