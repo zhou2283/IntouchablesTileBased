@@ -1,18 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class RewindLight : RewindObjectBase {
 
-    public override void Record()
-    {
-        if (lightIsOnHistory.Count >= MaxLength)
-        {
-            lightIsOnHistory.RemoveAt(MaxLength - 1);
-        }
-        //print(transform.name + " " + transform.GetComponent<Light2DBaseControl>().lightIsOn.ToString());
-        lightIsOnHistory.Insert(0, transform.GetComponent<Light2DBaseControl>().lightIsOn);
-    }
 
     public override void Rewind(float rewindTime)
     {
@@ -28,5 +20,16 @@ public class RewindLight : RewindObjectBase {
             }
             lightIsOnHistory.RemoveAt(0);
         }
+        
+    }
+
+    public override void Record()
+    {
+        if (lightIsOnHistory.Count >= MaxLength)
+        {
+            lightIsOnHistory.RemoveAt(MaxLength - 1);
+        }
+        //print(transform.name + " " + transform.GetComponent<Light2DBaseControl>().lightIsOn.ToString());
+        lightIsOnHistory.Insert(0, transform.GetComponent<Light2DBaseControl>().lightIsOn);
     }
 }

@@ -42,6 +42,7 @@ public class PlayerBase : MonoBehaviour {
     //interact part
     bool isInSwitch = false;
     bool isInRocker = false;
+    private bool isInteractWithRocker = false;
     bool isInButton = false;
     Transform currentSwitch;
     Transform currentRocker;
@@ -92,6 +93,9 @@ public class PlayerBase : MonoBehaviour {
 	    {
 	        return;
 	    }
+	    
+	    //update interact part
+	    UpdateInteractPart();
         
 	    //detect update
         if (prewarmTimeCount < prewarmTime)
@@ -106,7 +110,7 @@ public class PlayerBase : MonoBehaviour {
             }
         }
 
-        if (activeSelf && !playerControlScript.isWaiting && !playerControlScript.isDead)
+        if (activeSelf && !playerControlScript.isWaiting && !playerControlScript.isDead &&!isInteractWithRocker)
         {
             #region =====Update Keydown States=====
             //update keydown states
@@ -253,8 +257,7 @@ public class PlayerBase : MonoBehaviour {
             }
             #endregion
 
-            //update interact part
-            UpdateInteractPart();
+
         }
         else if (!activeSelf && !isTweening)//if it is not active, treat is as a box
         {
@@ -417,6 +420,7 @@ public class PlayerBase : MonoBehaviour {
     //Interact Part
     void UpdateInteractPart()
     {
+        isInteractWithRocker = false;
         if (isInSwitch)
         {
             if (Input.GetKeyDown(KeyCode.J))
@@ -424,17 +428,37 @@ public class PlayerBase : MonoBehaviour {
                 currentSwitch.GetComponent<SwitchBase>().Interact();
             }
         }
+        else if (isInRocker)
+        {
+            if (Input.GetKey(KeyCode.J))
+            {
+                isInteractWithRocker = true;
+                if (Input.GetKey(KeyCode.A))
+                {
+                    currentRocker.GetComponent<RockerBase>().Interact(false);//left(false)
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    currentRocker.GetComponent<RockerBase>().Interact(true);//right(true)
+                }
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         //print(col.tag);
-        if (col.tag == "Switch")
+        if (col.CompareTag("Switch"))
         {
             isInSwitch = true;
             currentSwitch = col.transform;
         }
-        else if(col.tag == "Box")
+        else if (col.CompareTag("Rocker"))
+        {
+            isInRocker = true;
+            currentRocker = col.transform;
+        }
+        else if(col.CompareTag("Box"))
         {
             if (!rewindControlScript.isRewinding)
             {
@@ -445,12 +469,17 @@ public class PlayerBase : MonoBehaviour {
 
     private void OnTriggerExit2D(Collider2D col)
     {
-        if (col.tag == "Switch")
+        if (col.CompareTag("Switch"))
         {
             isInSwitch = false;
             currentSwitch = null;
         }
-        else if (col.tag == "Box")
+        else if (col.CompareTag("Rocker"))
+        {
+            isInRocker = false;
+            currentRocker = null;
+        }
+        else if (col.CompareTag("Box"))
         {
             
         }

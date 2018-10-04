@@ -1,11 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.Serialization;
 
 public class SliderBase : MonoBehaviour
 {
+	public bool isTweening = false;
+	public bool isRewinding = false;
+	public float moveTime = 0.15f;
+	
+	
 	public float gridSize = 0.4f;
-	public GameObject connectedLight;
+	[FormerlySerializedAs("connectedLight")] public GameObject connectedItem;
 	private bool isXDirection;
 	private SpriteRenderer spriteRenderer;
 	private Vector3 position;
@@ -22,7 +29,15 @@ public class SliderBase : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-		connectedLight.transform.position = GetConnectedItemPosition();
+		//connectedItem.transform.position = GetConnectedItemPosition();
+		if (Input.GetKey(KeyCode.RightArrow))
+		{
+			MoveToMax();
+		}
+		else if (Input.GetKey(KeyCode.LeftArrow))
+		{
+			MoveToMin();
+		}
 	}
 
 	public void UpdateInEditor()
@@ -46,7 +61,7 @@ public class SliderBase : MonoBehaviour
 			Debug.Log("Slider size cannot be 1:1");
 		}
 
-		connectedLight.transform.position = GetConnectedItemPosition();
+		connectedItem.transform.position = GetConnectedItemPosition();
 	}
 
 	public Vector3 GetConnectedItemPosition()
@@ -61,6 +76,56 @@ public class SliderBase : MonoBehaviour
 			currentLength = 0;
 		}
 		return minPosition + ((float) currentLength / (float) totalLength) * (maxPosition - minPosition);
+	}
+
+	public Vector3 GetConnectedItemPosition(float _currentLength)
+	{
+		if (_currentLength > totalLength)
+		{
+			_currentLength = totalLength;
+		}
+
+		if (_currentLength < 0)
+		{
+			_currentLength = 0;
+		}
+		return minPosition + ((float) _currentLength / (float) totalLength) * (maxPosition - minPosition);
+	}
+
+	public void MoveToMax()
+	{
+		if (!isTweening && currentLength < totalLength)
+		{
+			isTweening = true;
+			connectedItem.transform.DOMove(GetConnectedItemPosition(currentLength + 1), moveTime).SetEase(Ease.Linear).OnComplete(DisableIsTweeningWhenMoveToMax);
+		}
+	}
+
+	public void MoveToMin()
+	{
+		if (!isTweening && currentLength > 0)
+		{
+			isTweening = true;
+			connectedItem.transform.DOMove(GetConnectedItemPosition(currentLength - 1), moveTime).SetEase(Ease.Linear).OnComplete(DisableIsTweeningWhenMoveToMin);
+		}
+	}
+
+	void DisableIsTweeningWhenMoveToMax()
+	{
+		currentLength++;
+		isTweening = false;
+	}
+	
+	void DisableIsTweeningWhenMoveToMin()
+	{
+		currentLength--;
+		isTweening = false;
+	}
+	
+	public void KillTweening()
+	{
+		isTweening = false;
+		connectedItem.transform.DOKill();
 	}
 }
 

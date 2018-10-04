@@ -132,6 +132,15 @@ public class PlayerControl : MonoBehaviour {
                 result = true;
             }
         }
+        //slider part
+        SliderBase[] sliderBaseArray = lightGroup.GetComponentsInChildren<SliderBase>();
+        foreach (SliderBase child in sliderBaseArray)
+        {
+            if (child.isTweening)
+            {
+                result = true;
+            }
+        }
         //player part
         if (playerLight.GetComponent<PlayerBase>().isTweening)
         {

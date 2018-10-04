@@ -15,7 +15,7 @@ public class RewindControl : MonoBehaviour {
     //array
     private Light2DBaseControl[] light2DBaseControlScriptArray;
     private ButtonBase[] buttonBaseScriptArray;
-    private SwitchBase[] switchBaseScriptArray;
+    private SliderBase[] sliderBaseScriptArray;
     //script
     private PlayerControl playerControlScript;
         
@@ -39,7 +39,7 @@ public class RewindControl : MonoBehaviour {
         //array
         light2DBaseControlScriptArray = lightGroup.GetComponentsInChildren<Light2DBaseControl>(true);
         buttonBaseScriptArray = lightGroup.GetComponentsInChildren<ButtonBase>(true);
-        switchBaseScriptArray = lightGroup.GetComponentsInChildren<SwitchBase>(true);
+        sliderBaseScriptArray = lightGroup.GetComponentsInChildren<SliderBase>(true);
         //script
         playerControlScript = GameObject.Find("PlayerControl").GetComponent<PlayerControl>();
         //record the start state
@@ -81,6 +81,12 @@ public class RewindControl : MonoBehaviour {
         {
             child.transform.GetComponent<RewindLight>().Record();
         }
+        //slider part
+        foreach (SliderBase child in sliderBaseScriptArray)
+        {
+            child.transform.GetComponent<RewindSlider>().Record();
+        }
+        
     }
 
     public void Rewind()
@@ -140,8 +146,11 @@ public class RewindControl : MonoBehaviour {
         {
             child.transform.GetComponent<RewindLight>().Rewind(rewindTime);
         }
-        //for switch
-
+        //for slider
+        foreach (SliderBase child in sliderBaseScriptArray)
+        {
+            child.transform.GetComponent<RewindSlider>().Rewind(rewindTime);
+        }
 
     }
     

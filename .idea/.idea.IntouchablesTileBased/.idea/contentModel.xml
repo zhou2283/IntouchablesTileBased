@@ -359,8 +359,10 @@
             <e p="RewindLight.cs" t="Include" />
             <e p="RewindObjectBase.cs" t="Include" />
             <e p="RewindPlayer.cs" t="Include" />
+            <e p="RewindSlider.cs" t="Include" />
             <e p="RewindSwitch.cs" t="Include" />
           </e>
+          <e p="RockerBase.cs" t="Include" />
           <e p="SelfDestroy.cs" t="Include" />
           <e p="SelfRotation.cs" t="Include" />
           <e p="SliderBase.cs" t="Include" />
