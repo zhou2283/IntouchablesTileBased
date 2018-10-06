@@ -29,7 +29,7 @@ TagManager:
   - Interactable
   - Goal
   - 
-  - 
+  - Rope
   - 
   - LightLayer
   - 
@@ -42,7 +42,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - DoNotRender
   m_SortingLayers:
   - name: Default
     uniqueID: 0

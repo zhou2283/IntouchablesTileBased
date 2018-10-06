@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/TestOnlyFolder/Scene/LightTest.unity
+  - enabled: 0
+    path: Assets/TestOnlyFolder/Scene/TestLevel-30.unity
     guid: e288a13154203bd4d985c18693cb01e5
+  - enabled: 1
+    path: Assets/TestOnlyFolder/Scene/artTest/artTest2.unity
+    guid: bc9acbbc915e13a4c9ba17d9bc66aac9
   m_configObjects: {}

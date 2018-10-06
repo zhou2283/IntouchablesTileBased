@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 public class SliderBase : MonoBehaviour
 {
 	public bool isTweening = false;
+	public bool isTweeningBuffer = false;//a little bit delay
 	public bool isRewinding = false;
 	public float moveTime = 0.15f;
 	
@@ -94,18 +95,20 @@ public class SliderBase : MonoBehaviour
 
 	public void MoveToMax()
 	{
-		if (!isTweening && currentLength < totalLength)
+		if (!isTweening && currentLength < totalLength && !isTweeningBuffer)
 		{
 			isTweening = true;
+			isTweeningBuffer = true;
 			connectedItem.transform.DOMove(GetConnectedItemPosition(currentLength + 1), moveTime).SetEase(Ease.Linear).OnComplete(DisableIsTweeningWhenMoveToMax);
 		}
 	}
 
 	public void MoveToMin()
 	{
-		if (!isTweening && currentLength > 0)
+		if (!isTweening && currentLength > 0 && !isTweeningBuffer)
 		{
 			isTweening = true;
+			isTweeningBuffer = true;
 			connectedItem.transform.DOMove(GetConnectedItemPosition(currentLength - 1), moveTime).SetEase(Ease.Linear).OnComplete(DisableIsTweeningWhenMoveToMin);
 		}
 	}
@@ -114,12 +117,20 @@ public class SliderBase : MonoBehaviour
 	{
 		currentLength++;
 		isTweening = false;
+		StartCoroutine(DelayToDisableIsTweeningBuffer(0.005f));
 	}
 	
 	void DisableIsTweeningWhenMoveToMin()
 	{
 		currentLength--;
 		isTweening = false;
+		StartCoroutine(DelayToDisableIsTweeningBuffer(0.005f));
+	}
+	
+	public IEnumerator DelayToDisableIsTweeningBuffer(float delaySeconds)
+	{
+		yield return new WaitForSeconds(delaySeconds);
+		isTweeningBuffer = false;
 	}
 	
 	public void KillTweening()
