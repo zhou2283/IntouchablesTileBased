@@ -91,6 +91,7 @@ public class PlayerBase : MonoBehaviour {
 	    
 	    if (playerControlScript.isDead)//if it is in rewinding, ignore all
 	    {
+	        isTweening = false;
 	        return;
 	    }
 	    
@@ -423,14 +424,14 @@ public class PlayerBase : MonoBehaviour {
         isInteractWithRocker = false;
         if (isInSwitch)
         {
-            if (Input.GetKeyDown(KeyCode.J))
+            if (Input.GetKeyDown(KeyCode.J) && activeSelf)
             {
                 currentSwitch.GetComponent<SwitchBase>().Interact();
             }
         }
         else if (isInRocker)
         {
-            if (Input.GetKey(KeyCode.J))
+            if (Input.GetKey(KeyCode.J) && activeSelf)
             {
                 isInteractWithRocker = true;
                 if (Input.GetKey(KeyCode.A))
