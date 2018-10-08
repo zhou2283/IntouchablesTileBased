@@ -434,14 +434,29 @@ public class PlayerBase : MonoBehaviour {
             if (Input.GetKey(KeyCode.J) && activeSelf)
             {
                 isInteractWithRocker = true;
-                if (Input.GetKey(KeyCode.A))
+                if (currentRocker.GetComponent<RockerBase>().connectedSlider.GetComponent<SliderBase>().isXDirection)
                 {
-                    currentRocker.GetComponent<RockerBase>().Interact(false);//left(false)
+                    if (Input.GetKey(KeyCode.A))
+                    {
+                        currentRocker.GetComponent<RockerBase>().Interact(false);//left(false)
+                    }
+                    else if (Input.GetKey(KeyCode.D))
+                    {
+                        currentRocker.GetComponent<RockerBase>().Interact(true);//right(true)
+                    }
                 }
-                else if (Input.GetKey(KeyCode.D))
+                else
                 {
-                    currentRocker.GetComponent<RockerBase>().Interact(true);//right(true)
+                    if (Input.GetKey(KeyCode.S))
+                    {
+                        currentRocker.GetComponent<RockerBase>().Interact(false);//left(false)
+                    }
+                    else if (Input.GetKey(KeyCode.W))
+                    {
+                        currentRocker.GetComponent<RockerBase>().Interact(true);//right(true)
+                    }
                 }
+
             }
         }
     }

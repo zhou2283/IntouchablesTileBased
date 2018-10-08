@@ -14,7 +14,7 @@ public class SliderBase : MonoBehaviour
 	
 	public float gridSize = 0.4f;
 	[FormerlySerializedAs("connectedLight")] public GameObject connectedItem;
-	private bool isXDirection;
+	public bool isXDirection = true;
 	private SpriteRenderer spriteRenderer;
 	private Vector3 position;
 	public int currentLength = 0;
@@ -47,12 +47,14 @@ public class SliderBase : MonoBehaviour
 		//connectedLight.transform.parent = transform;
 		if (spriteRenderer.size.x > spriteRenderer.size.y)
 		{
+			isXDirection = true;
 			totalLength = Mathf.RoundToInt(spriteRenderer.size.x / gridSize) - 1;
 			minPosition = transform.position - new Vector3(totalLength / 2f * gridSize, 0, 0);
 			maxPosition = transform.position + new Vector3(totalLength / 2f * gridSize, 0, 0);
 		}
 		else if (spriteRenderer.size.x < spriteRenderer.size.y)
 		{
+			isXDirection = false;
 			totalLength = Mathf.RoundToInt(spriteRenderer.size.y / gridSize) - 1;
 			minPosition = transform.position - new Vector3(0, totalLength / 2f * gridSize, 0);
 			maxPosition = transform.position + new Vector3(0, totalLength / 2f * gridSize, 0);
