@@ -9,17 +9,20 @@ public class RewindObjectBase : MonoBehaviour {
     protected const int MaxLength = 1000;
     //basic history list
     protected List<Vector3> positionHistory = new List<Vector3>();//used for box, player, 
+    protected List<bool> isTeleportingHistroy = new List<bool>();//used for player when teleporting
     protected List<bool> lightIsOnHistory = new List<bool>();//used for light
     //rewind state indicator
     public bool isRewinding = false;
 
     public virtual void Record()
     {
+        
         if(positionHistory.Count >= MaxLength)
         {
             positionHistory.RemoveAt(MaxLength - 1);
         }
         positionHistory.Insert(0, transform.position);
+        
         //print("Record: "gameObject.name + " " + transform.position.ToString());
     }
 

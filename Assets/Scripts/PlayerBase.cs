@@ -28,6 +28,7 @@ public class PlayerBase : MonoBehaviour {
 
     public bool isTweening = false;
     public bool isFalling = false;// it is a special case of isTweening
+    public bool isTeleporting = false;// to record if player is teleporting
 
     LayerMask solidBlockLayer = 1 << 9;
     LayerMask glassBlockLayer = 1 << 10;
@@ -306,10 +307,12 @@ public class PlayerBase : MonoBehaviour {
 
     public void CheckFalling()
     {
+        isTeleporting = false;
         RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position, Vector2.down, gridSize, downDetectableLayer);//check hit
         RaycastHit2D hitLadder = Physics2D.Raycast((Vector2)transform.position + new Vector2(0,-gridSize), Vector2.up, gridSize, ladderLayer);//check hit
         if (hit || hitLadder)
         {
+
             isFalling = false;
             isTweening = false;
         }
@@ -462,16 +465,27 @@ public class PlayerBase : MonoBehaviour {
         }
         else if (isInPortal)
         {
+            
             if (Input.GetKeyDown(KeyCode.J) && activeSelf && !isTweening)
             {
-                isTweening = true;
-                var teleportSequence = DOTween.Sequence();
-                teleportSequence
-                    .Append(transform.DOScale(0, 0.2f))
-                    .Append(transform.DOMove(currentPortal.GetComponent<PortalBase>().connectedPortal.transform.position,
-                        0.0f))
-                    .Append(transform.DOScale(1, 0.2f))
-                    .AppendCallback(CheckFalling);
+                var _connectedPortal = currentPortal.GetComponent<PortalBase>().connectedPortal;
+                if (_connectedPortal.GetComponent<PortalBase>().isEmpty)
+                {
+                    isTeleporting = true;
+                    isTweening = true;
+                    var teleportSequence = DOTween.Sequence();
+                    teleportSequence
+                        .Append(transform.DOScale(0.1f, 0.2f))//if the player size is 0, OnTriggerExit will not be called
+                        .Append(transform.DOMove(_connectedPortal.transform.position,
+                            0f))
+                        .Append(transform.DOScale(1, 0.2f))
+                        .AppendCallback(CheckFalling);
+                }
+                else
+                {
+                    print("Portal is not empty");
+                }
+
             }
 
         }
