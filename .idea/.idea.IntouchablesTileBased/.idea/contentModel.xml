@@ -382,6 +382,7 @@
           <e p="PlayerControl.cs" t="Include" />
           <e p="PlayerDark.cs" t="Include" />
           <e p="PlayerLight.cs" t="Include" />
+          <e p="PortalBase.cs" t="Include" />
           <e p="RewindClass" t="Include">
             <e p="RewindBox.cs" t="Include" />
             <e p="RewindButton.cs" t="Include" />

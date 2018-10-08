@@ -42,11 +42,13 @@ public class PlayerBase : MonoBehaviour {
     //interact part
     bool isInSwitch = false;
     bool isInRocker = false;
-    private bool isInteractWithRocker = false;
+    bool isInPortal = false;
+    bool isInteractWithRocker = false;
     bool isInButton = false;
     Transform currentSwitch;
     Transform currentRocker;
     Transform currentButton;
+    Transform currentPortal;
 
     //used for push recursive
     public bool visited = false;
@@ -456,8 +458,22 @@ public class PlayerBase : MonoBehaviour {
                         currentRocker.GetComponent<RockerBase>().Interact(true);//right(true)
                     }
                 }
-
             }
+        }
+        else if (isInPortal)
+        {
+            if (Input.GetKeyDown(KeyCode.J) && activeSelf && !isTweening)
+            {
+                isTweening = true;
+                var teleportSequence = DOTween.Sequence();
+                teleportSequence
+                    .Append(transform.DOScale(0, 0.2f))
+                    .Append(transform.DOMove(currentPortal.GetComponent<PortalBase>().connectedPortal.transform.position,
+                        0.0f))
+                    .Append(transform.DOScale(1, 0.2f))
+                    .AppendCallback(CheckFalling);
+            }
+
         }
     }
 
@@ -473,6 +489,11 @@ public class PlayerBase : MonoBehaviour {
         {
             isInRocker = true;
             currentRocker = col.transform;
+        }
+        else if (col.CompareTag("Portal"))
+        {
+            isInPortal = true;
+            currentPortal = col.transform;
         }
         else if(col.CompareTag("Box"))
         {
@@ -494,6 +515,11 @@ public class PlayerBase : MonoBehaviour {
         {
             isInRocker = false;
             currentRocker = null;
+        }
+        else if (col.CompareTag("Portal"))
+        {
+            isInPortal = false;
+            currentPortal = null;
         }
         else if (col.CompareTag("Box"))
         {

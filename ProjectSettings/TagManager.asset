@@ -10,6 +10,7 @@ TagManager:
   - Box
   - PlayerLight
   - PlayerDark
+  - Portal
   layers:
   - Default
   - TransparentFX
@@ -28,7 +29,7 @@ TagManager:
   - PlayerTrigger
   - Interactable
   - Goal
-  - 
+  - Portal
   - Rope
   - Slider
   - LightLayer
@@ -46,4 +47,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Portal
+    uniqueID: 1193184961
     locked: 0

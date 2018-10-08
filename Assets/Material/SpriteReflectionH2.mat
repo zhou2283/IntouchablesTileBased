@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: SpriteReflection
+  m_Name: SpriteReflectionH2
   m_Shader: {fileID: 4800000, guid: 55bc3c6fdc3b08949a7687404d3977c5, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
