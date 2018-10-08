@@ -129,6 +129,239 @@
             </e>
           </e>
         </e>
+        <e p="PostProcessing" t="Include">
+          <e p="SC Post Effects" t="Include">
+            <e p="_Demo" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="CharacterMovement.cs" t="Include" />
+                <e p="FirstPersonController.cs" t="Include" />
+                <e p="MouseLook.cs" t="Include" />
+                <e p="SCPE_Demo_Font.shader" t="Include" />
+              </e>
+              <e p="Textures" t="Include">
+                <e p="license.txt" t="Include" />
+              </e>
+            </e>
+            <e p="_Samples" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="VolumeTrigger.cs" t="Include" />
+              </e>
+            </e>
+            <e p="changelog.txt" t="Include" />
+            <e p="Editor" t="Include">
+              <e p="GUI.cs" t="Include" />
+              <e p="HelpWindow.cs" t="Include" />
+              <e p="Installer.cs" t="Include" />
+              <e p="InstallerWindow.cs" t="Include" />
+              <e p="SCPE.cs" t="Include" />
+              <e p="ShaderLibraries" t="Include">
+                <e p="Blending.hlsl" t="Include" />
+                <e p="SCPE.hlsl" t="Include" />
+              </e>
+            </e>
+            <e p="Effects" t="Include">
+              <e p="AmbientOcclusion2D" t="Include">
+                <e p="AmbientOcclusion2D.cs" t="Include" />
+                <e p="Editor" t="Include">
+                  <e p="AmbientOcclusion2DEditor.cs" t="Include" />
+                </e>
+                <e p="Resources" t="Include">
+                  <e p="AmbientOcclusion2DShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="BlackBars" t="Include">
+                <e p="BlackBars.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="BlackBarsShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Blur" t="Include">
+                <e p="Blur.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="BlurShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="CloudShadows" t="Include">
+                <e p="CloudShadows.cs" t="Include" />
+                <e p="Editor" t="Include">
+                  <e p="CloudShadowsEditor.cs" t="Include" />
+                </e>
+                <e p="Resources" t="Include">
+                  <e p="CloudShadowsShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Color Split" t="Include">
+                <e p="ColorSplit.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="ColorSplitShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Danger" t="Include">
+                <e p="Danger.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="DangerShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Dithering" t="Include">
+                <e p="Dithering.cs" t="Include" />
+                <e p="Editor" t="Include">
+                  <e p="DitheringEditor.cs" t="Include" />
+                </e>
+                <e p="Resources" t="Include">
+                  <e p="DitheringShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="DoubleVision" t="Include">
+                <e p="DoubleVision.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="DoubleVisionShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="EdgeDetection" t="Include">
+                <e p="EdgeDetection.cs" t="Include" />
+                <e p="Editor" t="Include">
+                  <e p="EdgeDetectionEditor.cs" t="Include" />
+                </e>
+                <e p="Resources" t="Include">
+                  <e p="EdgeDetectionShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Fog" t="Include">
+                <e p="Editor" t="Include">
+                  <e p="FogEditor.cs" t="Include" />
+                </e>
+                <e p="Fog.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="FogShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Gradient" t="Include">
+                <e p="Editor" t="Include">
+                  <e p="GradientEditor.cs" t="Include" />
+                </e>
+                <e p="Gradient.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="GradientShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="HueShift3D" t="Include">
+                <e p="Editor" t="Include">
+                  <e p="HueShift3DEditor.cs" t="Include" />
+                </e>
+                <e p="HueShift3D.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="HueShift3DShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Invert" t="Include">
+                <e p="Invert.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="InvertShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Kaleidoscope" t="Include">
+                <e p="Kaleidoscope.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="KaleidoscopeShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Kuwahara" t="Include">
+                <e p="Editor" t="Include">
+                  <e p="KuwuharaEditor.cs" t="Include" />
+                </e>
+                <e p="Kuwahara.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="KuwaharaShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="LensFlares" t="Include">
+                <e p="Lensflares.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="LensflaresShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="LightStreaks" t="Include">
+                <e p="LightStreaks.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="LightStreaksShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Mosaic" t="Include">
+                <e p="Mosaic.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="MosaicShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Overlay" t="Include">
+                <e p="Overlay.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="OverlayShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Pixelize" t="Include">
+                <e p="Pixelize.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="PixelizeShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Posterize" t="Include">
+                <e p="Posterize.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="PosterizeShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="RadialBlur" t="Include">
+                <e p="RadialBlur.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="RadialBlurShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Refraction" t="Include">
+                <e p="Refraction.cs" t="Include" />
+                <e p="Resources" t="Include">
+                  <e p="RefractionShader.shader" t="Include" />
+                </e>
+              </e>
+              <e p="Ripples" t="Include">
+                <e p="Editor" t="Include">
+                  <e p="RipplesEditor.cs" t="Include" />
+                </e>
+                <e p="Resources" t="Include">
+                  <e p="RipplesShader.shader" t="Include" />
+                </e>
+                <e p="Ripples.cs" t="Include" />
+              </e>
+              <e p="Scanlines" t="Include">
+                <e p="Resources" t="Include">
+                  <e p="ScanlinesShader.shader" t="Include" />
+                </e>
+                <e p="Scanlines.cs" t="Include" />
+              </e>
+              <e p="Sharpen" t="Include">
+                <e p="Resources" t="Include">
+                  <e p="SharpenShader.shader" t="Include" />
+                </e>
+                <e p="Sharpen.cs" t="Include" />
+              </e>
+              <e p="Sunshafts" t="Include">
+                <e p="Editor" t="Include">
+                  <e p="SunshaftsEditor.cs" t="Include" />
+                </e>
+                <e p="Resources" t="Include">
+                  <e p="SunshaftShader.shader" t="Include" />
+                </e>
+                <e p="SunshaftCaster.cs" t="Include" />
+                <e p="Sunshafts.cs" t="Include" />
+              </e>
+              <e p="TubeDistortion" t="Include">
+                <e p="Resources" t="Include">
+                  <e p="TubeDistortionShader.shader" t="Include" />
+                </e>
+                <e p="TubeDistortion.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
         <e p="PostProcessing-2" t="Include">
           <e p="PostProcessing" t="Include">
             <e p="Editor" t="Include">
