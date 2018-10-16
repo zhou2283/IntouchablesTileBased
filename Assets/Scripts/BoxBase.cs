@@ -21,6 +21,7 @@ public class BoxBase : MonoBehaviour
     LayerMask solidBoxLayer = 1 << 11;
     LayerMask glassBoxLayer = 1 << 12;
     LayerMask playerTriggerLayer = 1 << 14;
+    LayerMask outlineLayer = 1 << 21;
 
     LayerMask sideDetectableLayer;
 
@@ -34,7 +35,7 @@ public class BoxBase : MonoBehaviour
     void Start()
     {
         //layer mask part
-        sideDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | playerTriggerLayer;
+        sideDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | playerTriggerLayer | outlineLayer;
 
         //find part
         boxGroup = transform.parent;

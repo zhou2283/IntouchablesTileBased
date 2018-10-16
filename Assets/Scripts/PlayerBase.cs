@@ -35,6 +35,7 @@ public class PlayerBase : MonoBehaviour {
     LayerMask solidBoxLayer = 1 << 11;
     LayerMask glassBoxLayer = 1 << 12;
     LayerMask ladderLayer = 1 << 13;
+    LayerMask outlineLayer = 1 << 21;
 
     LayerMask downDetectableLayer;
     LayerMask sideDetectableLayer;
@@ -58,7 +59,7 @@ public class PlayerBase : MonoBehaviour {
     Vector2 direction;
 
     //prewarm time
-    float prewarmTime = 0.1f;
+    float prewarmTime = 1.5f;
     float prewarmTimeCount = 0f;
 
     //rewind part
@@ -71,8 +72,8 @@ public class PlayerBase : MonoBehaviour {
         rewindControlScript = GameObject.Find("RewindControl").GetComponent<RewindControl>();
         goalGroupScript = GameObject.Find("GoalGroup").GetComponent<GoalGroup>();
         //layer mask part
-        downDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | ladderLayer;
-        sideDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer;
+        downDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | ladderLayer | outlineLayer;
+        sideDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | outlineLayer;
         sideDetectablePushableLayer = solidBoxLayer | glassBoxLayer;
 
         //precheck function
@@ -105,6 +106,7 @@ public class PlayerBase : MonoBehaviour {
         if (prewarmTimeCount < prewarmTime)
         {
             prewarmTimeCount += Time.deltaTime;
+            return;
         }
         else
         {

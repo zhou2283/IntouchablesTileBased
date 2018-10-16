@@ -55,6 +55,11 @@ public class PlayerControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+	    if (Input.GetKeyDown(KeyCode.R))
+	    {
+	        RestartLevel();
+	    }
+	    
 	    if (goalGroupScript.levelIsCleared)
 	    {
 	        return;
@@ -62,11 +67,6 @@ public class PlayerControl : MonoBehaviour {
 	    
         //update part
         UpdateIsWaiting();
-        //reload scene test part
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
 
         if (Input.GetKey(KeyCode.Space) && !isWaiting)
         {
@@ -159,5 +159,17 @@ public class PlayerControl : MonoBehaviour {
         }
 
         _isWaitingLastFrame = isWaiting;
+    }
+
+    void RestartLevel()
+    {
+        GameObject.Find("RenderGroup").GetComponent<RenderGroupControl>().MoveBack();
+        StartCoroutine(DelayToLoadScene(1.5f));
+    }
+    
+    public IEnumerator DelayToLoadScene(float delaySeconds)
+    {
+        yield return new WaitForSeconds(delaySeconds);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

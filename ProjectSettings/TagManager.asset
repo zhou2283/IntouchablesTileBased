@@ -33,12 +33,12 @@ TagManager:
   - Rope
   - Slider
   - LightLayer
-  - 
+  - Outline
   - BgDarkLayer
   - BgLightLayer
   - BgDarkLayerRenderTexture
   - BgLightLayerRenderTexture
-  - 
+  - LightBlurLayer
   - 
   - 
   - 

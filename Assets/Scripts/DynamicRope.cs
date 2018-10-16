@@ -9,7 +9,7 @@ public class DynamicRope : MonoBehaviour
 	float elapsedTime = 0;
 	Rope rope; 
 	Transform firstSegment;
-	private bool isDynamic = false;
+	public bool isDynamic = false;
 	// Use this for initialization
 	void Start () {
 		if (!rope) 
@@ -22,10 +22,6 @@ public class DynamicRope : MonoBehaviour
 			}
 		}
 
-		if (connectedItem == null)
-		{
-			isDynamic = false;
-		}
 	}
 	
 	

@@ -76,13 +76,16 @@ public class Light2DBaseControl : MonoBehaviour {
 
     public void LightSwitch()
     {
-        if (lightIsOn)
+        if (!isTweening)
         {
-            LightOff();
-        }
-        else
-        {
-            LightOn();
+            if (lightIsOn)
+            {
+                LightOff();
+            }
+            else
+            {
+                LightOn();
+            }
         }
     }
 
