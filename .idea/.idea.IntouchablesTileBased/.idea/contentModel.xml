@@ -68,6 +68,26 @@
           </e>
           <e p="readme_DOTweenPro.txt" t="Include" />
         </e>
+        <e p="JellySprites" t="Include">
+          <e p="Demo" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="BlobBehaviour.cs" t="Include" />
+              <e p="BlobEyes.cs" t="Include" />
+              <e p="JellySpriteDemoManager.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Editor" t="Include">
+            <e p="JellySpriteEditor.cs" t="Include" />
+            <e p="UnityJellySpriteEditor.cs" t="Include" />
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="JellyBridge.cs" t="Include" />
+            <e p="JellyCameraFollow.cs" t="Include" />
+            <e p="JellySprite.cs" t="Include" />
+            <e p="JellySpriteReferencePoint.cs" t="Include" />
+            <e p="UnityJellySprite.cs" t="Include" />
+          </e>
+        </e>
         <e p="Light2D" t="Include">
           <e p="Demo Assets" t="Include">
             <e p="ImageEffects" t="Include">
@@ -612,6 +632,8 @@
           <e p="GoalBase.cs" t="Include" />
           <e p="GoalGroup.cs" t="Include" />
           <e p="Light2DBaseControl.cs" t="Include" />
+          <e p="MeshSortingOrder.cs" t="Include" />
+          <e p="MeshTwister.cs" t="Include" />
           <e p="OutsideGroupControl.cs" t="Include" />
           <e p="PlayerBase.cs" t="Include" />
           <e p="PlayerControl.cs" t="Include" />
@@ -639,6 +661,7 @@
         </e>
         <e p="Shader" t="Include">
           <e p="AlphaGradiantSprite.shader" t="Include" />
+          <e p="MeshSprite.shader" t="Include" />
         </e>
         <e p="ShaderForge" t="Include">
           <e p="Editor" t="Include">

@@ -25,8 +25,13 @@ public class PlayerBase : MonoBehaviour {
     bool rightIsDown = false;
     bool upIsDown = false;
     bool downIsDown = false;
+    private bool _leftIsDownLastFrame = false;
+    private bool _rightIsDownLastFrame = false;
+    private bool _upIsDownLastFrame = false;
+    private bool _downIsDownLastFrame = false;
 
     public bool isTweening = false;
+    private bool _isTweeningLastFrame = false;
     public bool isFalling = false;// it is a special case of isTweening
     public bool isTeleporting = false;// to record if player is teleporting
 
@@ -64,6 +69,9 @@ public class PlayerBase : MonoBehaviour {
 
     //rewind part
     public bool isRewinding = false;
+    
+    //animation part
+    private MeshTwister meshTwisterScript;
 
     // Use this for initialization
     void Start () {
@@ -71,6 +79,7 @@ public class PlayerBase : MonoBehaviour {
         playerControlScript = GameObject.Find("PlayerControl").GetComponent<PlayerControl>();
         rewindControlScript = GameObject.Find("RewindControl").GetComponent<RewindControl>();
         goalGroupScript = GameObject.Find("GoalGroup").GetComponent<GoalGroup>();
+        meshTwisterScript = transform.Find("BodyPivot").GetComponent<MeshTwister>();
         //layer mask part
         downDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | ladderLayer | outlineLayer;
         sideDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | outlineLayer;
@@ -158,6 +167,8 @@ public class PlayerBase : MonoBehaviour {
             //move character
             if (rightIsDown && !leftIsDown && !upIsDown && !downIsDown)
             {
+                meshTwisterScript.FaceRight();
+                meshTwisterScript.MoveHorizontalTwist();
                 //raycast to right grid
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, gridSize, sideDetectableLayer);
                 //if hit something
@@ -192,6 +203,8 @@ public class PlayerBase : MonoBehaviour {
 
             if (leftIsDown && !rightIsDown && !upIsDown && !downIsDown)
             {
+                meshTwisterScript.FaceLeft();
+                meshTwisterScript.MoveHorizontalTwist();
                 //raycast to left grid
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.left, gridSize, sideDetectableLayer);
                 //if hit something
@@ -226,6 +239,7 @@ public class PlayerBase : MonoBehaviour {
 
             if (upIsDown && !downIsDown && !leftIsDown && !rightIsDown)
             {
+                meshTwisterScript.MoveUpTwist();
                 CheckLadder();//check ladder first
                 if (canMoveUp)
                 {
@@ -245,6 +259,7 @@ public class PlayerBase : MonoBehaviour {
 
             if (downIsDown && !upIsDown && !leftIsDown && !rightIsDown)
             {
+                meshTwisterScript.MoveDownTwist();
                 CheckLadder();//check ladder first
                 if (canMoveDown)
                 {
@@ -261,6 +276,21 @@ public class PlayerBase : MonoBehaviour {
                     }
                 }
             }
+
+            if (!leftIsDown && _leftIsDownLastFrame ||
+                !rightIsDown && _rightIsDownLastFrame||
+                !downIsDown && _downIsDownLastFrame||
+                !upIsDown && _upIsDownLastFrame)
+            {
+                meshTwisterScript.MoveHorizontalTwistBack();
+                meshTwisterScript.MoveVerticalTwistBack();
+            }
+            
+            _leftIsDownLastFrame = leftIsDown;
+            _rightIsDownLastFrame = rightIsDown;
+            _upIsDownLastFrame = upIsDown;
+            _downIsDownLastFrame = downIsDown;
+
             #endregion
 
 
@@ -269,8 +299,11 @@ public class PlayerBase : MonoBehaviour {
         {
             CheckFallingInUpdate();
         }
-        
-    }
+
+
+	    _isTweeningLastFrame = isTweening;
+
+	}
 
 
 
