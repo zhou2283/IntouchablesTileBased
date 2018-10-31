@@ -23,18 +23,20 @@ public class MovableBlockBase : MonoBehaviour
 	LayerMask playerTriggerLayer = 1 << 14;
 	LayerMask outlineLayer = 1 << 21;
 	
-	LayerMask downDetectableLayer;
+	LayerMask sideDetectableLayerIncludePlayer;
 	LayerMask sideDetectableLayer;
-	LayerMask sideDetectablePushableLayer;
 
 	private float gridSize;
+	
+	BoxGroup boxGroupScript;
 	
 	// Use this for initialization
 	void Start ()
 	{
 		gridSize = GameConst.GRID_SIZE;
 		
-		downDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | outlineLayer;
+		sideDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | outlineLayer;
+		sideDetectableLayerIncludePlayer = sideDetectableLayer | playerTriggerLayer;
 		
 		width = Mathf.RoundToInt(transform.localScale.x);
 		height = Mathf.RoundToInt(transform.localScale.y);
@@ -63,7 +65,9 @@ public class MovableBlockBase : MonoBehaviour
 			leftRayArray[i] = new Ray2D(new Vector2(_xLeft, _y), Vector2.left);
 			rightRayArray[i] = new Ray2D(new Vector2(_xRight, _y), Vector2.right);
 		}
-		
+
+
+		boxGroupScript = GameObject.Find("BoxGroup").GetComponent<BoxGroup>();
 	}
 	
 	// Update is called once per frame
@@ -94,7 +98,7 @@ public class MovableBlockBase : MonoBehaviour
 	{
 		for (int i = 0; i < width; i++)
 		{
-			downRayHitArray[i] = Physics2D.Raycast(downRayArray[i].origin + (Vector2)(transform.position), downRayArray[i].direction, gridSize, downDetectableLayer);
+			downRayHitArray[i] = Physics2D.Raycast(downRayArray[i].origin + (Vector2)(transform.position), downRayArray[i].direction, gridSize, sideDetectableLayer);
 		}
 
 		foreach (RaycastHit2D child in downRayHitArray)
@@ -106,5 +110,189 @@ public class MovableBlockBase : MonoBehaviour
 			}
 		}
 		return true;
+	}
+
+	public bool CheckAndMoveLeft()
+	{
+		//initialize recursive states
+		boxGroupScript.InitializeBoxGroupAndPlayer();
+		bool result = CheckLeft(true);//check box include player
+		if (result == false)
+		{
+			//initialize recursive states
+			boxGroupScript.InitializeBoxGroupAndPlayer();
+			result = CheckLeft(false);//check box exclude player(smash player)
+		}
+		if (result)
+		{
+			boxGroupScript.MoveAllBoxAndPlayer();//move all marked obj
+		}
+		return result;
+	}
+	
+	public bool CheckAndMoveRight(bool includePlayer = true)
+	{
+		return true;
+	}
+	
+	public bool CheckAndMoveUp(bool includePlayer = true)
+	{
+		return true;
+	}
+
+	public bool CheckLeft(bool includePlayer = true)
+	{
+		bool needMove = true;
+		LayerMask _checkLayer;
+		if (includePlayer)
+		{
+			_checkLayer = sideDetectableLayerIncludePlayer;
+		}
+		else
+		{
+			_checkLayer = sideDetectableLayer;
+		}
+		
+		//check side first, then check up
+		for (int i = 0; i < height; i++)
+		{
+			leftRayHitArray[i] = Physics2D.Raycast(leftRayArray[i].origin + (Vector2)(transform.position), leftRayArray[i].direction, gridSize, _checkLayer);
+		}
+		bool[] isPushableArray = new bool[height];
+		for(int i = 0; i < height; i++)
+		{
+			if (leftRayHitArray[i])
+			{
+				if(leftRayHitArray[i].transform.gameObject.layer == 11 || leftRayHitArray[i].transform.gameObject.layer == 12)//if it is a box
+				{
+					isPushableArray[i] = leftRayHitArray[i].transform.GetComponent<BoxBase>().CheckBox(false, includePlayer);
+				}
+				else if(leftRayHitArray[i].transform.gameObject.layer == 14)//if it is a player
+				{
+					isPushableArray[i] = leftRayHitArray[i].transform.GetComponent<PlayerBase>().CheckPlayer(false);
+				}
+				else//it is block
+				{
+					isPushableArray[i] = false;
+				}
+			}
+			else//nothing
+			{
+				isPushableArray[i] = true;
+			}
+		}
+		//check boxes above
+		for (int i = 0; i < width; i++)
+		{
+			upRayHitArray[i] = Physics2D.Raycast(upRayArray[i].origin + (Vector2)(transform.position), upRayArray[i].direction, gridSize, _checkLayer);
+		}
+
+		for (int i = 0; i < width; i++)
+		{
+			if (upRayHitArray[i])
+			{
+				if (upRayHitArray[i].transform.gameObject.layer == 11 || upRayHitArray[i].transform.gameObject.layer == 12)
+				{
+					upRayHitArray[i].transform.GetComponent<BoxBase>().CheckBox(false, includePlayer);
+				}
+				else if (upRayHitArray[i].transform.gameObject.layer == 14)
+				{
+					upRayHitArray[i].transform.GetComponent<PlayerBase>().CheckPlayer(false);
+				}
+			}
+		}
+
+		bool isAllPushable = true;
+		bool isNothingPushable = false;
+		foreach (bool child in isPushableArray)
+		{
+			isAllPushable = (isAllPushable && child);
+			isNothingPushable = (isNothingPushable || child);
+		}
+
+		if (isAllPushable)//there is nothing on the way, need to move
+		{
+			needMove = true;
+		}
+		else if (isNothingPushable == false)//isNothingPushable   //this is trick since it is FALSE
+		{
+			needMove = false;
+		}
+		else//some of them is pushable
+		{
+			DisableNeedMoveOnNextLeft(includePlayer);
+			needMove = false;
+		}
+
+		return needMove;
+	}
+	
+	public bool CheckRight(bool includePlayer = true)
+	{
+		return true;
+	}
+	
+	public bool CheckUp(bool includePlayer = true)
+	{
+		return true;
+	}
+
+	void DisableNeedMoveOnNextLeft(bool includePlayer = true)
+	{
+		LayerMask _checkLayer;
+		if (includePlayer)
+		{
+			_checkLayer = sideDetectableLayerIncludePlayer;
+		}
+		else
+		{
+			_checkLayer = sideDetectableLayer;
+		}
+		for (int i = 0; i < height; i++)
+		{
+			leftRayHitArray[i] = Physics2D.Raycast(leftRayArray[i].origin + (Vector2)(transform.position), leftRayArray[i].direction, gridSize, _checkLayer);
+		}
+		for (int i = 0; i < width; i++)
+		{
+			upRayHitArray[i] = Physics2D.Raycast(upRayArray[i].origin + (Vector2)(transform.position), upRayArray[i].direction, gridSize, _checkLayer);
+		}
+		foreach(RaycastHit2D child in leftRayHitArray)
+		{
+			if (child)
+			{
+				if (child.transform.gameObject.layer == 11 || child.transform.gameObject.layer == 12)//if it is a box
+				{
+					child.transform.GetComponent<BoxBase>().DisableNeedMoveOnNext();
+				}
+				else if(child.transform.gameObject.layer == 14)
+				{
+					child.transform.GetComponent<PlayerBase>().DisableNeedMoveOnNext();
+				}
+				else
+				{
+					//nothing happend
+				}
+			}
+			
+		}
+		foreach(RaycastHit2D child in upRayHitArray)
+		{
+			if (child)
+			{
+				if (child.transform.gameObject.layer == 11 || child.transform.gameObject.layer == 12)//if it is a box
+				{
+					child.transform.GetComponent<BoxBase>().DisableNeedMoveOnNext();
+				}
+				else if(child.transform.gameObject.layer == 14)
+				{
+					child.transform.GetComponent<PlayerBase>().DisableNeedMoveOnNext();
+				}
+				else
+				{
+					//nothing happend
+				}
+			}
+
+		}
 	}
 }

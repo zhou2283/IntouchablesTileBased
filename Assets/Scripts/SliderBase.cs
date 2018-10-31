@@ -24,10 +24,12 @@ public class SliderBase : MonoBehaviour
 	public Vector3 maxPosition;
 
 	private MovableBlockBase movableBlockBaseScript;
+	private PlayerControl playerControlScript;
 	
 	// Use this for initialization
 	void Start ()
 	{
+		playerControlScript = GameObject.Find("PlayerControl").GetComponent<PlayerControl>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		if (connectedItem.CompareTag("MovableBlock"))
 		{
@@ -109,7 +111,7 @@ public class SliderBase : MonoBehaviour
 
 	public void MoveToMax()//move up or right
 	{
-		if (!isTweening && currentLength < totalLength && !isTweeningBuffer)
+		if (!playerControlScript.isWaiting && currentLength < totalLength && !isTweeningBuffer)
 		{
 			if (!isBlock)
 			{
@@ -133,8 +135,8 @@ public class SliderBase : MonoBehaviour
 
 	public void MoveToMin()//move dowr or left
 	{
-		print(movableBlockBaseScript.CheckDown());
-		if (!isTweening && currentLength > 0 && !isTweeningBuffer)
+		
+		if (!playerControlScript.isWaiting && currentLength > 0 && !isTweeningBuffer)
 		{
 			if (!isBlock)
 			{
@@ -146,7 +148,13 @@ public class SliderBase : MonoBehaviour
 			//if it is block
 			if (isXDirection)
 			{
-				
+				if (movableBlockBaseScript.CheckAndMoveLeft())
+				{
+					isTweening = true;
+					isTweeningBuffer = true;
+					connectedItem.transform.DOMove(GetConnectedItemPosition(currentLength - 1), moveTime).SetEase(Ease.Linear).OnComplete(DisableIsTweeningWhenMoveToMin);
+					return;
+				}
 			}
 			else
 			{
