@@ -72,7 +72,6 @@ public class BoxBase : MonoBehaviour
     }
 
 
-
     public bool CheckBox(bool isRight, bool includePlayer = true)
     {
         LayerMask _checkLayer;
@@ -199,6 +198,114 @@ public class BoxBase : MonoBehaviour
         }
         return needMove;
     }
+    
+    
+    public bool CheckAndMoveBoxUp()//this will only be called when it is the first attached box
+    {
+        //initialize recursive states
+        boxGroupScript.InitializeBoxGroupAndPlayer();
+        bool result = CheckBoxUp(true);//check box include player
+        if (result == false)
+        {
+            //initialize recursive states
+            boxGroupScript.InitializeBoxGroupAndPlayer();
+            result = CheckBoxUp(false);//check box exclude player(smash player)
+        }
+        if (result)
+        {
+            boxGroupScript.MoveAllBoxAndPlayer();//move all marked obj
+        }
+        return result;
+    }
+
+    public bool CheckBoxUp(bool includePlayer = true)
+    {
+        LayerMask _checkLayer;
+        if (includePlayer)
+        {
+            _checkLayer = sideDetectableLayerIncludePlayer;
+        }
+        else
+        {
+            _checkLayer = sideDetectableLayer;
+        }
+        //if it is visited, return
+        if (visited)
+        {
+            return needMove;
+        }
+        //renew direction
+        direction = Vector2.up;
+        
+        RaycastHit2D topleftUpHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2f, gridSize / 2f), Vector2.up, gridSize, _checkLayer);
+        RaycastHit2D toprightUpHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 2f, gridSize / 2f), Vector2.up, gridSize, _checkLayer);
+        bool topleftUpHitIsPushable = false;
+        bool toprightUpHitIsPushable = false;
+        if (topleftUpHit)
+        {
+            if(topleftUpHit.transform.gameObject.layer == 11 || topleftUpHit.transform.gameObject.layer == 12)//if it is a box
+            {
+                topleftUpHitIsPushable = topleftUpHit.transform.GetComponent<BoxBase>().CheckBoxUp(includePlayer);
+            }
+            else if(topleftUpHit.transform.gameObject.layer == 14)//if it is a player
+            {
+                topleftUpHitIsPushable = topleftUpHit.transform.GetComponent<PlayerBase>().CheckPlayerUp();
+            }
+            else//it is block
+            {
+                topleftUpHitIsPushable = false;
+            }
+        }
+        else//nothing
+        {
+            topleftUpHitIsPushable = true;
+        }
+        
+        if (toprightUpHit)
+        {
+            if(toprightUpHit.transform.gameObject.layer == 11 || toprightUpHit.transform.gameObject.layer == 12)//if it is a box
+            {
+                toprightUpHitIsPushable = toprightUpHit.transform.GetComponent<BoxBase>().CheckBoxUp(includePlayer);
+            }
+            else if(toprightUpHit.transform.gameObject.layer == 14)//if it is a player
+            {
+                toprightUpHitIsPushable = toprightUpHit.transform.GetComponent<PlayerBase>().CheckPlayerUp();
+            }
+            else//it is block
+            {
+                toprightUpHitIsPushable = false;
+            }
+        }
+        else//nothing
+        {
+            toprightUpHitIsPushable = true;
+        }
+        
+        if (topleftUpHitIsPushable && !toprightUpHitIsPushable)
+        {
+            DisableNeedMoveOnNext(includePlayer);
+            needMove = false;
+            visited = true;
+        }
+        else if (toprightUpHitIsPushable && !topleftUpHitIsPushable)
+        {
+            DisableNeedMoveOnNext(includePlayer);
+            needMove = false;
+            visited = true;
+        }
+        else if (topleftUpHitIsPushable && toprightUpHitIsPushable)//there is nothing on the way, need to move
+        {
+            needMove = true;
+            visited = true;
+        }
+        else
+        {
+            needMove = false;
+            visited = true;       
+        }
+        return needMove;
+    }
+    
 
     public void DisableNeedMoveOnNext(bool includePlayer = true)
     {
@@ -251,6 +358,7 @@ public class BoxBase : MonoBehaviour
     {
         isTweening = true;
         transform.DOMoveX(transform.position.x + direction.x * gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckStatus);
+        transform.DOMoveY(transform.position.y + direction.y * gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckStatus);
     }
 
     void DisactiveTweening()
@@ -260,8 +368,8 @@ public class BoxBase : MonoBehaviour
 
     void CheckStatus()
     {
-        RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize/2f+0.01f, sideDetectableLayer);
-        RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize/2f+0.01f, sideDetectableLayer);
+        RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize/2f+0.05f, sideDetectableLayer);
+        RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize/2f+0.05f, sideDetectableLayer);
         if (downleftDownHit || downrightDownHit)
         {
             //it is on ground
@@ -279,8 +387,8 @@ public class BoxBase : MonoBehaviour
 
     void CheckStatusUpdate()
     {
-        RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize / 2f + 0.01f, sideDetectableLayer);
-        RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize / 2f + 0.01f, sideDetectableLayer);
+        RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize / 2f + 0.05f, sideDetectableLayer);
+        RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize / 2f + 0.05f, sideDetectableLayer);
         Debug.DrawRay((Vector2)transform.position + new Vector2(-gridSize / 2f, -gridSize / 2f), Vector2.down, Color.green);
         Debug.DrawRay((Vector2)transform.position + new Vector2(gridSize / 2f, -gridSize / 2f), Vector2.down, Color.green);
         if (downleftDownHit || downrightDownHit)

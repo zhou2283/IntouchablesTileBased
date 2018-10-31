@@ -32,6 +32,7 @@ public class PlayerBase : MonoBehaviour {
     public bool isTweening = false;
     private bool _isTweeningLastFrame = false;
     public bool isFalling = false;// it is a special case of isTweening
+    public bool _isFallingLastFrame = false;
     public bool isTeleporting = false;// to record if player is teleporting
     public bool isDead = false;
 
@@ -309,8 +310,13 @@ public class PlayerBase : MonoBehaviour {
 	        meshTwisterScript.DropTwist();
 	    }
 
-	    _isTweeningLastFrame = isTweening;
+	    if (_isFallingLastFrame && !isFalling)
+	    {
+	        meshTwisterScript.MoveVerticalTwistBack();
+	    }
 
+	    _isTweeningLastFrame = isTweening;
+	    _isFallingLastFrame = isFalling;
 	}
 
 
@@ -414,6 +420,56 @@ public class PlayerBase : MonoBehaviour {
         return needMove;
     }
 
+
+    public bool CheckPlayerUp()
+    {
+        if (visited)
+        {
+            return needMove;
+        }
+        
+        bool isPushable = false;
+        //renew direction
+        direction = Vector2.up;
+        /*
+        RaycastHit2D upHit = Physics2D.Raycast((Vector2)transform.position, direction, GameConst.GRID_SIZE, sideDetectableLayer);
+        if (upHit)
+        {
+            if (upHit.transform.gameObject.layer == 11 || upHit.transform.gameObject.layer == 12)//if it is a box
+            {
+                isPushable = upHit.transform.GetComponent<BoxBase>().CheckBox(upHit);
+            }
+            else
+            {
+                isPushable = false;
+            }
+        }
+        else//nothing
+        {
+            isPushable = true;
+        }
+        */
+        
+        //it is always true
+        isPushable = true;
+        needMove = true;
+        visited = true;
+        
+        /*
+        if (isPushable)
+        {
+            needMove = true;
+            visited = true;
+        }
+        else
+        {
+            needMove = false;
+            visited = true;
+        }
+        */
+        return needMove;
+    }
+
     public void DisableNeedMoveOnNext()
     {
         needMove = false;
@@ -430,11 +486,14 @@ public class PlayerBase : MonoBehaviour {
             }
         }
     }
+    
+    
 
     public void MovePlayer()
     {
         isTweening = true;
         transform.DOMoveX(transform.position.x + direction.x * GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+        transform.DOMoveY(transform.position.y + direction.y * GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
     }
 
     void CheckFallingInUpdate()
@@ -444,9 +503,9 @@ public class PlayerBase : MonoBehaviour {
             return;
         }
         //use two rays to avoid small gap
-        RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, GameConst.GRID_SIZE/2f + 0.01f, downDetectableLayer);
+        RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, GameConst.GRID_SIZE/2f + 0.05f, downDetectableLayer);
         //RaycastHit2D downcenterDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(0, 0), Vector2.down, gridSize / 2f + 0.01f, downDetectableLayer);
-        RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, GameConst.GRID_SIZE/2f + 0.01f, downDetectableLayer);
+        RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, GameConst.GRID_SIZE/2f + 0.05f, downDetectableLayer);
         Debug.DrawRay((Vector2)transform.position + new Vector2(-GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, Color.green);
         Debug.DrawRay((Vector2)transform.position + new Vector2(GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, Color.green);
         if (downleftDownHit || downrightDownHit)

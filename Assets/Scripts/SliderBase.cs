@@ -111,7 +111,7 @@ public class SliderBase : MonoBehaviour
 
 	public void MoveToMax()//move up or right
 	{
-		if (!playerControlScript.isWaiting && currentLength < totalLength && !isTweeningBuffer)
+		if (!playerControlScript.isWaiting && !playerControlScript.isDead && currentLength < totalLength && !isTweeningBuffer)
 		{
 			if (!isBlock)
 			{
@@ -121,22 +121,42 @@ public class SliderBase : MonoBehaviour
 				return;
 			}
 			//if it is block
-			if (isXDirection)
+			if (isXDirection)//move right
 			{
-				
+				if (movableBlockBaseScript.CheckAndMoveSide(true))
+				{
+					isTweening = true;
+					isTweeningBuffer = true;
+					connectedItem.transform.DOMove(GetConnectedItemPosition(currentLength + 1), moveTime).SetEase(Ease.Linear).OnComplete(DisableIsTweeningWhenMoveToMax);
+					return;
+				}
+				else
+				{
+					print("cannot slide");
+				}
 			}
-			else
+			else//move up
 			{
-				
+				if (movableBlockBaseScript.CheckAndMoveUp())
+				{
+					isTweening = true;
+					isTweeningBuffer = true;
+					connectedItem.transform.DOMove(GetConnectedItemPosition(currentLength + 1), moveTime).SetEase(Ease.Linear).OnComplete(DisableIsTweeningWhenMoveToMax);
+					return;
+				}
+				else
+				{
+					print("cannot slide");
+				}
 			}
 			
 		}
 	}
 
-	public void MoveToMin()//move dowr or left
+	public void MoveToMin()//move down or left
 	{
 		
-		if (!playerControlScript.isWaiting && currentLength > 0 && !isTweeningBuffer)
+		if (!playerControlScript.isWaiting && !playerControlScript.isDead && currentLength > 0 && !isTweeningBuffer)
 		{
 			if (!isBlock)
 			{
@@ -146,17 +166,21 @@ public class SliderBase : MonoBehaviour
 				return;
 			}
 			//if it is block
-			if (isXDirection)
+			if (isXDirection)//move left
 			{
-				if (movableBlockBaseScript.CheckAndMoveLeft())
+				if (movableBlockBaseScript.CheckAndMoveSide(false))
 				{
 					isTweening = true;
 					isTweeningBuffer = true;
 					connectedItem.transform.DOMove(GetConnectedItemPosition(currentLength - 1), moveTime).SetEase(Ease.Linear).OnComplete(DisableIsTweeningWhenMoveToMin);
 					return;
 				}
+				else
+				{
+					print("cannot slide");
+				}
 			}
-			else
+			else//move down
 			{
 				if (movableBlockBaseScript.CheckDown())
 				{
