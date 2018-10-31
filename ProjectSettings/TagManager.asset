@@ -11,6 +11,8 @@ TagManager:
   - PlayerLight
   - PlayerDark
   - Portal
+  - MovableBlock
+  - Block
   layers:
   - Default
   - TransparentFX

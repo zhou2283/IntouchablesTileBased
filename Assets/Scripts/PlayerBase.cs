@@ -18,7 +18,6 @@ public class PlayerBase : MonoBehaviour {
     bool canMoveUp = false;
     bool canMoveDown = false;
 
-    float gridSize = 0.4f;
     float speed = 2f;
     float unitMoveTime = 0.15f;
     bool leftIsDown = false;
@@ -171,7 +170,7 @@ public class PlayerBase : MonoBehaviour {
                 meshTwisterScript.FaceRight();
                 meshTwisterScript.MoveHorizontalTwist();
                 //raycast to right grid
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, gridSize, sideDetectableLayer);
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, GameConst.GRID_SIZE, sideDetectableLayer);
                 //if hit something
                 if (hit)
                 {
@@ -181,7 +180,7 @@ public class PlayerBase : MonoBehaviour {
                         {
                             isTweening = true;
                             //!!!!!IMPORTANT!!!!!the box base will call the CheckStatus function, to make sure tweening animations are all down.
-                            transform.DOMoveX(transform.position.x + gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+                            transform.DOMoveX(transform.position.x + GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                         }
                         else
                         {
@@ -198,7 +197,7 @@ public class PlayerBase : MonoBehaviour {
                 else
                 {
                     isTweening = true;
-                    transform.DOMoveX(transform.position.x + gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+                    transform.DOMoveX(transform.position.x + GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                 }
             }
 
@@ -207,7 +206,7 @@ public class PlayerBase : MonoBehaviour {
                 meshTwisterScript.FaceLeft();
                 meshTwisterScript.MoveHorizontalTwist();
                 //raycast to left grid
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.left, gridSize, sideDetectableLayer);
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.left, GameConst.GRID_SIZE, sideDetectableLayer);
                 //if hit something
                 if (hit)
                 {
@@ -217,7 +216,7 @@ public class PlayerBase : MonoBehaviour {
                         {
                             isTweening = true;
                             //!!!!!IMPORTANT!!!!!the box base will call the CheckStatus function, to make sure tweening animations are all down.
-                            transform.DOMoveX(transform.position.x - gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+                            transform.DOMoveX(transform.position.x - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                         }
                         else
                         {
@@ -234,7 +233,7 @@ public class PlayerBase : MonoBehaviour {
                 else
                 {
                     isTweening = true;
-                    transform.DOMoveX(transform.position.x - gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+                    transform.DOMoveX(transform.position.x - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                 }
             }
 
@@ -244,7 +243,7 @@ public class PlayerBase : MonoBehaviour {
                 CheckLadder();//check ladder first
                 if (canMoveUp)
                 {
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up, gridSize, sideDetectableLayer);
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up, GameConst.GRID_SIZE, sideDetectableLayer);
                     if (hit)
                     {
                         //collide with wall or box
@@ -253,7 +252,7 @@ public class PlayerBase : MonoBehaviour {
                     else
                     {
                         isTweening = true;
-                        transform.DOMoveY(transform.position.y + gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+                        transform.DOMoveY(transform.position.y + GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                     }
                 }
             }
@@ -264,7 +263,7 @@ public class PlayerBase : MonoBehaviour {
                 CheckLadder();//check ladder first
                 if (canMoveDown)
                 {
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, gridSize, sideDetectableLayer);
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, GameConst.GRID_SIZE, sideDetectableLayer);
                     if (hit)
                     {
                         //collide with wall or box
@@ -273,7 +272,7 @@ public class PlayerBase : MonoBehaviour {
                     else
                     {
                         isTweening = true;
-                        transform.DOMoveY(transform.position.y - gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+                        transform.DOMoveY(transform.position.y - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                     }
                 }
             }
@@ -318,19 +317,19 @@ public class PlayerBase : MonoBehaviour {
 
     float CeilGridSizeValue(float value)
     {
-        return Mathf.Ceil((value - gridSize / 2f) * (1f / gridSize)) * gridSize + gridSize/2f;
+        return Mathf.Ceil((value - GameConst.GRID_SIZE / 2f) * (1f / GameConst.GRID_SIZE)) * GameConst.GRID_SIZE + GameConst.GRID_SIZE/2f;
     }
 
     float FloorGridSizeValue(float value)
     {
-        return Mathf.Floor((value + gridSize / 2f) * (1f / gridSize)) * gridSize - gridSize / 2f;
+        return Mathf.Floor((value + GameConst.GRID_SIZE / 2f) * (1f / GameConst.GRID_SIZE)) * GameConst.GRID_SIZE - GameConst.GRID_SIZE / 2f;
     }
 
     void CheckLadder()
     {
-        RaycastHit2D hitThisGrid = Physics2D.Raycast((Vector2)transform.position + Vector2.up * gridSize, Vector2.down, gridSize, ladderLayer);
-        RaycastHit2D hitDown = Physics2D.Raycast((Vector2)transform.position, Vector2.down, gridSize, ladderLayer);
-        RaycastHit2D hitUp = Physics2D.Raycast((Vector2)transform.position, Vector2.up, gridSize, ladderLayer);
+        RaycastHit2D hitThisGrid = Physics2D.Raycast((Vector2)transform.position + Vector2.up * GameConst.GRID_SIZE, Vector2.down, GameConst.GRID_SIZE, ladderLayer);
+        RaycastHit2D hitDown = Physics2D.Raycast((Vector2)transform.position, Vector2.down, GameConst.GRID_SIZE, ladderLayer);
+        RaycastHit2D hitUp = Physics2D.Raycast((Vector2)transform.position, Vector2.up, GameConst.GRID_SIZE, ladderLayer);
         if (hitDown || hitThisGrid)
         {
             canMoveDown = true;
@@ -352,8 +351,8 @@ public class PlayerBase : MonoBehaviour {
     public void CheckFalling()
     {
         isTeleporting = false;
-        RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position, Vector2.down, gridSize, downDetectableLayer);//check hit
-        RaycastHit2D hitLadder = Physics2D.Raycast((Vector2)transform.position + new Vector2(0,-gridSize), Vector2.up, gridSize, ladderLayer);//check hit
+        RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position, Vector2.down, GameConst.GRID_SIZE, downDetectableLayer);//check hit
+        RaycastHit2D hitLadder = Physics2D.Raycast((Vector2)transform.position + new Vector2(0,-GameConst.GRID_SIZE), Vector2.up, GameConst.GRID_SIZE, ladderLayer);//check hit
         if (hit || hitLadder)
         {
 
@@ -364,7 +363,7 @@ public class PlayerBase : MonoBehaviour {
         {
             isFalling = true;
             isTweening = true;
-            transform.DOMoveY(transform.position.y - gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+            transform.DOMoveY(transform.position.y - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
         }
     }
 
@@ -385,7 +384,7 @@ public class PlayerBase : MonoBehaviour {
         {
             direction = Vector2.left;
         }
-        RaycastHit2D sideHit = Physics2D.Raycast((Vector2)transform.position, direction, gridSize, sideDetectableLayer);
+        RaycastHit2D sideHit = Physics2D.Raycast((Vector2)transform.position, direction, GameConst.GRID_SIZE, sideDetectableLayer);
         if (sideHit)
         {
             if (sideHit.transform.gameObject.layer == 11 || sideHit.transform.gameObject.layer == 12)//if it is a box
@@ -418,7 +417,7 @@ public class PlayerBase : MonoBehaviour {
     public void DisableNeedMoveOnNext()
     {
         needMove = false;
-        RaycastHit2D sideHit = Physics2D.Raycast((Vector2)transform.position, direction, gridSize, sideDetectableLayer);
+        RaycastHit2D sideHit = Physics2D.Raycast((Vector2)transform.position, direction, GameConst.GRID_SIZE, sideDetectableLayer);
         if (sideHit)
         {
             if (sideHit.transform.gameObject.layer == 11 || sideHit.transform.gameObject.layer == 12)//if it is a box
@@ -435,7 +434,7 @@ public class PlayerBase : MonoBehaviour {
     public void MovePlayer()
     {
         isTweening = true;
-        transform.DOMoveX(transform.position.x + direction.x * gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+        transform.DOMoveX(transform.position.x + direction.x * GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
     }
 
     void CheckFallingInUpdate()
@@ -445,11 +444,11 @@ public class PlayerBase : MonoBehaviour {
             return;
         }
         //use two rays to avoid small gap
-        RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2.1f, 0), Vector2.down, gridSize/2f + 0.01f, downDetectableLayer);
+        RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, GameConst.GRID_SIZE/2f + 0.01f, downDetectableLayer);
         //RaycastHit2D downcenterDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(0, 0), Vector2.down, gridSize / 2f + 0.01f, downDetectableLayer);
-        RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 2.1f, 0), Vector2.down, gridSize/2f + 0.01f, downDetectableLayer);
-        Debug.DrawRay((Vector2)transform.position + new Vector2(-gridSize / 2.1f, 0), Vector2.down, Color.green);
-        Debug.DrawRay((Vector2)transform.position + new Vector2(gridSize / 2.1f, 0), Vector2.down, Color.green);
+        RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, GameConst.GRID_SIZE/2f + 0.01f, downDetectableLayer);
+        Debug.DrawRay((Vector2)transform.position + new Vector2(-GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, Color.green);
+        Debug.DrawRay((Vector2)transform.position + new Vector2(GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, Color.green);
         if (downleftDownHit || downrightDownHit)
         {
             //it is on ground
@@ -461,7 +460,7 @@ public class PlayerBase : MonoBehaviour {
         {
             isFalling = true;
             isTweening = true;
-            transform.DOMoveY(transform.position.y - gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFallingInUpdate);
+            transform.DOMoveY(transform.position.y - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFallingInUpdate);
             //print(transform.position.y - gridSize);
         }
     }
@@ -553,7 +552,7 @@ public class PlayerBase : MonoBehaviour {
             isInPortal = true;
             currentPortal = col.transform;
         }
-        else if(col.CompareTag("Box"))
+        else if(col.CompareTag("Box") || col.CompareTag("Block"))
         {
             if (!rewindControlScript.isRewinding)
             {

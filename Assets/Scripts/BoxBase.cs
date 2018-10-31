@@ -23,6 +23,7 @@ public class BoxBase : MonoBehaviour
     LayerMask playerTriggerLayer = 1 << 14;
     LayerMask outlineLayer = 1 << 21;
 
+    LayerMask sideDetectableLayerIncludePlayer;
     LayerMask sideDetectableLayer;
 
     //used for push recursive
@@ -35,7 +36,8 @@ public class BoxBase : MonoBehaviour
     void Start()
     {
         //layer mask part
-        sideDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | playerTriggerLayer | outlineLayer;
+        sideDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | outlineLayer;
+        sideDetectableLayerIncludePlayer = sideDetectableLayer | playerTriggerLayer;
 
         //find part
         boxGroup = transform.parent;
@@ -58,18 +60,16 @@ public class BoxBase : MonoBehaviour
     public bool CheckAndMoveBox(bool isRight)//this will only be called when it is the first attached box
     {
         //initialize recursive states
-        foreach (Transform child in boxGroup)
-        {
-            child.GetComponent<BoxBase>().visited = false;
-            child.GetComponent<BoxBase>().needMove = false;
-        }
-        playerDark.GetComponent<PlayerBase>().visited = false;
-        playerDark.GetComponent<PlayerBase>().needMove = false;
-        playerLight.GetComponent<PlayerBase>().visited = false;
-        playerLight.GetComponent<PlayerBase>().needMove = false;
+        InitializeBoxGroupAndPlayer();
 
         //check all boxes first
-        bool result = CheckBox(isRight);
+        bool result = CheckBox(isRight, true);//check include player
+        if (result == false)
+        {
+            //initialize recursive states
+            InitializeBoxGroupAndPlayer();
+            result = CheckBox(isRight, false);//check exclude player(smash player)
+        }
         if (result)
         {
             foreach (Transform child in boxGroup)
@@ -91,8 +91,30 @@ public class BoxBase : MonoBehaviour
         return result;
     }
 
-    public bool CheckBox(bool isRight)
+    void InitializeBoxGroupAndPlayer()
     {
+        foreach (Transform child in boxGroup)
+        {
+            child.GetComponent<BoxBase>().visited = false;
+            child.GetComponent<BoxBase>().needMove = false;
+        }
+        playerDark.GetComponent<PlayerBase>().visited = false;
+        playerDark.GetComponent<PlayerBase>().needMove = false;
+        playerLight.GetComponent<PlayerBase>().visited = false;
+        playerLight.GetComponent<PlayerBase>().needMove = false;
+    }
+
+    public bool CheckBox(bool isRight, bool includePlayer = true)
+    {
+        LayerMask _checkLayer;
+        if (includePlayer)
+        {
+            _checkLayer = sideDetectableLayerIncludePlayer;
+        }
+        else
+        {
+            _checkLayer = sideDetectableLayer;
+        }
         //if it is visited, return
         if (visited)
         {
@@ -107,10 +129,10 @@ public class BoxBase : MonoBehaviour
         {
             direction = Vector2.left;
         } 
-        RaycastHit2D topleftUpHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2f, gridSize / 2f), Vector2.up, gridSize, sideDetectableLayer);
-        RaycastHit2D toprightUpHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 2f, gridSize / 2f), Vector2.up, gridSize, sideDetectableLayer);
-        RaycastHit2D upSideHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(direction.x * gridSize / 2f, gridSize / 2f), direction, gridSize, sideDetectableLayer);
-        RaycastHit2D downSideHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(direction.x * gridSize / 2f, -gridSize / 2f), direction, gridSize, sideDetectableLayer);
+        RaycastHit2D topleftUpHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2f, gridSize / 2f), Vector2.up, gridSize, _checkLayer);
+        RaycastHit2D toprightUpHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 2f, gridSize / 2f), Vector2.up, gridSize, _checkLayer);
+        RaycastHit2D upSideHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(direction.x * gridSize / 2f, gridSize / 2f), direction, gridSize, _checkLayer);
+        RaycastHit2D downSideHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(direction.x * gridSize / 2f, -gridSize / 2f), direction, gridSize, _checkLayer);
 
         bool upSideHitIsPushable = false;
         bool downSideHitIsPushable = false;
@@ -120,7 +142,7 @@ public class BoxBase : MonoBehaviour
         {
             if(upSideHit.transform.gameObject.layer == 11 || upSideHit.transform.gameObject.layer == 12)//if it is a box
             {
-                upSideHitIsPushable = upSideHit.transform.GetComponent<BoxBase>().CheckBox(isRight);
+                upSideHitIsPushable = upSideHit.transform.GetComponent<BoxBase>().CheckBox(isRight, includePlayer);
             }
             else if(upSideHit.transform.gameObject.layer == 14)//if it is a player
             {
@@ -142,7 +164,7 @@ public class BoxBase : MonoBehaviour
             if (downSideHit.transform.gameObject.layer == 11 || downSideHit.transform.gameObject.layer == 12)//if it is a box
             {
                 //print(downSideHit.transform.gameObject.name);
-                downSideHitIsPushable = downSideHit.transform.GetComponent<BoxBase>().CheckBox(isRight);
+                downSideHitIsPushable = downSideHit.transform.GetComponent<BoxBase>().CheckBox(isRight, includePlayer);
             }
             else if (downSideHit.transform.gameObject.layer == 14)//if it is a player
             {
@@ -164,7 +186,7 @@ public class BoxBase : MonoBehaviour
         {
             if (topleftUpHit.transform.gameObject.layer == 11 || topleftUpHit.transform.gameObject.layer == 12)
             {
-                topleftUpHit.transform.GetComponent<BoxBase>().CheckBox(isRight);
+                topleftUpHit.transform.GetComponent<BoxBase>().CheckBox(isRight, includePlayer);
             }
             else if (topleftUpHit.transform.gameObject.layer == 14)
             {
@@ -175,7 +197,7 @@ public class BoxBase : MonoBehaviour
         {
             if (toprightUpHit.transform.gameObject.layer == 11 || toprightUpHit.transform.gameObject.layer == 12)
             {
-                toprightUpHit.transform.GetComponent<BoxBase>().CheckBox(isRight);
+                toprightUpHit.transform.GetComponent<BoxBase>().CheckBox(isRight, includePlayer);
             }
             else if (toprightUpHit.transform.gameObject.layer == 14)
             {

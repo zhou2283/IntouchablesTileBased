@@ -14,6 +14,7 @@ public class SliderBase : MonoBehaviour
 	
 	public float gridSize = 0.4f;
 	[FormerlySerializedAs("connectedLight")] public GameObject connectedItem;
+	private bool isBlock = false;
 	public bool isXDirection = true;
 	private SpriteRenderer spriteRenderer;
 	private Vector3 position;
@@ -21,11 +22,22 @@ public class SliderBase : MonoBehaviour
 	public int totalLength;
 	public Vector3 minPosition;
 	public Vector3 maxPosition;
+
+	private MovableBlockBase movableBlockBaseScript;
 	
 	// Use this for initialization
 	void Start ()
 	{
 		spriteRenderer = GetComponent<SpriteRenderer>();
+		if (connectedItem.CompareTag("MovableBlock"))
+		{
+			isBlock = true;
+			movableBlockBaseScript = connectedItem.GetComponent<MovableBlockBase>();
+		}
+		else
+		{
+			isBlock = false;
+		}
 	}
 	
 	// Update is called once per frame
@@ -95,23 +107,62 @@ public class SliderBase : MonoBehaviour
 		return minPosition + ((float) _currentLength / (float) totalLength) * (maxPosition - minPosition);
 	}
 
-	public void MoveToMax()
+	public void MoveToMax()//move up or right
 	{
 		if (!isTweening && currentLength < totalLength && !isTweeningBuffer)
 		{
-			isTweening = true;
-			isTweeningBuffer = true;
-			connectedItem.transform.DOMove(GetConnectedItemPosition(currentLength + 1), moveTime).SetEase(Ease.Linear).OnComplete(DisableIsTweeningWhenMoveToMax);
+			if (!isBlock)
+			{
+				isTweening = true;
+				isTweeningBuffer = true;
+				connectedItem.transform.DOMove(GetConnectedItemPosition(currentLength + 1), moveTime).SetEase(Ease.Linear).OnComplete(DisableIsTweeningWhenMoveToMax);
+				return;
+			}
+			//if it is block
+			if (isXDirection)
+			{
+				
+			}
+			else
+			{
+				
+			}
+			
 		}
 	}
 
-	public void MoveToMin()
+	public void MoveToMin()//move dowr or left
 	{
+		print(movableBlockBaseScript.CheckDown());
 		if (!isTweening && currentLength > 0 && !isTweeningBuffer)
 		{
-			isTweening = true;
-			isTweeningBuffer = true;
-			connectedItem.transform.DOMove(GetConnectedItemPosition(currentLength - 1), moveTime).SetEase(Ease.Linear).OnComplete(DisableIsTweeningWhenMoveToMin);
+			if (!isBlock)
+			{
+				isTweening = true;
+				isTweeningBuffer = true;
+				connectedItem.transform.DOMove(GetConnectedItemPosition(currentLength - 1), moveTime).SetEase(Ease.Linear).OnComplete(DisableIsTweeningWhenMoveToMin);
+				return;
+			}
+			//if it is block
+			if (isXDirection)
+			{
+				
+			}
+			else
+			{
+				if (movableBlockBaseScript.CheckDown())
+				{
+					isTweening = true;
+					isTweeningBuffer = true;
+					connectedItem.transform.DOMove(GetConnectedItemPosition(currentLength - 1), moveTime).SetEase(Ease.Linear).OnComplete(DisableIsTweeningWhenMoveToMin);
+					return;
+				}
+				else
+				{
+					print("cannot slide");
+				}
+			}
+			
 		}
 	}
 
