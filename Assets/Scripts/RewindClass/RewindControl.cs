@@ -118,11 +118,11 @@ public class RewindControl : MonoBehaviour {
         //enable isRewinding
         EnableIsRewinding();
         //revive effect, takes 0.5f
-        if (playerLight.GetComponent<SpriteRenderer>().enabled == false)
+        if (playerLight.GetComponent<PlayerBase>().isDead)
         {
             playerLight.GetComponent<PlayerBase>().PlayerRevive();//0.5s
         }
-        if (playerDark.GetComponent<SpriteRenderer>().enabled == false)
+        if (playerDark.GetComponent<PlayerBase>().isDead)
         {
             playerDark.GetComponent<PlayerBase>().PlayerRevive();//0.5s
         }
@@ -179,7 +179,8 @@ public class RewindControl : MonoBehaviour {
     private IEnumerator DelayToRevive(float delaySeconds)
     {
         yield return new WaitForSeconds(delaySeconds);
-        playerControlScript.isDead = false;
+        playerLight.GetComponent<PlayerBase>().isDead = false;
+        playerDark.GetComponent<PlayerBase>().isDead = false;
     }
 
     private IEnumerator DelayToDoRewindPublicPart(float delaySeconds)

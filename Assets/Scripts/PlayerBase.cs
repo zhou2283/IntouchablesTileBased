@@ -14,7 +14,7 @@ public class PlayerBase : MonoBehaviour {
 
     public bool activeSelf = true;
 
-    //bool isFalling = false;
+
     bool canMoveUp = false;
     bool canMoveDown = false;
 
@@ -34,6 +34,7 @@ public class PlayerBase : MonoBehaviour {
     private bool _isTweeningLastFrame = false;
     public bool isFalling = false;// it is a special case of isTweening
     public bool isTeleporting = false;// to record if player is teleporting
+    public bool isDead = false;
 
     LayerMask solidBlockLayer = 1 << 9;
     LayerMask glassBlockLayer = 1 << 10;
@@ -79,7 +80,7 @@ public class PlayerBase : MonoBehaviour {
         playerControlScript = GameObject.Find("PlayerControl").GetComponent<PlayerControl>();
         rewindControlScript = GameObject.Find("RewindControl").GetComponent<RewindControl>();
         goalGroupScript = GameObject.Find("GoalGroup").GetComponent<GoalGroup>();
-        meshTwisterScript = transform.Find("BodyPivot").GetComponent<MeshTwister>();
+        meshTwisterScript = transform.Find("BodyPivotVertical").GetComponent<MeshTwister>();
         //layer mask part
         downDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | ladderLayer | outlineLayer;
         sideDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | outlineLayer;
@@ -102,7 +103,7 @@ public class PlayerBase : MonoBehaviour {
             return;
         }
 	    
-	    if (playerControlScript.isDead)//if it is in rewinding, ignore all
+	    if (isDead)//if it is in rewinding, ignore all
 	    {
 	        isTweening = false;
 	        return;
@@ -119,7 +120,7 @@ public class PlayerBase : MonoBehaviour {
         }
         else
         {
-            if (!playerControlScript.isDead && !rewindControlScript.isRewinding)
+            if (!isDead && !rewindControlScript.isRewinding)
             {
                 UpdateDeathDetect();
             }
@@ -285,21 +286,29 @@ public class PlayerBase : MonoBehaviour {
                 meshTwisterScript.MoveHorizontalTwistBack();
                 meshTwisterScript.MoveVerticalTwistBack();
             }
+
+
             
             _leftIsDownLastFrame = leftIsDown;
             _rightIsDownLastFrame = rightIsDown;
             _upIsDownLastFrame = upIsDown;
             _downIsDownLastFrame = downIsDown;
-
+            
+            
+            
             #endregion
 
 
         }
-        else if (!activeSelf && !isTweening)//if it is not active, treat is as a box
+        else if (!activeSelf && !isTweening && !playerControlScript.isDead)//if it is not active, treat is as a box
         {
             CheckFallingInUpdate();
         }
-
+        
+	    if (isFalling && !playerControlScript.isDead)
+	    {
+	        meshTwisterScript.DropTwist();
+	    }
 
 	    _isTweeningLastFrame = isTweening;
 
@@ -579,15 +588,18 @@ public class PlayerBase : MonoBehaviour {
     public virtual void PlayerDead()
     {
         KillTweening();
-        playerControlScript.isDead = true;
-        transform.GetComponent<SpriteRenderer>().enabled = false;
+        
+        
+        isFalling = false;
+        isDead = true;
+        meshTwisterScript.DeadTwist();
         Instantiate(deadEffect, transform.position, Quaternion.identity);
     }
 
     public virtual void PlayerRevive()
     {
         Instantiate(reviveEffect, transform.position, Quaternion.identity);
-        StartCoroutine(DelayToActiveSprite(0.5f));
+        meshTwisterScript.ReviveTwist(0.5f);
     }
 
 
@@ -608,17 +620,15 @@ public class PlayerBase : MonoBehaviour {
         isTweening = false;
         transform.DOKill();
     }
-    /*
-    public void RewindingDisable(float delaySeconds)
-    {
-        isRewinding = true;
-        StartCoroutine(DelayToDisactiveIsRewinding(delaySeconds));
-    }
     
-    public IEnumerator DelayToDisactiveIsRewinding(float delaySeconds)
+    
+    //animation part
+    public void DoActiveTwistAnimation()
     {
-        yield return new WaitForSeconds(delaySeconds);
-        isRewinding = false;
+        meshTwisterScript.ActiveTwist();
     }
-    */
+    public void DoDisactiveTwistAnimation()
+    {
+        meshTwisterScript.DisactiveTwist();
+    }
 }

@@ -7,8 +7,8 @@ using DG.Tweening;
 public class PlayerControl : MonoBehaviour {
 
     //find part
-    Transform playerLight;
-    Transform playerDark;
+    public Transform playerLight;
+    public Transform playerDark;
     Transform playerIndicator;
     
 
@@ -55,6 +55,15 @@ public class PlayerControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+	    if (playerLight.GetComponent<PlayerBase>().isDead || playerDark.GetComponent<PlayerBase>().isDead)
+	    {
+	        isDead = true;
+	    }
+	    else
+	    {
+	        isDead = false;
+	    }
+	    
 	    if (Input.GetKeyDown(KeyCode.R))
 	    {
 	        RestartLevel();
@@ -96,12 +105,16 @@ public class PlayerControl : MonoBehaviour {
         if (isLightPlayerActive)
         {
             isLightPlayerActive = false;
+            playerDark.GetComponent<PlayerBase>().DoActiveTwistAnimation();
+            playerLight.GetComponent<PlayerBase>().DoDisactiveTwistAnimation();
             playerIndicator.parent = playerDark;
             playerIndicator.DOLocalMove(new Vector3(0, 0.4f, 0), 0.1f);
         }
         else
         {
             isLightPlayerActive = true;
+            playerLight.GetComponent<PlayerBase>().DoActiveTwistAnimation();
+            playerDark.GetComponent<PlayerBase>().DoDisactiveTwistAnimation();
             playerIndicator.parent = playerLight;
             playerIndicator.DOLocalMove(new Vector3(0, 0.4f, 0), 0.1f);
         }

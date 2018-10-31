@@ -6,6 +6,7 @@ public class RopeBase : MonoBehaviour {
 	
 	public int segments = 100;
 	public Color lineColor = new Color(0.5f, 0.5f, 0.5f, 1);
+	public Material ropeMaterial;
 	List<Vector3> linePoints = new List<Vector3>();
 	private VectorLine line;
 	
@@ -17,6 +18,7 @@ public class RopeBase : MonoBehaviour {
 
 		line = VectorLine.SetLine(lineColor, linePoints.ToArray());
 		line.SetWidth(8f);
+		line.material = ropeMaterial;
 		line.joins = Joins.Fill;
 		line.layer = 18;
 	}
