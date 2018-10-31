@@ -387,10 +387,10 @@ public class BoxBase : MonoBehaviour
 
     void CheckStatusUpdate()
     {
-        RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize / 2f + 0.05f, sideDetectableLayer);
-        RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize / 2f + 0.05f, sideDetectableLayer);
-        Debug.DrawRay((Vector2)transform.position + new Vector2(-gridSize / 2f, -gridSize / 2f), Vector2.down, Color.green);
-        Debug.DrawRay((Vector2)transform.position + new Vector2(gridSize / 2f, -gridSize / 2f), Vector2.down, Color.green);
+        RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 1.1f, -gridSize / 2f), Vector2.down, gridSize / 2f + 0.05f, sideDetectableLayer);
+        RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 1.1f, -gridSize / 2f), Vector2.down, gridSize / 2f + 0.05f, sideDetectableLayer);
+        Debug.DrawRay((Vector2)transform.position + new Vector2(-gridSize / 1.1f, -gridSize / 2f), Vector2.down, Color.green);
+        Debug.DrawRay((Vector2)transform.position + new Vector2(gridSize / 1.1f, -gridSize / 2f), Vector2.down, Color.green);
         if (downleftDownHit || downrightDownHit)
         {
             //it is on ground
