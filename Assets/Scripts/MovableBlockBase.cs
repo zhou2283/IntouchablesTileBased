@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class MovableBlockBase : MonoBehaviour
 {
+	public bool isFalling = false;//this will be used for box falling checking
+
+	private float posY;
+	private float _posYLastFrame;
+	
 	//ray origin need to add transform.position
 	private Ray2D[] leftRayArray;
 	private Ray2D[] rightRayArray;
@@ -64,6 +69,7 @@ public class MovableBlockBase : MonoBehaviour
 			rightRayArray[i] = new Ray2D(new Vector2(_xRight, _y), Vector2.right);
 		}
 
+		posY = _posYLastFrame = transform.position.y;
 
 		boxGroupScript = GameObject.Find("BoxGroup").GetComponent<BoxGroup>();
 	}
@@ -87,9 +93,20 @@ public class MovableBlockBase : MonoBehaviour
 		{
 			Debug.DrawRay(child.origin + (Vector2)(transform.position), child.direction, Color.magenta);
 		}
-		
-		
-		
+
+		posY = transform.position.y;
+
+		if (_posYLastFrame - posY > 0.01f)
+		{
+			isFalling = true;
+		}
+		else
+		{
+			isFalling = false;
+		}
+		_posYLastFrame = posY;
+
+
 	}
 
 	public bool CheckDown()

@@ -53,6 +53,7 @@ public class SliderBase : MonoBehaviour
 		{
 			MoveToMin();
 		}
+
 	}
 
 	public void UpdateInEditor()
@@ -211,6 +212,7 @@ public class SliderBase : MonoBehaviour
 		isTweening = false;
 		StartCoroutine(DelayToDisableIsTweeningBuffer(0.005f));
 	}
+
 	
 	public IEnumerator DelayToDisableIsTweeningBuffer(float delaySeconds)
 	{

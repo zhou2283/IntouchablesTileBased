@@ -498,10 +498,12 @@ public class PlayerBase : MonoBehaviour {
 
     void CheckFallingInUpdate()
     {
+        /*
         if (playerControlScript.isDead)
         {
             return;
         }
+        */
         //use two rays to avoid small gap
         RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, GameConst.GRID_SIZE/2f + 0.05f, downDetectableLayer);
         //RaycastHit2D downcenterDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(0, 0), Vector2.down, gridSize / 2f + 0.01f, downDetectableLayer);

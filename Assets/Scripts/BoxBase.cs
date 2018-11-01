@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using DG.Tweening;
 
@@ -370,6 +371,23 @@ public class BoxBase : MonoBehaviour
     {
         RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize/2f+0.05f, sideDetectableLayer);
         RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize/2f+0.05f, sideDetectableLayer);
+
+        
+        if (CanFallCheck(downleftDownHit,downrightDownHit))
+        {
+            //falling
+            isTweening = true;
+            isFalling = true;
+            transform.DOMoveY(transform.position.y - gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckStatusUpdate);
+        }
+        else
+        {
+            //it is on ground
+            isTweening = false;
+            isFalling = false;
+        }
+        
+        /*
         if (downleftDownHit || downrightDownHit)
         {
             //it is on ground
@@ -383,6 +401,7 @@ public class BoxBase : MonoBehaviour
             isFalling = true;
             transform.DOMoveY(transform.position.y - gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckStatus);
         }
+        */
     }
 
     void CheckStatusUpdate()
@@ -391,6 +410,23 @@ public class BoxBase : MonoBehaviour
         RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 1.1f, -gridSize / 2f), Vector2.down, gridSize / 2f + 0.05f, sideDetectableLayer);
         Debug.DrawRay((Vector2)transform.position + new Vector2(-gridSize / 1.1f, -gridSize / 2f), Vector2.down, Color.green);
         Debug.DrawRay((Vector2)transform.position + new Vector2(gridSize / 1.1f, -gridSize / 2f), Vector2.down, Color.green);
+
+        
+        if (CanFallCheck(downleftDownHit,downrightDownHit))
+        {
+            //falling
+            isTweening = true;
+            isFalling = true;
+            transform.DOMoveY(transform.position.y - gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckStatusUpdate);
+        }
+        else
+        {
+            //it is on ground
+            isTweening = false;
+            isFalling = false;
+        }
+        
+        /*
         if (downleftDownHit || downrightDownHit)
         {
             //it is on ground
@@ -404,6 +440,86 @@ public class BoxBase : MonoBehaviour
             isFalling = true;
             transform.DOMoveY(transform.position.y - gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckStatusUpdate);
         }
+        */
+    }
+    
+    bool CanFallCheck(RaycastHit2D downleftDownHit, RaycastHit2D downrightDownHit)
+    {
+        bool downLeftCanFall = false;
+        bool downRightCanFall = false;
+
+        if (!downleftDownHit)
+        {
+            downLeftCanFall = true;
+        }
+        else
+        {
+            if (downleftDownHit.transform.CompareTag("Box"))
+            {
+                if (downleftDownHit.transform.GetComponent<BoxBase>().isFalling)
+                {
+                    downLeftCanFall = true;
+                }
+                else
+                {
+                    downLeftCanFall = false;
+                }
+            }
+            /*
+            else if (downleftDownHit.transform.CompareTag("MovableBlock"))
+            {
+                if (downleftDownHit.transform.GetComponent<MovableBlockBase>().isFalling)
+                {
+                    downLeftCanFall = true;
+                }
+                else
+                {
+                    downLeftCanFall = false;
+                }
+            }
+            */
+            else
+            {
+                downLeftCanFall = false;
+            }
+        }
+        if (!downrightDownHit)
+        {
+            downRightCanFall = true;
+        }
+        else
+        {
+            if (downrightDownHit.transform.CompareTag("Box"))
+            {
+                if (downrightDownHit.transform.GetComponent<BoxBase>().isFalling)
+                {
+                    downRightCanFall = true;
+                }
+                else
+                {
+                    downRightCanFall = false;
+                }
+            }
+            /*
+            else if (downrightDownHit.transform.CompareTag("MovableBlock"))
+            {
+                if (downrightDownHit.transform.GetComponent<MovableBlockBase>().isFalling)
+                {
+                    downRightCanFall = true;
+                }
+                else
+                {
+                    downRightCanFall = false;
+                }
+            }
+            */
+            else
+            {
+                downRightCanFall = false;
+            }
+        }
+
+        return (downLeftCanFall && downRightCanFall);
     }
 
     //rewind part
