@@ -1,4 +1,3 @@
-// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 // Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
 Shader "Alpha Masked/Unlit Alpha Masked - World Coords"
@@ -6,17 +5,23 @@ Shader "Alpha Masked/Unlit Alpha Masked - World Coords"
 	Properties
 	{
 		_MainTex("Texture", 2D) = "white" {}
-		[HideInInspector][Toggle] _Enabled("Mask Enabled", Float) = 1
-		[HideInInspector][Toggle] _ClampHoriz("Clamp Alpha Horizontally", Float) = 0
-		[HideInInspector][Toggle] _ClampVert("Clamp Alpha Vertically", Float) = 0
-		[HideInInspector][Toggle] _UseAlphaChannel("Use Mask Alpha Channel (not RGB)", Float) = 0
-		[HideInInspector]_AlphaTex("Alpha Mask", 2D) = "white" {}
-		[HideInInspector]_ClampBorder("Clamping Border", Float) = 0.01
+		[HideInInspector][PerRendererData][Toggle] _Enabled("Mask Enabled", Float) = 1
+		[HideInInspector][PerRendererData][Toggle] _ClampHoriz("Clamp Alpha Horizontally", Float) = 0
+		[HideInInspector][PerRendererData][Toggle] _ClampVert("Clamp Alpha Vertically", Float) = 0
+		[HideInInspector][PerRendererData][Toggle] _UseAlphaChannel("Use Mask Alpha Channel (not RGB)", Float) = 0
+		[HideInInspector][PerRendererData][Toggle] _ScreenSpaceUI ("Is this screen space ui element?", Float) = 0
+		[HideInInspector][PerRendererData]_AlphaTex("Alpha Mask", 2D) = "white" {}
+		[HideInInspector][PerRendererData]_ClampBorder("Clamping Border", Float) = 0.01
 	}
 
 		SubShader
 		{
-			Tags { "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" }
+			Tags { 
+			"Queue" = "Transparent" 
+			"IgnoreProjector" = "True" 
+			"RenderType" = "Transparent" 
+			"ToJMasked" = "True"
+			}
 			Blend SrcAlpha OneMinusSrcAlpha
 			Cull Off Lighting Off ZWrite Off Fog { Color(0, 0, 0, 0) }
 
@@ -24,33 +29,21 @@ Shader "Alpha Masked/Unlit Alpha Masked - World Coords"
 			{
 			CGPROGRAM
 			#include "UnityCG.cginc"
+			#include "../../ToJAlphaMasking.cginc"
 
 			#pragma vertex vert
 			#pragma fragment frag
 
-
-			float _ClampHoriz;
-			float _ClampVert;
-			float _UseAlphaChannel;
-
-			sampler2D _MainTex;
-			sampler2D _AlphaTex;
-			float _ClampBorder;
-
-			float4x4 _WorldToMask;
-
-			float _Enabled;
+			sampler2D _MainTex; //form properties
+			float4 _MainTex_ST;
 
 			struct v2f
 			{
 				float4 pos : SV_POSITION;
-				float2 uvMain : TEXCOORD1;
-				float2 uvAlpha : TEXCOORD2;
 				float4 color : COLOR;
+				float2 uvMain : TEXCOORD1;
+				TOJ_MASK_COORDS(2)
 			};
-
-			float4 _MainTex_ST;
-			float4 _AlphaTex_ST;
 
 			v2f vert(appdata_full v)
 			{
@@ -59,49 +52,26 @@ Shader "Alpha Masked/Unlit Alpha Masked - World Coords"
 				o.uvMain = TRANSFORM_TEX(v.texcoord, _MainTex);
 				o.color = v.color;
 
-				o.uvAlpha = float2(0, 0);
-				if (_Enabled == 1)
-				{
-					o.uvAlpha = mul(_WorldToMask, mul(unity_ObjectToWorld, v.vertex)).xy + float2(0.5f, 0.5f);
-
-					o.uvAlpha = o.uvAlpha * _AlphaTex_ST.xy + _AlphaTex_ST.zw;
-				}
+				
+				TOJ_TRANSFER_MASK(o, v.vertex);				
 
 				return o;
 			}
 
-			half4 frag(v2f i) : COLOR
+			half4 frag(v2f i) : SV_Target //If using version below 4.5 replace SV_Target with: COLOR
 			{
 				half4 texcol;
-				if (_Enabled > 0){
 
-					float2 alphaCoords = i.uvAlpha;
+				texcol = tex2D(_MainTex, i.uvMain);
+				texcol *= i.color;
 
-					if (_ClampHoriz)
-						alphaCoords.x = clamp(alphaCoords.x, _ClampBorder, 1.0 - _ClampBorder);
+				TOJ_APPLY_MASK(i, texcol.a);
 
-					if (_ClampVert)
-						alphaCoords.y = clamp(alphaCoords.y, _ClampBorder, 1.0 - _ClampBorder);
-
-					texcol = tex2D(_MainTex, i.uvMain);
-
-					if (_UseAlphaChannel)
-						texcol.a *= tex2D(_AlphaTex, alphaCoords).a;
-					else
-						texcol.a *= tex2D(_AlphaTex, alphaCoords).rgb;
-					
-				}
-				else
-				{
-					texcol = tex2D(_MainTex, i.uvMain);
-				}
-
-				return texcol * i.color;
+				return texcol;
 			}
 
 		ENDCG
 		}
 	}
-
-			Fallback "Unlit/Texture"
+	Fallback "Unlit/Texture"
 }

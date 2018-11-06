@@ -26,6 +26,10 @@ public class UIMaterialModifier : MonoBehaviour, IMaterialModifier
 
 	[SerializeField][HideInInspector]
 	private int instanceID = 0;
+
+	private Image image;
+	private Text text;
+
 	void Awake ()
 	{
 		if (instanceID != GetInstanceID())
@@ -43,6 +47,8 @@ public class UIMaterialModifier : MonoBehaviour, IMaterialModifier
 				}
 			}
 		}
+		image = GetComponent<Image>();
+		text = GetComponent<Text>();
 	}
 
 	private void OnDestroy ()
@@ -68,15 +74,9 @@ public class UIMaterialModifier : MonoBehaviour, IMaterialModifier
 			target.SetFloat("_UseAlphaChannel", useAlphaChannel ? 1 : 0);
 			target.SetFloat("_Enabled", maskingEnabled ? 1 : 0);
 			target.SetFloat("_ClampingBorder", clampingBorder);
-
-			if (screenSpaceEnabled)
-			{
-				target.EnableKeyword("_SCREEN_SPACE_UI");
-			}
-			else
-			{
-				target.DisableKeyword("_SCREEN_SPACE_UI");
-			}
+			target.SetFloat("_ScreenSpaceUI", screenSpaceEnabled ? 1 : 0);
+			if (image) target.SetColor("_Color", image.color);
+			if (text) target.SetColor("_Color", text.color);
 		}
 	}
 

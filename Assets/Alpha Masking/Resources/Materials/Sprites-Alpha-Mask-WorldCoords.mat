@@ -4,10 +4,10 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Sprites-Alpha-Mask-WorldCoords
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 728c0e664f8bc78468d36dcb0c49f8d5, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _ENABLED_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -34,6 +34,7 @@ Material:
     - _Enabled: 1
     - _IsThisText: 1
     - _PixelSnap: 0
+    - _ScreenSpaceUI: 0
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0

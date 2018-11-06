@@ -58,10 +58,19 @@ public class MeshTwister : MonoBehaviour {
 		//mesh.RecalculateBounds();
 	}
 
-	public void MoveHorizontalTwist()
+	public void MoveLeftTwist()
 	{
 		bodyPivotVertical.transform.DOKill();
-		DOTween.To(() => twisterPower, x => twisterPower = x, 3f, 0.2f).SetEase(Ease.Linear);
+		DOTween.To(() => twisterPower, x => twisterPower = x, 1.5f, 0.2f).SetEase(Ease.Linear);
+		bodyPivotVertical.transform.DOScaleY(0.9f,0.2f).SetEase(Ease.Linear);
+		DOTween.To(() => twisterPower, x => twisterPower = x, 0, 1f).SetEase(Ease.OutElastic).SetDelay(0.2f);
+		bodyPivotVertical.transform.DOScaleY(1f, 1f).SetEase(Ease.OutElastic).SetDelay(0.2f);
+	}
+	
+	public void MoveRightTwist()
+	{
+		bodyPivotVertical.transform.DOKill();
+		DOTween.To(() => twisterPower, x => twisterPower = x, -1.5f, 0.2f).SetEase(Ease.Linear);
 		bodyPivotVertical.transform.DOScaleY(0.9f,0.2f).SetEase(Ease.Linear);
 		DOTween.To(() => twisterPower, x => twisterPower = x, 0, 1f).SetEase(Ease.OutElastic).SetDelay(0.2f);
 		bodyPivotVertical.transform.DOScaleY(1f, 1f).SetEase(Ease.OutElastic).SetDelay(0.2f);
@@ -95,7 +104,8 @@ public class MeshTwister : MonoBehaviour {
 	
 	public void DisactiveTwist()
 	{
-
+		MoveHorizontalTwistBack();
+		MoveVerticalTwistBack();
 	}
 	
 	public void MoveDownTwist()
@@ -110,7 +120,7 @@ public class MeshTwister : MonoBehaviour {
 	public void DropTwist()
 	{
 		bodyPivotHorizontal.transform.DOKill();
-		bodyPivotVertical.transform.DOScaleY(1.3f,0.2f).SetEase(Ease.Linear);
+		bodyPivotVertical.transform.DOScaleY(1.2f,0.2f).SetEase(Ease.Linear);
 		bodyPivotHorizontal.transform.DOScaleX(0.8f,0.2f).SetEase(Ease.Linear);
 		bodyPivotVertical.transform.DOScaleY(1f, 1f).SetEase(Ease.OutElastic).SetDelay(0.2f);
 		bodyPivotHorizontal.transform.DOScaleX(1f, 1f).SetEase(Ease.OutElastic).SetDelay(0.2f);

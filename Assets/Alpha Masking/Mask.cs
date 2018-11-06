@@ -41,7 +41,7 @@ namespace ToJ
 			{
 				if (value != _isMaskingEnabled)
 				{
-					fullMaskRefresh = true;
+					ScheduleFullMaskRefresh();
 					_isMaskingEnabled = value;
 				}
 			}
@@ -57,7 +57,7 @@ namespace ToJ
 			{
 				if (value != _clampAlphaHorizontally)
 				{
-					fullMaskRefresh = true;
+					ScheduleFullMaskRefresh();
 					_clampAlphaHorizontally = value;
 				}
 			}
@@ -73,7 +73,7 @@ namespace ToJ
 			{
 				if (value != _clampAlphaVertically)
 				{
-					fullMaskRefresh = true;
+					ScheduleFullMaskRefresh();
 					_clampAlphaVertically = value;
 				}
 			}
@@ -89,7 +89,7 @@ namespace ToJ
 			{
 				if (value != _clampingBorder)
 				{
-					fullMaskRefresh = true;
+					ScheduleFullMaskRefresh();
 					_clampingBorder = value;
 				}
 			}
@@ -105,7 +105,7 @@ namespace ToJ
 			{
 				if (value != _useMaskAlphaChannel)
 				{
-					fullMaskRefresh = true;
+					ScheduleFullMaskRefresh();
 					_useMaskAlphaChannel = value;
 				}
 			}
@@ -121,7 +121,7 @@ namespace ToJ
 			{
 				if (value != mainTex)
 				{
-					fullMaskRefresh = true;
+					ScheduleFullMaskRefresh();
 					mainTex = value;
 				}
 			}
@@ -137,7 +137,7 @@ namespace ToJ
 			{
 				if (value != mainTexTiling)
 				{
-					fullMaskRefresh = true;
+					ScheduleFullMaskRefresh();
 					mainTexTiling = value;
 				}
 			}
@@ -152,52 +152,67 @@ namespace ToJ
 			{
 				if (value != mainTexOffset)
 				{
-					fullMaskRefresh = true;
+					ScheduleFullMaskRefresh();
 					mainTexOffset = value;
 				}
 			}
 		}
 
-		public void FlagForRefresh ()
+		private bool fullMaskRefresh = true;
+		public void ScheduleFullMaskRefresh ()
 		{
 			fullMaskRefresh = true;
 		}
 
-		private bool fullMaskRefresh = true;
-
 		private Matrix4x4 oldWorldToMask = Matrix4x4.identity;
-
-		private Shader maskedSpriteWorldCoordsShader = null;
-		private Shader MaskedSpriteWorldCoordsShader
+		private Matrix4x4 OldWorldToMask
 		{
 			get
 			{
-				if (maskedSpriteWorldCoordsShader == null)
-				{
-					maskedSpriteWorldCoordsShader = Shader.Find(MASKED_SPRITE_SHADER);
-				}
-				return maskedSpriteWorldCoordsShader;
+				return oldWorldToMask;
 			}
 			set
 			{
-				maskedSpriteWorldCoordsShader = value;
+				oldWorldToMask = value;
 			}
 		}
 
-		private Shader maskedUnlitWorldCoordsShader = null;
-		private Shader MaskedUnlitWorldCoordsShader
+		//Must remaint for version upgrades
+		private Shader defaultMaskedSpriteShader = null;
+		private Shader DefaultMaskedSpriteShader
 		{
 			get
 			{
-				if (maskedUnlitWorldCoordsShader == null)
-				{
-					maskedUnlitWorldCoordsShader = Shader.Find(MASKED_UNLIT_SHADER);
-				}
-				return maskedUnlitWorldCoordsShader;
+				if (defaultMaskedSpriteShader == null) defaultMaskedSpriteShader = Shader.Find(MASKED_SPRITE_SHADER);
+				return defaultMaskedSpriteShader;
 			}
 			set
 			{
-				maskedUnlitWorldCoordsShader = value;
+				defaultMaskedSpriteShader = value;
+			}
+		}
+
+		//Must remain for version upgrades
+		private Shader defaultMaskedUnlitShader = null;
+		private Shader DefaultMaskedUnlitShader
+		{
+			get
+			{
+				if (defaultMaskedUnlitShader == null) defaultMaskedUnlitShader = Shader.Find(MASKED_UNLIT_SHADER);
+				return defaultMaskedUnlitShader;
+			}
+			set
+			{
+				defaultMaskedUnlitShader = value;
+			}
+		}
+		private MeshRenderer meshRenderer;
+		private MeshRenderer MeshRenderer
+		{
+			get
+			{
+				if (meshRenderer == null) meshRenderer = GetComponent<MeshRenderer>();
+				return meshRenderer;
 			}
 		}
 
@@ -250,7 +265,7 @@ namespace ToJ
 			}
 		}
 
-		private Matrix4x4 maskQuadMatrix = Matrix4x4.identity;
+
 
 		//Assigning starter value here, throws error of initializing property block not in main thread
 		private MaterialPropertyBlock maskeePropertyBlock;
@@ -289,10 +304,46 @@ namespace ToJ
 
 		public List<Material> createdMatsStorage = new List<Material>();
 
-		[SerializeField]
-		int instanceID = 0;
+
 #if UNITY_EDITOR
-		private void Reset ()
+		private Matrix4x4 maskQuadMatrix = Matrix4x4.identity;
+		private bool freshlyInitialized = true;
+
+
+		//Draws the displayMask image, unselectable
+		private void OnRenderObject () //Unity Event
+		{
+			DrawReferenceMask(out maskQuadMatrix);
+		}
+
+		private void OnValidate () //Unity Event
+		{
+			if (maskVersion == 0)
+			{
+				VersionUpgradeMask(false);
+				maskVersion = 1;
+			}
+
+			Event e = Event.current;
+			if (e != null && !string.IsNullOrEmpty(e.commandName))
+			{
+				// freshlyInitialized is used to avoid false flags when pasting values into component fields
+				bool componentPaste = (e.commandName == "Paste" && freshlyInitialized);
+
+				if (e.commandName == "Duplicate" || componentPaste)
+				{
+					DuplicateMaskedMaterials();
+					CoreInitialization();
+				}
+			}
+			freshlyInitialized = false;
+
+
+			RefreshMaskPropertyBlock();
+			UpdateMasking();
+		}
+
+		private void Reset () //Unity Event
 		{
 			CoreInitialization();
 
@@ -303,7 +354,7 @@ namespace ToJ
 			}
 		}
 
-		private void Awake ()
+		private void Awake () //Unity Event
 		{
 			CoreInitialization();
 
@@ -316,54 +367,35 @@ namespace ToJ
 
 		private void CoreInitialization ()
 		{
-			if (GetComponent<Renderer>().sharedMaterial == null)
+			if (MeshRenderer.sharedMaterial == null)
 			{
-				GetComponent<Renderer>().sharedMaterial = MaskMaterial;
-				GetComponent<Renderer>().enabled = false;
+				MeshRenderer.sharedMaterial = MaskMaterial;
+				MeshRenderer.enabled = false;
 			}
 
-			InitializeMeshRenderer(GetComponent<MeshRenderer>());
-			fullMaskRefresh = true;
+			InitializeMeshRenderer(MeshRenderer);
+			ScheduleFullMaskRefresh();
 		}
 #endif
 
 		void Start ()
 		{
-			MeshRenderer maskMeshRenderer = GetComponent<MeshRenderer>();
 			if (Application.isPlaying)
 			{
-				if (maskMeshRenderer != null)
-				{
-					maskMeshRenderer.enabled = false;
-				}
+				MeshRenderer.enabled = false;
 			}
-#if UNITY_EDITOR
-			else
-			{
-				if (instanceID != GetInstanceID())
-				{
-					if (instanceID == 0)
-					{
-						instanceID = GetInstanceID();
-					}
-					else
-					{
-						instanceID = GetInstanceID();
-						if (instanceID < 0)
-						{
-							DuplicateMaskedMaterials();
-						}
-					}
-				}
-				CoreInitialization();
-			}
-#endif
+		}
+
+		public bool IsMaskeeMaterial (Material material)
+		{
+			string materialTag = material.GetTag("ToJMasked", false, "false").ToLowerInvariant();
+			return materialTag.Equals("true");
 		}
 
 		private void ClearShaders ()
 		{
-			MaskedSpriteWorldCoordsShader = null;
-			MaskedUnlitWorldCoordsShader = null;
+			DefaultMaskedSpriteShader = null;
+			DefaultMaskedUnlitShader = null;
 		}
 
 		private void InitializeMeshRenderer (MeshRenderer target)
@@ -378,36 +410,26 @@ namespace ToJ
 
 		void LateUpdate ()
 		{
+
 #if UNITY_EDITOR
 			if (maskVersion == 0)
 			{
 				VersionUpgradeMask();
 				maskVersion = 1;
 			}
-#endif
 
-			RefreshMaskPropertyBlock();
-			UpdateMasking();
-
-		}
-#if UNITY_EDITOR
-		//Draws the displayMask image, unselectable
-		private void OnRenderObject ()
-		{
-			DrawReferenceMask(out maskQuadMatrix);
-		}
-
-		private void OnValidate ()
-		{
-			if (maskVersion == 0)
+			// Fixes broken masks after scene save. Shouldn't impact performance, since updates
+			// in edit mode aren't frequent anyway.
+			if (!Application.isPlaying)
 			{
-				VersionUpgradeMask(false);
-				maskVersion = 1;
+				ScheduleFullMaskRefresh();
 			}
+#endif
+
 			RefreshMaskPropertyBlock();
 			UpdateMasking();
+
 		}
-#endif
 
 		private void UpdateInstanciatedMaterials (List<Material> differentMaterials, Matrix4x4 worldToMask)
 		{
@@ -415,17 +437,25 @@ namespace ToJ
 			{
 				ValidateShader(material);
 
-				if (material.shader == MaskedSpriteWorldCoordsShader || material.shader == MaskedUnlitWorldCoordsShader)
+
+				if (IsMaskeeMaterial(material))
 				{
-					material.DisableKeyword("_SCREEN_SPACE_UI");
+
 
 					material.SetTexture("_AlphaTex", MainTex);
 					//Set calculations
 					material.SetTextureOffset("_AlphaTex", MainTexOffset);
 					material.SetTextureScale("_AlphaTex", MainTexTiling);
+
 					material.SetFloat("_ClampHoriz", ClampAlphaHorizontally ? 1 : 0);
 					material.SetFloat("_ClampVert", ClampAlphaVertically ? 1 : 0);
+					material.SetFloat("_UseAlphaChannel", UseMaskAlphaChannel ? 1 : 0);
+					material.SetFloat("_Enabled", IsMaskingEnabled ? 1 : 0);
 					material.SetFloat("_ClampBorder", ClampingBorder);
+					material.SetFloat("_IsThisText", 0);
+
+					material.SetFloat("_ScreenSpaceUI", 0);
+					
 
 					material.SetMatrix("_WorldToMask", worldToMask);
 				}
@@ -443,8 +473,7 @@ namespace ToJ
 				}
 #endif
 
-				if ((graphic.material.shader == MaskedSpriteWorldCoordsShader) ||
-					(graphic.material.shader == MaskedUnlitWorldCoordsShader))
+				if (IsMaskeeMaterial(graphic.material))
 				{
 					UIMaterialModifier modifier = graphic.GetComponent<UIMaterialModifier>();
 					if (modifier == null)
@@ -487,11 +516,9 @@ namespace ToJ
 				}
 #endif
 
-				if ((spriteRenderer.sharedMaterial.shader == MaskedSpriteWorldCoordsShader) ||
-					(spriteRenderer.sharedMaterial.shader == MaskedUnlitWorldCoordsShader))
+				if (IsMaskeeMaterial(spriteRenderer.sharedMaterial))
 				{
 					spriteRenderer.GetPropertyBlock(MaskeePropertyBlock);
-					Texture propertyBlockTexture = MaskeePropertyBlock.GetTexture("_AlphaTex");
 
 					if (MainTex != null)
 					{
@@ -519,7 +546,7 @@ namespace ToJ
 		public void UpdateMasking ()
 		{
 			//Find or create missing components
-			if (MaskedSpriteWorldCoordsShader == null || MaskedUnlitWorldCoordsShader == null)
+			if (DefaultMaskedSpriteShader == null || DefaultMaskedUnlitShader == null)
 			{
 				Debug.Log("Shaders necessary for masking don't seem to be present in the project.");
 				return;
@@ -544,18 +571,27 @@ namespace ToJ
 				worldToMask.SetTRS(transform.position, transform.rotation, maskSize);
 				worldToMask = Matrix4x4.Inverse(worldToMask);
 
-				if (worldToMask != oldWorldToMask)
+				if (worldToMask != OldWorldToMask)
 				{
-					fullMaskRefresh = true;
-
+					ScheduleFullMaskRefresh();
 				}
-				oldWorldToMask = worldToMask;
+
+				OldWorldToMask = worldToMask;
 
 				if (fullMaskRefresh)
 				{
+					List<Renderer> renderers = new List<Renderer>();
+					transform.parent.gameObject.GetComponentsInChildren(true, renderers);
+					Renderer excludedRenderer = transform.parent.GetComponent<Renderer>();
+					if (excludedRenderer != null) renderers.Remove(excludedRenderer);
 
-					Renderer[] renderers = transform.parent.gameObject.GetComponentsInChildren<Renderer>(true);
-					Graphic[] UIComponents = transform.parent.gameObject.GetComponentsInChildren<Graphic>(true);
+
+					List<Graphic> UIComponents = new List<Graphic>();
+					transform.parent.gameObject.GetComponentsInChildren(true, UIComponents);
+					Graphic excludedGraphic = transform.parent.GetComponent<Graphic>();
+					if (excludedGraphic != null) UIComponents.Remove(excludedGraphic);
+
+
 					List<SpriteRenderer> differentSpriteRenderers = new List<SpriteRenderer>();
 					List<Graphic> differentGraphics = new List<Graphic>();
 					List<Material> differentActiveMaterials = new List<Material>();
@@ -618,17 +654,17 @@ namespace ToJ
 
 		private void ValidateShader (Material material)
 		{
-			if ((material.shader.ToString() == MaskedSpriteWorldCoordsShader.ToString()) &&
-				(material.shader.GetInstanceID() != MaskedSpriteWorldCoordsShader.GetInstanceID()))
+			if ((material.shader.ToString() == DefaultMaskedSpriteShader.ToString()) &&
+				(material.shader.GetInstanceID() != DefaultMaskedSpriteShader.GetInstanceID()))
 			{
 				Debug.Log("There seems to be more than one masked shader in the project with the same display name, and it's preventing the mask from being properly applied.");
-				MaskedSpriteWorldCoordsShader = null;
+				DefaultMaskedSpriteShader = null;
 			}
-			if ((material.shader.ToString() == MaskedUnlitWorldCoordsShader.ToString()) &&
-				(material.shader.GetInstanceID() != MaskedUnlitWorldCoordsShader.GetInstanceID()))
+			if ((material.shader.ToString() == DefaultMaskedUnlitShader.ToString()) &&
+				(material.shader.GetInstanceID() != DefaultMaskedUnlitShader.GetInstanceID()))
 			{
 				Debug.Log("There seems to be more than one masked shader in the project with the same display name, and it's preventing the mask from being properly applied.");
-				MaskedUnlitWorldCoordsShader = null;
+				DefaultMaskedUnlitShader = null;
 			}
 		}
 
@@ -639,7 +675,7 @@ namespace ToJ
 				MaskPropertyBlock = new MaterialPropertyBlock();
 			}
 
-			GetComponent<Renderer>().GetPropertyBlock(MaskPropertyBlock);
+			MeshRenderer.GetPropertyBlock(MaskPropertyBlock);
 
 			if (MainTex != null)
 			{
@@ -648,7 +684,7 @@ namespace ToJ
 
 			MaskPropertyBlock.SetVector("_MainTex_ST", new Vector4(MainTexTiling.x, MainTexTiling.y, MainTexOffset.x, MainTexOffset.y));
 
-			GetComponent<Renderer>().SetPropertyBlock(MaskPropertyBlock);
+			MeshRenderer.SetPropertyBlock(MaskPropertyBlock);
 		}
 
 
@@ -735,7 +771,12 @@ namespace ToJ
 				return differentMaterials;
 			}
 
-			Renderer[] renderers = transform.parent.gameObject.GetComponentsInChildren<Renderer>();
+			List<Renderer> renderers = new List<Renderer>();
+			transform.parent.gameObject.GetComponentsInChildren(true, renderers);
+			Renderer excludedRenderer = transform.parent.GetComponent<Renderer>();
+			if (excludedRenderer != null) renderers.Remove(excludedRenderer);
+
+
 			foreach (Renderer renderer in renderers)
 			{
 				if (renderer.gameObject != gameObject)
@@ -762,17 +803,7 @@ namespace ToJ
 
 		public void SetMaskRendererActive (bool value)
 		{
-			if (GetComponent<Renderer>() != null)
-			{
-				if (value == true)
-				{
-					GetComponent<Renderer>().enabled = true;
-				}
-				else
-				{
-					GetComponent<Renderer>().enabled = false;
-				}
-			}
+			MeshRenderer.enabled = value;
 		}
 
 		//For custom user interaction.
@@ -790,7 +821,7 @@ namespace ToJ
 
 			foreach (Material material in differentMaterials)
 			{
-				if (material.shader == MaskedSpriteWorldCoordsShader || material.shader == MaskedUnlitWorldCoordsShader)
+				if (IsMaskeeMaterial(material))
 				{
 					Material newMaterial = new Material(material);
 					duplicatedDifferentMaterials.Add(material, newMaterial);
@@ -810,7 +841,11 @@ namespace ToJ
 				return;
 			}
 
-			Renderer[] renderers = transform.parent.gameObject.GetComponentsInChildren<Renderer>();
+			List<Renderer> renderers = new List<Renderer>();
+			transform.parent.gameObject.GetComponentsInChildren(true, renderers);
+			Renderer excludedRenderer = transform.parent.GetComponent<Renderer>();
+			if (excludedRenderer != null) renderers.Remove(excludedRenderer);
+
 			foreach (Renderer renderer in renderers)
 			{
 				if (renderer.gameObject != gameObject)
@@ -833,7 +868,11 @@ namespace ToJ
 				}
 			}
 
-			Graphic[] UIComponents = transform.parent.gameObject.GetComponentsInChildren<Graphic>();
+			List<Graphic> UIComponents = new List<Graphic>();
+			transform.parent.gameObject.GetComponentsInChildren(true, UIComponents);
+			Graphic excludedGraphic = transform.parent.GetComponent<Graphic>();
+			if (excludedGraphic != null) UIComponents.Remove(excludedGraphic);
+
 			foreach (Graphic UIComponent in UIComponents)
 			{
 				if (UIComponent.gameObject != gameObject)
@@ -851,11 +890,11 @@ namespace ToJ
 		{
 			get
 			{
-				return GetComponent<MeshRenderer>().enabled;
+				return MeshRenderer.enabled;
 			}
 			set
 			{
-				GetComponent<MeshRenderer>().enabled = value;
+				MeshRenderer.enabled = value;
 			}
 		}
 		public Mesh editorMesh;
@@ -869,19 +908,19 @@ namespace ToJ
 
 		private void VersionUpgradeMask (bool componentImmediate = true)
 		{
-			if (GetComponent<Renderer>().sharedMaterial.shader == Shader.Find("Unlit/Transparent"))
+			if (MeshRenderer.sharedMaterial.shader == Shader.Find("Unlit/Transparent"))
 			{
-				if (!GetComponent<Renderer>().sharedMaterial.Equals(MaskMaterial))
+				if (!MeshRenderer.sharedMaterial.Equals(MaskMaterial))
 				{
-					fullMaskRefresh = true;
+					ScheduleFullMaskRefresh();
 					Debug.Log("Version upgrade on: " + gameObject.name, gameObject);
 
-					MainTex = GetComponent<Renderer>().sharedMaterial.GetTexture("_MainTex");
-					MainTexOffset = GetComponent<Renderer>().sharedMaterial.GetTextureOffset("_MainTex");
-					MainTexTiling = GetComponent<Renderer>().sharedMaterial.GetTextureScale("_MainTex");
+					MainTex = MeshRenderer.sharedMaterial.GetTexture("_MainTex");
+					MainTexOffset = MeshRenderer.sharedMaterial.GetTextureOffset("_MainTex");
+					MainTexTiling = MeshRenderer.sharedMaterial.GetTextureScale("_MainTex");
 
-					DestroyImmediate(GetComponent<Renderer>().sharedMaterial);
-					GetComponent<Renderer>().sharedMaterial = MaskMaterial;
+					DestroyImmediate(MeshRenderer.sharedMaterial);
+					MeshRenderer.sharedMaterial = MaskMaterial;
 
 					MeshFilter filter = GetComponent<MeshFilter>();
 					if (filter)
@@ -897,7 +936,7 @@ namespace ToJ
 								DestroyImmediate(filter);
 							};
 						}
-						
+
 					}
 
 					RefreshMaskPropertyBlock();
@@ -910,11 +949,11 @@ namespace ToJ
 			if (!AssetDatabase.Contains(targetRen.material))
 			{
 				//Version upgrade content. Switches old instantiated materials to reference to core material.
-				if ((targetRen.material.shader.ToString() == MaskedSpriteWorldCoordsShader.ToString()))
+				if ((targetRen.material.shader.ToString() == DefaultMaskedSpriteShader.ToString()))
 				{
 					if (!targetRen.material.Equals(SpritesAlphaMaskWorldCoords))
 					{
-						fullMaskRefresh = true;
+						ScheduleFullMaskRefresh();
 						Debug.Log("Version upgrade on: " + targetRen.gameObject.name, targetRen.gameObject);
 						if (!upgradeDiscards.Contains(targetRen.material))
 						{
@@ -931,7 +970,7 @@ namespace ToJ
 		{
 			if (!AssetDatabase.Contains(targetRen.sharedMaterial))
 			{
-				if ((targetRen.sharedMaterial.shader.ToString() == MaskedSpriteWorldCoordsShader.ToString()))
+				if ((targetRen.sharedMaterial.shader.ToString() == DefaultMaskedSpriteShader.ToString()))
 				{
 					if (!targetRen.sharedMaterial.Equals(SpritesAlphaMaskWorldCoords))
 					{
@@ -1002,23 +1041,23 @@ namespace ToJ
 					editorMesh = new Mesh();
 					editorMesh.name = "Mask Editor Mesh";
 				}
-				Texture originalTex = GetComponent<Renderer>().sharedMaterial.GetTexture("_MainTex");
-				Vector2 originalOffset = GetComponent<Renderer>().sharedMaterial.GetTextureOffset("_MainTex");
-				Vector2 originalScale = GetComponent<Renderer>().sharedMaterial.GetTextureScale("_MainTex");
+				Texture originalTex = MeshRenderer.sharedMaterial.GetTexture("_MainTex");
+				Vector2 originalOffset = MeshRenderer.sharedMaterial.GetTextureOffset("_MainTex");
+				Vector2 originalScale = MeshRenderer.sharedMaterial.GetTextureScale("_MainTex");
 
-				GetComponent<Renderer>().sharedMaterial.SetTexture("_MainTex", MainTex);
-				GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", MainTexOffset);
-				GetComponent<Renderer>().sharedMaterial.SetTextureScale("_MainTex", MainTexTiling);
-				if (GetComponent<Renderer>().sharedMaterial.SetPass(0))
+				MeshRenderer.sharedMaterial.SetTexture("_MainTex", MainTex);
+				MeshRenderer.sharedMaterial.SetTextureOffset("_MainTex", MainTexOffset);
+				MeshRenderer.sharedMaterial.SetTextureScale("_MainTex", MainTexTiling);
+				if (MeshRenderer.sharedMaterial.SetPass(0))
 				{
 					GetMaskQuad(editorMesh, texR);
 
 					Graphics.DrawMeshNow(editorMesh, completeMatrix);
 				}
 
-				GetComponent<Renderer>().sharedMaterial.SetTexture("_MainTex", originalTex);
-				GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", originalOffset);
-				GetComponent<Renderer>().sharedMaterial.SetTextureScale("_MainTex", originalScale);
+				MeshRenderer.sharedMaterial.SetTexture("_MainTex", originalTex);
+				MeshRenderer.sharedMaterial.SetTextureOffset("_MainTex", originalOffset);
+				MeshRenderer.sharedMaterial.SetTextureScale("_MainTex", originalScale);
 			}
 			objectMatrix = completeMatrix;
 		}

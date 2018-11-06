@@ -73,6 +73,8 @@ public class PlayerBase : MonoBehaviour {
     
     //animation part
     private MeshTwister meshTwisterScript;
+    private PlayerEyeControl playerEyeControlScript;
+    private PlayerIndicator playerIndicatorScript;
 
     // Use this for initialization
     void Start () {
@@ -81,6 +83,8 @@ public class PlayerBase : MonoBehaviour {
         rewindControlScript = GameObject.Find("RewindControl").GetComponent<RewindControl>();
         goalGroupScript = GameObject.Find("GoalGroup").GetComponent<GoalGroup>();
         meshTwisterScript = transform.Find("BodyPivotVertical").GetComponent<MeshTwister>();
+        playerEyeControlScript = transform.Find("EyeGroup").GetComponent<PlayerEyeControl>();
+        playerIndicatorScript = GameObject.Find("PlayerIndicator").GetComponent<PlayerIndicator>();
         //layer mask part
         downDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | ladderLayer | outlineLayer;
         sideDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | outlineLayer;
@@ -168,8 +172,10 @@ public class PlayerBase : MonoBehaviour {
             //move character
             if (rightIsDown && !leftIsDown && !upIsDown && !downIsDown)
             {
-                meshTwisterScript.FaceRight();
-                meshTwisterScript.MoveHorizontalTwist();
+                //meshTwisterScript.FaceRight();
+                playerEyeControlScript.LookRight();
+                playerEyeControlScript.MoveRight();
+                meshTwisterScript.MoveRightTwist();
                 //raycast to right grid
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, GameConst.GRID_SIZE, sideDetectableLayer);
                 //if hit something
@@ -204,8 +210,10 @@ public class PlayerBase : MonoBehaviour {
 
             if (leftIsDown && !rightIsDown && !upIsDown && !downIsDown)
             {
-                meshTwisterScript.FaceLeft();
-                meshTwisterScript.MoveHorizontalTwist();
+                //meshTwisterScript.FaceLeft();
+                playerEyeControlScript.LookLeft();
+                playerEyeControlScript.MoveLeft();
+                meshTwisterScript.MoveLeftTwist();
                 //raycast to left grid
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.left, GameConst.GRID_SIZE, sideDetectableLayer);
                 //if hit something
@@ -240,6 +248,8 @@ public class PlayerBase : MonoBehaviour {
 
             if (upIsDown && !downIsDown && !leftIsDown && !rightIsDown)
             {
+                playerEyeControlScript.MoveUp();
+                playerEyeControlScript.LookUp();
                 meshTwisterScript.MoveUpTwist();
                 CheckLadder();//check ladder first
                 if (canMoveUp)
@@ -260,6 +270,8 @@ public class PlayerBase : MonoBehaviour {
 
             if (downIsDown && !upIsDown && !leftIsDown && !rightIsDown)
             {
+                playerEyeControlScript.MoveDown();
+                playerEyeControlScript.LookDown();
                 meshTwisterScript.MoveDownTwist();
                 CheckLadder();//check ladder first
                 if (canMoveDown)
@@ -283,6 +295,8 @@ public class PlayerBase : MonoBehaviour {
                 !downIsDown && _downIsDownLastFrame||
                 !upIsDown && _upIsDownLastFrame)
             {
+                playerEyeControlScript.MoveBackToCenter();
+                playerEyeControlScript.LookCenter();
                 meshTwisterScript.MoveHorizontalTwistBack();
                 meshTwisterScript.MoveVerticalTwistBack();
             }
@@ -308,6 +322,8 @@ public class PlayerBase : MonoBehaviour {
 	    if (isFalling && !playerControlScript.isDead)
 	    {
 	        meshTwisterScript.DropTwist();
+	        playerEyeControlScript.MoveUp();
+	        playerEyeControlScript.LookDown();
 	    }
 
 	    if (_isFallingLastFrame && !isFalling)
@@ -530,11 +546,30 @@ public class PlayerBase : MonoBehaviour {
     //Interact Part
     void UpdateInteractPart()
     {
+        //change indicator
+        if (activeSelf)
+        {
+            if (isInSwitch)
+            {
+                playerIndicatorScript.ChangeToGear();
+            }
+            else if (isInRocker)
+            {
+                playerIndicatorScript.ChangeToGear();
+            }
+            else
+            {
+                playerIndicatorScript.ChangeToBasic();
+            }
+        }
+        
+        
         isInteractWithRocker = false;
         if (isInSwitch)
         {
             if (Input.GetKeyDown(KeyCode.J) && activeSelf)
             {
+                playerIndicatorScript.GearBlink();
                 currentSwitch.GetComponent<SwitchBase>().Interact();
             }
         }
@@ -545,6 +580,7 @@ public class PlayerBase : MonoBehaviour {
                 isInteractWithRocker = true;
                 if (currentRocker.GetComponent<RockerBase>().connectedSlider.GetComponent<SliderBase>().isXDirection)
                 {
+                    playerIndicatorScript.ChangeToXSlider();
                     if (Input.GetKey(KeyCode.A))
                     {
                         currentRocker.GetComponent<RockerBase>().Interact(false);//left(false)
@@ -556,6 +592,7 @@ public class PlayerBase : MonoBehaviour {
                 }
                 else
                 {
+                    playerIndicatorScript.ChangeToYSlider();
                     if (Input.GetKey(KeyCode.S))
                     {
                         currentRocker.GetComponent<RockerBase>().Interact(false);//left(false)
@@ -565,6 +602,10 @@ public class PlayerBase : MonoBehaviour {
                         currentRocker.GetComponent<RockerBase>().Interact(true);//right(true)
                     }
                 }
+            }
+            else if(activeSelf)
+            {
+                playerIndicatorScript.ChangeToGear();
             }
         }
         else if (isInPortal)
@@ -602,18 +643,30 @@ public class PlayerBase : MonoBehaviour {
         {
             isInSwitch = true;
             currentSwitch = col.transform;
+            //change indicator
+/*
+            
+            if (activeSelf)
+            {
+                playerIndicatorScript.ChangeToGear();
+            }*/
         }
         else if (col.CompareTag("Rocker"))
         {
             isInRocker = true;
             currentRocker = col.transform;
+            //change indicator
+/*            if (activeSelf)
+            {
+                playerIndicatorScript.ChangeToGear();
+            }*/
         }
         else if (col.CompareTag("Portal"))
         {
             isInPortal = true;
             currentPortal = col.transform;
         }
-        else if(col.CompareTag("Box") || col.CompareTag("Block"))
+        else if(col.CompareTag("Box") || col.CompareTag("MovableBlock"))
         {
             if (!rewindControlScript.isRewinding)
             {
@@ -628,16 +681,31 @@ public class PlayerBase : MonoBehaviour {
         {
             isInSwitch = false;
             currentSwitch = null;
+            //change indicator
+/*            if (activeSelf)
+            {
+                playerIndicatorScript.ChangeToBasic();
+            }*/
         }
         else if (col.CompareTag("Rocker"))
         {
             isInRocker = false;
             currentRocker = null;
+            //change indicator
+            if (activeSelf)
+            {
+                playerIndicatorScript.ChangeToBasic();
+            }
         }
         else if (col.CompareTag("Portal"))
         {
             isInPortal = false;
             currentPortal = null;
+            //change indicator
+/*            if (activeSelf)
+            {
+                playerIndicatorScript.ChangeToBasic();
+            }*/
         }
         else if (col.CompareTag("Box"))
         {
@@ -653,6 +721,7 @@ public class PlayerBase : MonoBehaviour {
         isFalling = false;
         isDead = true;
         meshTwisterScript.DeadTwist();
+        playerEyeControlScript.DeadEyes();
         Instantiate(deadEffect, transform.position, Quaternion.identity);
     }
 
@@ -660,6 +729,7 @@ public class PlayerBase : MonoBehaviour {
     {
         Instantiate(reviveEffect, transform.position, Quaternion.identity);
         meshTwisterScript.ReviveTwist(0.5f);
+        playerEyeControlScript.ReviveEyes(0.5f);
     }
 
 
@@ -683,12 +753,18 @@ public class PlayerBase : MonoBehaviour {
     
     
     //animation part
-    public void DoActiveTwistAnimation()
+    public void DoActiveAnimation()
     {
         meshTwisterScript.ActiveTwist();
+        playerEyeControlScript.MoveUp();
+        playerEyeControlScript.LookCenter();
+        playerEyeControlScript.OpenEyes();
     }
-    public void DoDisactiveTwistAnimation()
+    public void DoDisactiveAnimation()
     {
         meshTwisterScript.DisactiveTwist();
+        playerEyeControlScript.MoveBackToCenter();
+        playerEyeControlScript.LookCenter();
+        playerEyeControlScript.CloseEyes();
     }
 }

@@ -88,6 +88,7 @@ namespace ToJ
 		public override void OnInspectorGUI ()
 		{
 			Mask maskTarget = (Mask)target;
+			
 
 			bool changesMade = false;
 
@@ -199,11 +200,6 @@ namespace ToJ
 				   (shader == DefaultFontShaderUI);
 		}
 
-		private bool MaskeeMaterialUsed (Material material, Mask mask)
-		{
-			return material.Equals(mask.SpritesAlphaMaskWorldCoords);
-		}
-
 		private List<Material> GetAllReusableMaterials (List<Renderer> renderers)
 		{
 			List<Material> reusableMaterials = new List<Material>();
@@ -275,20 +271,19 @@ namespace ToJ
 
 		private void ApplyMaskToSpriteRenderer(SpriteRenderer spriteRenderer, Mask maskTarget)
 		{
-			//loop per all materials on a single renderer
-			Material replaceMaterial = spriteRenderer.sharedMaterial;
-			if (replaceMaterial == null)
+			Material materialToReplace = spriteRenderer.sharedMaterial;
+			if (materialToReplace == null)
 			{
 				return;
 			}
 
-			if (!MaskeeMaterialUsed(replaceMaterial, maskTarget))
+			if (!maskTarget.IsMaskeeMaterial(materialToReplace))
 			{
 				if (IsSupported2DShader(spriteRenderer.sharedMaterial.shader))
 				{
-					replaceMaterial = maskTarget.SpritesAlphaMaskWorldCoords;
+					materialToReplace = maskTarget.SpritesAlphaMaskWorldCoords;
 				}
-				spriteRenderer.sharedMaterial = replaceMaterial;
+				spriteRenderer.sharedMaterial = materialToReplace;
 			}
 		}
 
@@ -310,7 +305,7 @@ namespace ToJ
 
 				if (!originalMaterials.Contains(material))
 				{
-					if (material.shader == UnlitTransparentShader)
+					if ((material.shader == UnlitTransparentShader) || (material.shader = SpriteDefaultShader))
 					{
 						Material reusableMaterial = FindSuitableMaskedMaterial(material, reusableMaterials, 0);
 
@@ -363,7 +358,7 @@ namespace ToJ
 		private void ApplyMaskToUIElement (Graphic mGraphic, Mask maskTarget)
 		{
 
-			bool maskeeMaterialUsed = MaskeeMaterialUsed(mGraphic.material, maskTarget);
+			bool maskeeMaterialUsed = maskTarget.IsMaskeeMaterial(mGraphic.material);
 
 			if (IsSupported2DShader(mGraphic.material.shader) || maskeeMaterialUsed)
 			{
@@ -387,7 +382,7 @@ namespace ToJ
 
 			Mask maskTarget = (Mask)target;
 
-			maskTarget.FlagForRefresh();
+			maskTarget.ScheduleFullMaskRefresh();
 
 			if ((MaskedSpriteShader == null) || (MaskedUnlitShader == null))
 			{
@@ -395,10 +390,19 @@ namespace ToJ
 				return;
 			}
 
-			List<Graphic> maskeeGraphics = new List<Graphic>();
+			
+			
+			
 			List<Renderer> maskeeRenderers = new List<Renderer>();
-			maskeeRenderers.AddRange(maskTarget.transform.parent.gameObject.GetComponentsInChildren<Renderer>(true));
-			maskeeGraphics.AddRange(maskTarget.transform.parent.gameObject.GetComponentsInChildren<Graphic>(true));
+			maskTarget.transform.parent.gameObject.GetComponentsInChildren(true, maskeeRenderers);
+			Renderer excludedRenderer = maskTarget.transform.parent.GetComponent<Renderer>();
+			if (excludedRenderer != null) maskeeRenderers.Remove(excludedRenderer);
+
+			List<Graphic> maskeeGraphics = new List<Graphic>();
+			maskTarget.transform.parent.gameObject.GetComponentsInChildren(true, maskeeGraphics);
+			Graphic excludedGraphic = maskTarget.transform.parent.GetComponent<Graphic>();
+			if (excludedGraphic != null) maskeeGraphics.Remove(excludedGraphic);
+
 
 			//Mask materials that already exist within this masks hierarchy
 			List<Material> reusableMaterials = GetAllReusableMaterials(maskeeRenderers);

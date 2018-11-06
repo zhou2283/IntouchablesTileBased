@@ -32,6 +32,7 @@
               <e p="UVAnimator.cs" t="Include" />
             </e>
           </e>
+          <e p="ToJAlphaMasking.cginc" t="Include" />
           <e p="UIMaterialModifier.cs" t="Include" />
         </e>
         <e p="Demigiant" t="Include">
@@ -640,6 +641,8 @@
           <e p="PlayerBase.cs" t="Include" />
           <e p="PlayerControl.cs" t="Include" />
           <e p="PlayerDark.cs" t="Include" />
+          <e p="PlayerEyeControl.cs" t="Include" />
+          <e p="PlayerIndicator.cs" t="Include" />
           <e p="PlayerLight.cs" t="Include" />
           <e p="PortalBase.cs" t="Include" />
           <e p="RenderGroupControl.cs" t="Include" />
@@ -656,6 +659,7 @@
           <e p="RockerBase.cs" t="Include" />
           <e p="RopeBase.cs" t="Include" />
           <e p="SelfDestroy.cs" t="Include" />
+          <e p="SelfFloating.cs" t="Include" />
           <e p="SelfRotation.cs" t="Include" />
           <e p="SliderBase.cs" t="Include" />
           <e p="SwitchBase.cs" t="Include" />

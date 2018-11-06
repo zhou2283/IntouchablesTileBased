@@ -307,6 +307,95 @@ public class BoxBase : MonoBehaviour
         return needMove;
     }
     
+    
+    public bool CheckBoxDown(bool includePlayer = true)
+    {
+        LayerMask _checkLayer;
+        if (includePlayer)
+        {
+            _checkLayer = sideDetectableLayerIncludePlayer;
+        }
+        else
+        {
+            _checkLayer = sideDetectableLayer;
+        }
+        //if it is visited, return
+        if (visited)
+        {
+            return needMove;
+        }
+        //renew direction
+        direction = Vector2.up;
+        
+        RaycastHit2D topleftUpHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2f, gridSize / 2f), Vector2.up, gridSize, _checkLayer);
+        RaycastHit2D toprightUpHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 2f, gridSize / 2f), Vector2.up, gridSize, _checkLayer);
+        bool topleftUpHitIsPushable = false;
+        bool toprightUpHitIsPushable = false;
+        if (topleftUpHit)
+        {
+            if(topleftUpHit.transform.gameObject.layer == 11 || topleftUpHit.transform.gameObject.layer == 12)//if it is a box
+            {
+                topleftUpHitIsPushable = topleftUpHit.transform.GetComponent<BoxBase>().CheckBoxUp(includePlayer);
+            }
+            else if(topleftUpHit.transform.gameObject.layer == 14)//if it is a player
+            {
+                topleftUpHitIsPushable = topleftUpHit.transform.GetComponent<PlayerBase>().CheckPlayerUp();
+            }
+            else//it is block
+            {
+                topleftUpHitIsPushable = false;
+            }
+        }
+        else//nothing
+        {
+            topleftUpHitIsPushable = true;
+        }
+        
+        if (toprightUpHit)
+        {
+            if(toprightUpHit.transform.gameObject.layer == 11 || toprightUpHit.transform.gameObject.layer == 12)//if it is a box
+            {
+                toprightUpHitIsPushable = toprightUpHit.transform.GetComponent<BoxBase>().CheckBoxUp(includePlayer);
+            }
+            else if(toprightUpHit.transform.gameObject.layer == 14)//if it is a player
+            {
+                toprightUpHitIsPushable = toprightUpHit.transform.GetComponent<PlayerBase>().CheckPlayerUp();
+            }
+            else//it is block
+            {
+                toprightUpHitIsPushable = false;
+            }
+        }
+        else//nothing
+        {
+            toprightUpHitIsPushable = true;
+        }
+        
+        if (topleftUpHitIsPushable && !toprightUpHitIsPushable)
+        {
+            DisableNeedMoveOnNext(includePlayer);
+            needMove = false;
+            visited = true;
+        }
+        else if (toprightUpHitIsPushable && !topleftUpHitIsPushable)
+        {
+            DisableNeedMoveOnNext(includePlayer);
+            needMove = false;
+            visited = true;
+        }
+        else if (topleftUpHitIsPushable && toprightUpHitIsPushable)//there is nothing on the way, need to move
+        {
+            needMove = true;
+            visited = true;
+        }
+        else
+        {
+            needMove = false;
+            visited = true;       
+        }
+        return needMove;
+    }
+    
 
     public void DisableNeedMoveOnNext(bool includePlayer = true)
     {

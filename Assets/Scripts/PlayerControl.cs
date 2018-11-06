@@ -34,13 +34,13 @@ public class PlayerControl : MonoBehaviour {
         if (isLightPlayerActive)
         {
             playerIndicator.parent = playerLight;
-            playerIndicator.DOLocalMove(new Vector3(0, 0.4f, 0), 0f);
+            playerIndicator.DOLocalMove(new Vector3(0, 0.55f, 0), 0f);
             
         }
         else
         {
             playerIndicator.parent = playerDark;
-            playerIndicator.DOLocalMove(new Vector3(0, 0.4f, 0), 0f);
+            playerIndicator.DOLocalMove(new Vector3(0, 0.55f, 0), 0f);
         }
 
         //find part
@@ -105,18 +105,18 @@ public class PlayerControl : MonoBehaviour {
         if (isLightPlayerActive)
         {
             isLightPlayerActive = false;
-            playerDark.GetComponent<PlayerBase>().DoActiveTwistAnimation();
-            playerLight.GetComponent<PlayerBase>().DoDisactiveTwistAnimation();
+            playerDark.GetComponent<PlayerBase>().DoActiveAnimation();
+            playerLight.GetComponent<PlayerBase>().DoDisactiveAnimation();
             playerIndicator.parent = playerDark;
-            playerIndicator.DOLocalMove(new Vector3(0, 0.4f, 0), 0.1f);
+            playerIndicator.DOLocalMove(new Vector3(0, 0.55f, 0), 0.1f);
         }
         else
         {
             isLightPlayerActive = true;
-            playerLight.GetComponent<PlayerBase>().DoActiveTwistAnimation();
-            playerDark.GetComponent<PlayerBase>().DoDisactiveTwistAnimation();
+            playerLight.GetComponent<PlayerBase>().DoActiveAnimation();
+            playerDark.GetComponent<PlayerBase>().DoDisactiveAnimation();
             playerIndicator.parent = playerLight;
-            playerIndicator.DOLocalMove(new Vector3(0, 0.4f, 0), 0.1f);
+            playerIndicator.DOLocalMove(new Vector3(0, 0.55f, 0), 0.1f);
         }
 
         playerLight.GetComponent<PlayerBase>().activeSelf = isLightPlayerActive;
@@ -185,4 +185,5 @@ public class PlayerControl : MonoBehaviour {
         yield return new WaitForSeconds(delaySeconds);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+    
 }

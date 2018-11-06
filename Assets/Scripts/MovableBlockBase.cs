@@ -42,8 +42,10 @@ public class MovableBlockBase : MonoBehaviour
 		sideDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | outlineLayer;
 		sideDetectableLayerIncludePlayer = sideDetectableLayer | playerTriggerLayer;
 		
-		width = Mathf.RoundToInt(transform.localScale.x);
-		height = Mathf.RoundToInt(transform.localScale.y);
+		width = Mathf.RoundToInt(transform.GetComponent<SpriteRenderer>().size.x/gridSize);
+		
+		height = Mathf.RoundToInt(transform.GetComponent<SpriteRenderer>().size.y/gridSize);
+		
 		upRayArray = new Ray2D[width];
 		upRayHitArray = new RaycastHit2D[width];
 		downRayArray = new Ray2D[width];

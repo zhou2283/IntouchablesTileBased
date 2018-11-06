@@ -32,8 +32,17 @@ Material:
     - _ClampBorder: 0.01
     - _ClampHoriz: 0
     - _ClampVert: 0
+    - _ColorMask: 15
+    - _Enabled: 1
     - _IsThisText: 0
     - _MaskRotation: 0
+    - _PixelSnap: 0
+    - _ScreenSpaceUI: 0
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     - _UseAlphaChannel: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
