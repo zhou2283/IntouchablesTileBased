@@ -36,7 +36,7 @@ public class PlayerIndicator : MonoBehaviour
 	{
 		HideAll();
 		basic.DOKill();
-		basic.DOScale(1, changeDuration);
+		basic.DOScale(1f, changeDuration);
 	}
 	
 	public void ChangeToGear()

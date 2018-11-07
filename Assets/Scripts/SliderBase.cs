@@ -183,7 +183,7 @@ public class SliderBase : MonoBehaviour
 			}
 			else//move down
 			{
-				if (movableBlockBaseScript.CheckDown())
+				if (movableBlockBaseScript.CheckAndMoveDown())
 				{
 					isTweening = true;
 					isTweeningBuffer = true;

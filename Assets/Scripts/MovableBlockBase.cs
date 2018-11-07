@@ -33,6 +33,9 @@ public class MovableBlockBase : MonoBehaviour
 	private float gridSize;
 	
 	BoxGroup boxGroupScript;
+
+	public bool needMove = false;
+	public bool needMoveDown = false;
 	
 	// Use this for initialization
 	void Start ()
@@ -111,7 +114,7 @@ public class MovableBlockBase : MonoBehaviour
 
 	}
 
-	public bool CheckDown()
+	public bool CheckDownMove()
 	{
 		for (int i = 0; i < width; i++)
 		{
@@ -123,10 +126,48 @@ public class MovableBlockBase : MonoBehaviour
 			//print(child.transform.gameObject.name);
 			if (child)
 			{
+				needMoveDown = false;
 				return false;
 			}
 		}
+		
+		
+		//drag all boxes above down
+		needMoveDown = true;
+		for (int i = 0; i < width; i++)
+		{
+			upRayHitArray[i] = Physics2D.Raycast(upRayArray[i].origin + (Vector2)(transform.position), upRayArray[i].direction, gridSize, sideDetectableLayer);
+		}
+		
+		for(int i = 0; i < width; i++)
+		{
+			if (upRayHitArray[i])
+			{
+				if(upRayHitArray[i].transform.gameObject.layer == 11 || upRayHitArray[i].transform.gameObject.layer == 12)//if it is a box
+				{
+					upRayHitArray[i].transform.GetComponent<BoxBase>().CheckBoxDown();
+				}
+			}
+		}
+		
 		return true;
+	}
+
+	public bool CheckAndMoveDown(bool includePlayer = true)
+	{
+		//initialize recursive states
+		boxGroupScript.InitializeBoxGroupAndPlayer();
+		bool result = CheckDownMove();
+		if (result == false)
+		{
+			return result;
+		}
+		else
+		{
+			boxGroupScript.MoveAllBoxAndPlayer(); //move all marked obj
+		}
+
+		return result;
 	}
 
 	public bool CheckAndMoveSide(bool isRight)
@@ -167,7 +208,7 @@ public class MovableBlockBase : MonoBehaviour
 
 	public bool CheckUpMove(bool includePlayer = true)
 	{
-		bool needMove = true;
+		needMove = true;
 		LayerMask _checkLayer;
 		if (includePlayer)
 		{

@@ -219,7 +219,7 @@ public class BoxBase : MonoBehaviour
         return result;
     }
 
-    public bool CheckBoxUp(bool includePlayer = true)
+    public bool CheckBoxUp(bool includePlayer = true)//used for movable block moving up
     {
         LayerMask _checkLayer;
         if (includePlayer)
@@ -308,91 +308,83 @@ public class BoxBase : MonoBehaviour
     }
     
     
-    public bool CheckBoxDown(bool includePlayer = true)
+    public bool CheckBoxDown()//used for movable block moving down
     {
         LayerMask _checkLayer;
-        if (includePlayer)
-        {
-            _checkLayer = sideDetectableLayerIncludePlayer;
-        }
-        else
-        {
-            _checkLayer = sideDetectableLayer;
-        }
+        _checkLayer = sideDetectableLayer;
         //if it is visited, return
         if (visited)
         {
             return needMove;
         }
         //renew direction
-        direction = Vector2.up;
+        direction = Vector2.down;
         
         RaycastHit2D topleftUpHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2f, gridSize / 2f), Vector2.up, gridSize, _checkLayer);
         RaycastHit2D toprightUpHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 2f, gridSize / 2f), Vector2.up, gridSize, _checkLayer);
+        RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize, _checkLayer);
+        RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(gridSize / 2f, -gridSize / 2f), Vector2.down, gridSize, _checkLayer);
         bool topleftUpHitIsPushable = false;
         bool toprightUpHitIsPushable = false;
-        if (topleftUpHit)
+        bool downleftDownHitIsMoving = false;
+        bool downrightDownHitIsMoving = false;
+
+        //check if itself can move first
+        if (downleftDownHit)
         {
-            if(topleftUpHit.transform.gameObject.layer == 11 || topleftUpHit.transform.gameObject.layer == 12)//if it is a box
+            if(downleftDownHit.transform.gameObject.layer == 11 || downleftDownHit.transform.gameObject.layer == 12)//if it is a box
             {
-                topleftUpHitIsPushable = topleftUpHit.transform.GetComponent<BoxBase>().CheckBoxUp(includePlayer);
+                downleftDownHitIsMoving = downleftDownHit.transform.GetComponent<BoxBase>().needMove;
             }
-            else if(topleftUpHit.transform.gameObject.layer == 14)//if it is a player
+            else if(downleftDownHit.transform.gameObject.CompareTag("MovableBlock"))//if it is a movable block
             {
-                topleftUpHitIsPushable = topleftUpHit.transform.GetComponent<PlayerBase>().CheckPlayerUp();
+                downleftDownHitIsMoving = downleftDownHit.transform.GetComponent<MovableBlockBase>().needMoveDown;
             }
             else//it is block
             {
-                topleftUpHitIsPushable = false;
+                downleftDownHitIsMoving = false;
             }
         }
         else//nothing
         {
-            topleftUpHitIsPushable = true;
+            downleftDownHitIsMoving = true;
         }
         
-        if (toprightUpHit)
+        if (downrightDownHit)
         {
-            if(toprightUpHit.transform.gameObject.layer == 11 || toprightUpHit.transform.gameObject.layer == 12)//if it is a box
+            if(downrightDownHit.transform.gameObject.layer == 11 || downrightDownHit.transform.gameObject.layer == 12)//if it is a box
             {
-                toprightUpHitIsPushable = toprightUpHit.transform.GetComponent<BoxBase>().CheckBoxUp(includePlayer);
+                downrightDownHitIsMoving = downrightDownHit.transform.GetComponent<BoxBase>().needMove;
             }
-            else if(toprightUpHit.transform.gameObject.layer == 14)//if it is a player
+            else if(downrightDownHit.transform.gameObject.CompareTag("MovableBlock"))//if it is a movable block
             {
-                toprightUpHitIsPushable = toprightUpHit.transform.GetComponent<PlayerBase>().CheckPlayerUp();
+                downrightDownHitIsMoving = downrightDownHit.transform.GetComponent<MovableBlockBase>().needMoveDown;
             }
             else//it is block
             {
-                toprightUpHitIsPushable = false;
+                downrightDownHitIsMoving = false;
             }
         }
         else//nothing
         {
-            toprightUpHitIsPushable = true;
+            downrightDownHitIsMoving = true;
         }
-        
-        if (topleftUpHitIsPushable && !toprightUpHitIsPushable)
-        {
-            DisableNeedMoveOnNext(includePlayer);
-            needMove = false;
-            visited = true;
-        }
-        else if (toprightUpHitIsPushable && !topleftUpHitIsPushable)
-        {
-            DisableNeedMoveOnNext(includePlayer);
-            needMove = false;
-            visited = true;
-        }
-        else if (topleftUpHitIsPushable && toprightUpHitIsPushable)//there is nothing on the way, need to move
+
+        if (downleftDownHitIsMoving && downrightDownHitIsMoving)
         {
             needMove = true;
             visited = true;
         }
-        else
+        
+        //drag all boxes above
+        if (topleftUpHit)
         {
-            needMove = false;
-            visited = true;       
+            if(topleftUpHit.transform.gameObject.layer == 11 || topleftUpHit.transform.gameObject.layer == 12)//if it is a box
+            {
+                topleftUpHit.transform.GetComponent<BoxBase>().CheckBoxDown();
+            }
         }
+
         return needMove;
     }
     

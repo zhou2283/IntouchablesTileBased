@@ -101,7 +101,15 @@ public class PlayerEyeControl : MonoBehaviour
 		eyeball.DOKill();
 		eyeball.transform.DOLocalMove(new Vector3(0,0,0), 0.2f);
 	}
-	
+
+	public void LookAtTarget(Vector3 targetPos)
+	{
+		eyeball.DOKill();
+
+		Vector3 dirV3 = Vector3.Normalize(targetPos - eyeball.position);
+		dirV3 = new Vector3(dirV3.x,dirV3.y,0);
+		eyeball.transform.DOLocalMove(dirV3 * 0.05f, 0.2f);
+	}
 	
 	
 

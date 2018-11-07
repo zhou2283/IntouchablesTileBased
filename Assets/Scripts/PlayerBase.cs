@@ -331,6 +331,15 @@ public class PlayerBase : MonoBehaviour {
 	        meshTwisterScript.MoveVerticalTwistBack();
 	    }
 
+	    if (isInSwitch && activeSelf)
+	    {
+	        playerEyeControlScript.LookAtTarget(currentSwitch.GetComponent<SwitchBase>().connectedLight.transform.position);
+	    }
+	    else if (isInRocker && activeSelf)
+	    {
+	        playerEyeControlScript.LookAtTarget(currentRocker.GetComponent<RockerBase>().connectedSlider.GetComponent<SliderBase>().connectedItem.transform.position);
+	    }
+
 	    _isTweeningLastFrame = isTweening;
 	    _isFallingLastFrame = isFalling;
 	}
