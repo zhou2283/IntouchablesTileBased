@@ -13,6 +13,8 @@ TagManager:
   - Portal
   - MovableBlock
   - Block
+  - Ladder
+  - Netting
   layers:
   - Default
   - TransparentFX
