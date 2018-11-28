@@ -11,19 +11,33 @@ public class RopeBase : MonoBehaviour {
 	private VectorLine line;
 	
 	void Start () {
+		//initialize
 		foreach (Transform child in transform)
 		{
 			linePoints.Add(child.transform.position);
 		}
-
 		line = VectorLine.SetLine(lineColor, linePoints.ToArray());
 		line.SetWidth(8f);
 		line.material = ropeMaterial;
 		line.joins = Joins.Fill;
 		line.layer = 18;
+		line.name = "SetLine" + transform.name;
+		//update line 
+		UpdateDrawLine();
+		//set render layer and order
+		var lineObj = GameObject.Find(line.name);
+		lineObj.AddComponent<MeshSortingOrder>();
+		lineObj.GetComponent<MeshSortingOrder>().layerName = "Wire";
+		lineObj.GetComponent<MeshSortingOrder>().order = 0;
+		lineObj.GetComponent<MeshSortingOrder>().enabled = true;
 	}
 
 	private void Update()
+	{
+		UpdateDrawLine();
+	}
+
+	void UpdateDrawLine()
 	{
 		linePoints.Clear();
 		foreach (Transform child in transform)

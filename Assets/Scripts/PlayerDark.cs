@@ -11,6 +11,10 @@ public class PlayerDark : PlayerBase {
 
     public override void UpdateDeathDetect()
     {
+        if (invincible)
+        {
+            return;
+        }
         ray = new Ray(transform.position + new Vector3(0, 0, -rayDistance / 2f), new Vector3(0, 0, 1f));
         if (Physics.Raycast(ray, out rayhit, rayDistance, lightLayer))
         {

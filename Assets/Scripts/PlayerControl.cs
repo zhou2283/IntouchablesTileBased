@@ -108,7 +108,8 @@ public class PlayerControl : MonoBehaviour {
             playerDark.GetComponent<PlayerBase>().DoActiveAnimation();
             playerLight.GetComponent<PlayerBase>().DoDisactiveAnimation();
             playerIndicator.parent = playerDark;
-            playerIndicator.DOLocalMove(new Vector3(0, 0.55f, 0), 0.1f);
+            playerIndicator.DOLocalMove(new Vector3(0, 0.5f, 0), 0.1f);
+            playerIndicator.DOScale(1, 0.1f);
         }
         else
         {
@@ -116,7 +117,8 @@ public class PlayerControl : MonoBehaviour {
             playerLight.GetComponent<PlayerBase>().DoActiveAnimation();
             playerDark.GetComponent<PlayerBase>().DoDisactiveAnimation();
             playerIndicator.parent = playerLight;
-            playerIndicator.DOLocalMove(new Vector3(0, 0.55f, 0), 0.1f);
+            playerIndicator.DOLocalMove(new Vector3(0, 0.5f, 0), 0.1f);
+            playerIndicator.DOScale(1, 0.1f);
         }
 
         playerLight.GetComponent<PlayerBase>().activeSelf = isLightPlayerActive;

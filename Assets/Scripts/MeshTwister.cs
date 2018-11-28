@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class MeshTwister : MonoBehaviour {
 
 	Mesh mesh;
 	Vector3[] vertices;
-	Vector3[] verticesOri;
+
+	public Mesh baseMesh;
+	public Mesh baseMeshInair;
+	private float inairPercentage = 0;
 
 	private Transform bodyPivotHorizontal;
 	private Transform bodyPivotVertical;
@@ -15,41 +19,47 @@ public class MeshTwister : MonoBehaviour {
 	
 	private int sideCount = 11;
 	public float twisterPower = 0;
+
+	private Tweener inairMeshChangeTweener;
 	
 	// Use this for initialization
 	void Start ()
 	{
+		DOTween.SetTweensCapacity(500,200);
 		bodyPivotVertical = transform;
 		bodyPivotHorizontal = transform.Find("BodyPivotHorizontal");
 		bodyMesh = bodyPivotHorizontal.Find("BodyMesh");
 		mesh = bodyMesh.GetComponent<MeshFilter>().mesh;
 		vertices = mesh.vertices;
-		verticesOri = new Vector3[vertices.Length];
-		for (int i = 0; i < vertices.Length; i++)
-		{
-			verticesOri[i] = vertices[i];
-		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
+		
 		for (int row = 0; row < sideCount; row++)
 		{
 			for (int col = 0; col < sideCount; col++)
 			{
-				vertices[row*sideCount + col] = verticesOri[row*sideCount + col] + new Vector3(twisterPower * ((float)(row*row)/(float)(sideCount*sideCount)),0,0);
+				vertices[row*sideCount + col] = inairPercentage * baseMeshInair.vertices[row*sideCount + col] 
+				                                + (1 - inairPercentage) * baseMesh.vertices[row*sideCount + col]
+				                                + new Vector3(twisterPower * ((float)(row*row)/(float)(sideCount*sideCount)),0,0);
 			}
 		}
+		
+		
+		
 
-		if (Input.GetKeyDown(KeyCode.A))
+		
+
+		if (Input.GetKeyDown(KeyCode.Y))
 		{
-			
+			FromGroundToAir();
 		}
 		
-		if (Input.GetKeyDown(KeyCode.S)||Input.GetKeyDown(KeyCode.W))
+		if (Input.GetKeyDown(KeyCode.U))
 		{
-
+			FromAirToGround();
 		}
 		
 
@@ -158,6 +168,18 @@ public class MeshTwister : MonoBehaviour {
 	public void FaceRight()
 	{
 		transform.localScale = new Vector3(-1,1,1);
+	}
+
+	public void FromGroundToAir()
+	{
+		inairMeshChangeTweener.Kill();
+		inairMeshChangeTweener = DOTween.To(() => inairPercentage, x => inairPercentage = x, 1, 1f).SetEase(Ease.OutElastic);
+	}
+
+	public void FromAirToGround()
+	{
+		inairMeshChangeTweener.Kill();
+		inairMeshChangeTweener = DOTween.To(() => inairPercentage, x => inairPercentage = x, 0, 0.2f);
 	}
 	
 }

@@ -87,6 +87,6 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Emmision: {r: 0.23451404, g: 0.39126816, b: 0.5849056, a: 0.78431374}
+    - _Emmision: {r: 0.29810432, g: 0.49205643, b: 0.7264151, a: 0.88235295}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}

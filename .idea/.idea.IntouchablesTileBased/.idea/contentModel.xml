@@ -9,6 +9,315 @@
       <e p="Assembly-CSharp-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="2DxFX" t="Include">
+          <e p="Resources" t="Include">
+            <e p="2dxfx_AL" t="Include">
+              <e p="_2dxFX_AL_4Gradients.shader" t="Include" />
+              <e p="_2dxFX_AL_BlackHole.shader" t="Include" />
+              <e p="_2dxFX_AL_Blood.shader" t="Include" />
+              <e p="_2dxFX_AL_Blur.shader" t="Include" />
+              <e p="_2dxFX_AL_BurningFX.shader" t="Include" />
+              <e p="_2dxFX_AL_Cartoon.shader" t="Include" />
+              <e p="_2dxFX_AL_CircleFade.shader" t="Include" />
+              <e p="_2dxFX_AL_Clipping.shader" t="Include" />
+              <e p="_2dxFX_AL_Color.shader" t="Include" />
+              <e p="_2dxFX_AL_ColorChange.shader" t="Include" />
+              <e p="_2dxFX_AL_ColorRGB.shader" t="Include" />
+              <e p="_2dxFX_AL_CompressionFX.shader" t="Include" />
+              <e p="_2dxFX_AL_DesintegrationFX.shader" t="Include" />
+              <e p="_2dxFX_AL_DestroyedFX.shader" t="Include" />
+              <e p="_2dxFX_AL_Distortion.shader" t="Include" />
+              <e p="_2dxFX_AL_EdgeColor.shader" t="Include" />
+              <e p="_2dxFX_AL_EnergyBar.shader" t="Include" />
+              <e p="_2dxFX_AL_Fire.shader" t="Include" />
+              <e p="_2dxFX_AL_Flame.shader" t="Include" />
+              <e p="_2dxFX_AL_Frozen.shader" t="Include" />
+              <e p="_2dxFX_AL_Ghost.shader" t="Include" />
+              <e p="_2dxFX_AL_GoldenFX.shader" t="Include" />
+              <e p="_2dxFX_AL_GoldFX.shader" t="Include" />
+              <e p="_2dxFX_AL_GrassFX.shader" t="Include" />
+              <e p="_2dxFX_AL_GrassMultiFX.shader" t="Include" />
+              <e p="_2dxFX_AL_GrayScale.shader" t="Include" />
+              <e p="_2dxFX_AL_Heat.shader" t="Include" />
+              <e p="_2dxFX_AL_Hologram.shader" t="Include" />
+              <e p="_2dxFX_AL_Hologram2.shader" t="Include" />
+              <e p="_2dxFX_AL_Hologram3.shader" t="Include" />
+              <e p="_2dxFX_AL_HSV.shader" t="Include" />
+              <e p="_2dxFX_AL_Ice.shader" t="Include" />
+              <e p="_2dxFX_AL_IcedFX.shader" t="Include" />
+              <e p="_2dxFX_AL_Jelly.shader" t="Include" />
+              <e p="_2dxFX_AL_Lightning.shader" t="Include" />
+              <e p="_2dxFX_AL_LightningBolt.shader" t="Include" />
+              <e p="_2dxFX_AL_Liquid.shader" t="Include" />
+              <e p="_2dxFX_AL_Liquify.shader" t="Include" />
+              <e p="_2dxFX_AL_MetalFX.shader" t="Include" />
+              <e p="_2dxFX_AL_Mystic_Distortion.shader" t="Include" />
+              <e p="_2dxFX_AL_Negative.shader" t="Include" />
+              <e p="_2dxFX_AL_Noise.shader" t="Include" />
+              <e p="_2dxFX_AL_NoiseAnimated.shader" t="Include" />
+              <e p="_2dxFX_AL_Normal.shader" t="Include" />
+              <e p="_2dxFX_AL_Offset.shader" t="Include" />
+              <e p="_2dxFX_AL_Outline.shader" t="Include" />
+              <e p="_2dxFX_AL_Pattern.shader" t="Include" />
+              <e p="_2dxFX_AL_Pixel.shader" t="Include" />
+              <e p="_2dxFX_AL_Pixel8bitsBW.shader" t="Include" />
+              <e p="_2dxFX_AL_Pixel8bitsC64.shader" t="Include" />
+              <e p="_2dxFX_AL_Pixel8bitsGB.shader" t="Include" />
+              <e p="_2dxFX_AL_PixelDie.shader" t="Include" />
+              <e p="_2dxFX_AL_PlasmaRainbow.shader" t="Include" />
+              <e p="_2dxFX_AL_PlasmaShield.shader" t="Include" />
+              <e p="_2dxFX_AL_Posterize.shader" t="Include" />
+              <e p="_2dxFX_AL_SandFX.shader" t="Include" />
+              <e p="_2dxFX_AL_Sepia.shader" t="Include" />
+              <e p="_2dxFX_AL_Sharpen.shader" t="Include" />
+              <e p="_2dxFX_AL_Shiny_Reflect.shader" t="Include" />
+              <e p="_2dxFX_AL_SkyCloud.shader" t="Include" />
+              <e p="_2dxFX_AL_Slim.shader" t="Include" />
+              <e p="_2dxFX_AL_Smoke.shader" t="Include" />
+              <e p="_2dxFX_AL_StoneFX.shader" t="Include" />
+              <e p="_2dxFX_AL_Threshold.shader" t="Include" />
+              <e p="_2dxFX_AL_Twist.shader" t="Include" />
+              <e p="_2dxFX_AL_WoodFX.shader" t="Include" />
+            </e>
+            <e p="_2dxFX_4Gradients.shader" t="Include" />
+            <e p="_2dxFX_Additive.shader" t="Include" />
+            <e p="_2dxFX_BlackHole.shader" t="Include" />
+            <e p="_2dxFX_Blood.shader" t="Include" />
+            <e p="_2dxFX_Blur.shader" t="Include" />
+            <e p="_2dxFX_BlurHQ.shader" t="Include" />
+            <e p="_2dxFX_BlurHQX.shader" t="Include" />
+            <e p="_2dxFX_BurnFX.shader" t="Include" />
+            <e p="_2dxFX_BurningFX.shader" t="Include" />
+            <e p="_2dxFX_Cartoon.shader" t="Include" />
+            <e p="_2dxFX_CircleFade.shader" t="Include" />
+            <e p="_2dxFX_Clipping.shader" t="Include" />
+            <e p="_2dxFX_Color.shader" t="Include" />
+            <e p="_2dxFX_ColorChange.shader" t="Include" />
+            <e p="_2dxFX_ColorRGB.shader" t="Include" />
+            <e p="_2dxFX_CompressionFX.shader" t="Include" />
+            <e p="_2dxFX_DesintegrationFX.shader" t="Include" />
+            <e p="_2dxFX_DestroyedFX.shader" t="Include" />
+            <e p="_2dxFX_Distortion.shader" t="Include" />
+            <e p="_2dxFX_Distortion_Additive.shader" t="Include" />
+            <e p="_2dxFX_EdgeColor.shader" t="Include" />
+            <e p="_2dxFX_EnergyBar.shader" t="Include" />
+            <e p="_2dxFX_Fire.shader" t="Include" />
+            <e p="_2dxFX_FireAdditive.shader" t="Include" />
+            <e p="_2dxFX_Flame.shader" t="Include" />
+            <e p="_2dxFX_FlameAdditive.shader" t="Include" />
+            <e p="_2dxFX_Frozen.shader" t="Include" />
+            <e p="_2dxFX_Ghost.shader" t="Include" />
+            <e p="_2dxFX_GoldenFX.shader" t="Include" />
+            <e p="_2dxFX_GoldFX.shader" t="Include" />
+            <e p="_2dxFX_GrassFX.shader" t="Include" />
+            <e p="_2dxFX_GrassMultiFX.shader" t="Include" />
+            <e p="_2dxFX_GrayScale.shader" t="Include" />
+            <e p="_2dxFX_Heat.shader" t="Include" />
+            <e p="_2dxFX_Hologram.shader" t="Include" />
+            <e p="_2dxFX_Hologram2.shader" t="Include" />
+            <e p="_2dxFX_Hologram3.shader" t="Include" />
+            <e p="_2dxFX_HSV.shader" t="Include" />
+            <e p="_2dxFX_Ice.shader" t="Include" />
+            <e p="_2dxFX_IcedFX.shader" t="Include" />
+            <e p="_2dxFX_Jelly.shader" t="Include" />
+            <e p="_2dxFX_Lightning.shader" t="Include" />
+            <e p="_2dxFX_LightningBolt.shader" t="Include" />
+            <e p="_2dxFX_Liquid.shader" t="Include" />
+            <e p="_2dxFX_Liquify.shader" t="Include" />
+            <e p="_2dxFX_MetalFX.shader" t="Include" />
+            <e p="_2dxFX_Mystic_Distortion.shader" t="Include" />
+            <e p="_2dxFX_Mystic_Distortion_Additive.shader" t="Include" />
+            <e p="_2dxFX_Negative.shader" t="Include" />
+            <e p="_2dxFX_NewTeleportation.shader" t="Include" />
+            <e p="_2dxFX_NewTeleportation2.shader" t="Include" />
+            <e p="_2dxFX_Noise.shader" t="Include" />
+            <e p="_2dxFX_NoiseAnimated.shader" t="Include" />
+            <e p="_2dxFX_Offset.shader" t="Include" />
+            <e p="_2dxFX_Outline.shader" t="Include" />
+            <e p="_2dxFX_Pattern.shader" t="Include" />
+            <e p="_2dxFX_PatternAdditive.shader" t="Include" />
+            <e p="_2dxFX_Pixel.shader" t="Include" />
+            <e p="_2dxFX_Pixel8bitsBW.shader" t="Include" />
+            <e p="_2dxFX_Pixel8bitsC64.shader" t="Include" />
+            <e p="_2dxFX_Pixel8bitsGB.shader" t="Include" />
+            <e p="_2dxFX_PixelDie.shader" t="Include" />
+            <e p="_2dxFX_PlasmaRainbow.shader" t="Include" />
+            <e p="_2dxFX_PlasmaRainbow_Color.shader" t="Include" />
+            <e p="_2dxFX_PlasmaShield.shader" t="Include" />
+            <e p="_2dxFX_Posterize.shader" t="Include" />
+            <e p="_2dxFX_SandFX.shader" t="Include" />
+            <e p="_2dxFX_Sepia.shader" t="Include" />
+            <e p="_2dxFX_Sharpen.shader" t="Include" />
+            <e p="_2dxFX_Shiny_Reflect.shader" t="Include" />
+            <e p="_2dxFX_SkyCloud.shader" t="Include" />
+            <e p="_2dxFX_Slim.shader" t="Include" />
+            <e p="_2dxFX_Smoke.shader" t="Include" />
+            <e p="_2dxFX_StoneFX.shader" t="Include" />
+            <e p="_2dxFX_Teleportation.shader" t="Include" />
+            <e p="_2dxFX_Threshold.shader" t="Include" />
+            <e p="_2dxFX_Twist.shader" t="Include" />
+            <e p="_2dxFX_WaterAndBackground.shader" t="Include" />
+            <e p="_2dxFX_WaterAndBackgroundDeluxe.shader" t="Include" />
+            <e p="_2dxFX_Waterfall.shader" t="Include" />
+            <e p="_2dxFX_Wave.shader" t="Include" />
+            <e p="_2dxFX_WoodFX.shader" t="Include" />
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="2dxfx_AL" t="Include">
+              <e p="_2dxFX_AL_4Gradients.cs" t="Include" />
+              <e p="_2dxFX_AL_BlackHole.cs" t="Include" />
+              <e p="_2dxFX_AL_Blood.cs" t="Include" />
+              <e p="_2dxFX_AL_Blur.cs" t="Include" />
+              <e p="_2dxFX_AL_BurningFX.cs" t="Include" />
+              <e p="_2dxFX_AL_Cartoon.cs" t="Include" />
+              <e p="_2dxFX_AL_CircleFade.cs" t="Include" />
+              <e p="_2dxFX_AL_Clipping.cs" t="Include" />
+              <e p="_2dxFX_AL_Color.cs" t="Include" />
+              <e p="_2dxFX_AL_ColorChange.cs" t="Include" />
+              <e p="_2dxFX_AL_ColorRGB.cs" t="Include" />
+              <e p="_2dxFX_AL_CompressionFX.cs" t="Include" />
+              <e p="_2dxFX_AL_DesintegrationFX.cs" t="Include" />
+              <e p="_2dxFX_AL_DestroyedFX.cs" t="Include" />
+              <e p="_2dxFX_AL_Distortion.cs" t="Include" />
+              <e p="_2dxFX_AL_EdgeColor.cs" t="Include" />
+              <e p="_2dxFX_AL_EnergyBar.cs" t="Include" />
+              <e p="_2dxFX_AL_Fire.cs" t="Include" />
+              <e p="_2dxFX_AL_Flame.cs" t="Include" />
+              <e p="_2dxFX_AL_Frozen.cs" t="Include" />
+              <e p="_2dxFX_AL_Ghost.cs" t="Include" />
+              <e p="_2dxFX_AL_GoldenFX.cs" t="Include" />
+              <e p="_2dxFX_AL_GoldFX.cs" t="Include" />
+              <e p="_2dxFX_AL_GrassFX.cs" t="Include" />
+              <e p="_2dxFX_AL_GrassMultiFX.cs" t="Include" />
+              <e p="_2dxFX_AL_GrayScale.cs" t="Include" />
+              <e p="_2dxFX_AL_Heat.cs" t="Include" />
+              <e p="_2dxFX_AL_Hologram.cs" t="Include" />
+              <e p="_2dxFX_AL_Hologram2.cs" t="Include" />
+              <e p="_2dxFX_AL_Hologram3.cs" t="Include" />
+              <e p="_2dxFX_AL_HSV.cs" t="Include" />
+              <e p="_2dxFX_AL_Ice.cs" t="Include" />
+              <e p="_2dxFX_AL_IcedFX.cs" t="Include" />
+              <e p="_2dxFX_AL_Jelly.cs" t="Include" />
+              <e p="_2dxFX_AL_JellyAutoMove.cs" t="Include" />
+              <e p="_2dxFX_AL_Lightning.cs" t="Include" />
+              <e p="_2dxFX_AL_LightningBolt.cs" t="Include" />
+              <e p="_2dxFX_AL_Liquid.cs" t="Include" />
+              <e p="_2dxFX_AL_Liquify.cs" t="Include" />
+              <e p="_2dxFX_AL_MetalFX.cs" t="Include" />
+              <e p="_2dxFX_AL_Mystic_Distortion.cs" t="Include" />
+              <e p="_2dxFX_AL_Negative.cs" t="Include" />
+              <e p="_2dxFX_AL_Noise.cs" t="Include" />
+              <e p="_2dxFX_AL_NoiseAnimated.cs" t="Include" />
+              <e p="_2dxFX_AL_Normal.cs" t="Include" />
+              <e p="_2dxFX_AL_Offset.cs" t="Include" />
+              <e p="_2dxFX_AL_Outline.cs" t="Include" />
+              <e p="_2dxFX_AL_Pattern.cs" t="Include" />
+              <e p="_2dxFX_AL_Pixel.cs" t="Include" />
+              <e p="_2dxFX_AL_Pixel8bitsBW.cs" t="Include" />
+              <e p="_2dxFX_AL_Pixel8bitsC64.cs" t="Include" />
+              <e p="_2dxFX_AL_Pixel8bitsGB.cs" t="Include" />
+              <e p="_2dxFX_AL_PixelDie.cs" t="Include" />
+              <e p="_2dxFX_AL_PlasmaRainbow.cs" t="Include" />
+              <e p="_2dxFX_AL_PlasmaShield.cs" t="Include" />
+              <e p="_2dxFX_AL_Posterize.cs" t="Include" />
+              <e p="_2dxFX_AL_SandFX.cs" t="Include" />
+              <e p="_2dxFX_AL_Sepia.cs" t="Include" />
+              <e p="_2dxFX_AL_Sharpen.cs" t="Include" />
+              <e p="_2dxFX_AL_Shiny_Reflect.cs" t="Include" />
+              <e p="_2dxFX_AL_SkyCloud.cs" t="Include" />
+              <e p="_2dxFX_AL_Slim.cs" t="Include" />
+              <e p="_2dxFX_AL_Smoke.cs" t="Include" />
+              <e p="_2dxFX_AL_StoneFX.cs" t="Include" />
+              <e p="_2dxFX_AL_Threshold.cs" t="Include" />
+              <e p="_2dxFX_AL_Twist.cs" t="Include" />
+              <e p="_2dxFX_AL_WoodFX.cs" t="Include" />
+            </e>
+            <e p="_2DxFX.cs" t="Include" />
+            <e p="_2dxFX_4Gradients.cs" t="Include" />
+            <e p="_2dxFX_Additive.cs" t="Include" />
+            <e p="_2dxFX_BlackHole.cs" t="Include" />
+            <e p="_2dxFX_Blood.cs" t="Include" />
+            <e p="_2dxFX_Blur.cs" t="Include" />
+            <e p="_2dxFX_BlurHQ.cs" t="Include" />
+            <e p="_2dxFX_BlurHQX.cs" t="Include" />
+            <e p="_2dxFX_BurnFX.cs" t="Include" />
+            <e p="_2dxFX_BurningFX.cs" t="Include" />
+            <e p="_2dxFX_Cartoon.cs" t="Include" />
+            <e p="_2dxFX_CircleFade.cs" t="Include" />
+            <e p="_2dxFX_Clipping.cs" t="Include" />
+            <e p="_2dxFX_Color.cs" t="Include" />
+            <e p="_2dxFX_ColorChange.cs" t="Include" />
+            <e p="_2dxFX_ColorRGB.cs" t="Include" />
+            <e p="_2dxFX_CompressionFX.cs" t="Include" />
+            <e p="_2dxFX_DesintegrationFX.cs" t="Include" />
+            <e p="_2dxFX_DestroyedFX.cs" t="Include" />
+            <e p="_2dxFX_Distortion.cs" t="Include" />
+            <e p="_2dxFX_Distortion_Additive.cs" t="Include" />
+            <e p="_2dxFX_EdgeColor.cs" t="Include" />
+            <e p="_2dxFX_EnergyBar.cs" t="Include" />
+            <e p="_2dxFX_Fire.cs" t="Include" />
+            <e p="_2dxFX_FireAdditive.cs" t="Include" />
+            <e p="_2dxFX_Flame.cs" t="Include" />
+            <e p="_2dxFX_FlameAdditive.cs" t="Include" />
+            <e p="_2dxFX_Frozen.cs" t="Include" />
+            <e p="_2dxFX_Ghost.cs" t="Include" />
+            <e p="_2dxFX_GoldenFX.cs" t="Include" />
+            <e p="_2dxFX_GoldFX.cs" t="Include" />
+            <e p="_2dxFX_GrassFX.cs" t="Include" />
+            <e p="_2dxFX_GrassMultiFX.cs" t="Include" />
+            <e p="_2dxFX_GrayScale.cs" t="Include" />
+            <e p="_2dxFX_Heat.cs" t="Include" />
+            <e p="_2dxFX_Hologram.cs" t="Include" />
+            <e p="_2dxFX_Hologram2.cs" t="Include" />
+            <e p="_2dxFX_Hologram3.cs" t="Include" />
+            <e p="_2dxFX_HSV.cs" t="Include" />
+            <e p="_2dxFX_Ice.cs" t="Include" />
+            <e p="_2dxFX_IcedFX.cs" t="Include" />
+            <e p="_2dxFX_Jelly.cs" t="Include" />
+            <e p="_2dxFX_JellyAutoMove.cs" t="Include" />
+            <e p="_2dxFX_Lightning.cs" t="Include" />
+            <e p="_2dxFX_LightningBolt.cs" t="Include" />
+            <e p="_2dxFX_Liquid.cs" t="Include" />
+            <e p="_2dxFX_Liquify.cs" t="Include" />
+            <e p="_2dxFX_MetalFX.cs" t="Include" />
+            <e p="_2dxFX_Mystic_Distortion.cs" t="Include" />
+            <e p="_2dxFX_Mystic_Distortion_Additive.cs" t="Include" />
+            <e p="_2dxFX_Negative.cs" t="Include" />
+            <e p="_2dxFX_NewTeleportation.cs" t="Include" />
+            <e p="_2dxFX_NewTeleportation2.cs" t="Include" />
+            <e p="_2dxFX_Noise.cs" t="Include" />
+            <e p="_2dxFX_NoiseAnimated.cs" t="Include" />
+            <e p="_2dxFX_Offset.cs" t="Include" />
+            <e p="_2dxFX_Outline.cs" t="Include" />
+            <e p="_2dxFX_Pattern.cs" t="Include" />
+            <e p="_2dxFX_PatternAdditive.cs" t="Include" />
+            <e p="_2dxFX_Pixel.cs" t="Include" />
+            <e p="_2dxFX_Pixel8bitsBW.cs" t="Include" />
+            <e p="_2dxFX_Pixel8bitsC64.cs" t="Include" />
+            <e p="_2dxFX_Pixel8bitsGB.cs" t="Include" />
+            <e p="_2dxFX_PixelDie.cs" t="Include" />
+            <e p="_2dxFX_PlasmaRainbow.cs" t="Include" />
+            <e p="_2dxFX_PlasmaRainbow_Color.cs" t="Include" />
+            <e p="_2dxFX_PlasmaShield.cs" t="Include" />
+            <e p="_2dxFX_Posterize.cs" t="Include" />
+            <e p="_2dxFX_SandFX.cs" t="Include" />
+            <e p="_2dxFX_Sepia.cs" t="Include" />
+            <e p="_2dxFX_Sharpen.cs" t="Include" />
+            <e p="_2dxFX_Shiny_Reflect.cs" t="Include" />
+            <e p="_2dxFX_SkyCloud.cs" t="Include" />
+            <e p="_2dxFX_Slim.cs" t="Include" />
+            <e p="_2dxFX_Smoke.cs" t="Include" />
+            <e p="_2dxFX_StoneFX.cs" t="Include" />
+            <e p="_2dxFX_Teleportation.cs" t="Include" />
+            <e p="_2dxFX_Threshold.cs" t="Include" />
+            <e p="_2dxFX_Twist.cs" t="Include" />
+            <e p="_2dxFX_WaterAndBackground.cs" t="Include" />
+            <e p="_2dxFX_WaterAndBackgroundDeluxe.cs" t="Include" />
+            <e p="_2dxFX_Waterfall.cs" t="Include" />
+            <e p="_2dxFX_Wave.cs" t="Include" />
+            <e p="_2dxFX_WoodFX.cs" t="Include" />
+          </e>
+        </e>
         <e p="Alpha Masking" t="Include">
           <e p="Editor" t="Include">
             <e p="MaskEditor.cs" t="Include" />
@@ -69,6 +378,20 @@
           </e>
           <e p="readme_DOTweenPro.txt" t="Include" />
         </e>
+        <e p="Editor" t="Include">
+          <e p="FMODMigrationUtil.cs" t="Include" />
+        </e>
+        <e p="GoogleVR" t="Include">
+          <e p="Editor" t="Include">
+            <e p="FmodGvrAudioRoomEditor.cs" t="Include" />
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="Audio" t="Include">
+              <e p="FmodGvrAudio.cs" t="Include" />
+              <e p="FmodGvrAudioRoom.cs" t="Include" />
+            </e>
+          </e>
+        </e>
         <e p="JellySprites" t="Include">
           <e p="Demo" t="Include">
             <e p="Scripts" t="Include">
@@ -125,7 +448,97 @@
             <e p="Light2D-Alpha Belnd.shader" t="Include" />
           </e>
         </e>
+        <e p="PIDI Game Development Framework" t="Include">
+          <e p="PIDI - 2D Reflections" t="Include">
+            <e p="Editor" t="Include">
+              <e p="PIDIEditor_2DReflection.cs" t="Include" />
+            </e>
+            <e p="Readme_Licenses.txt" t="Include" />
+            <e p="Shared" t="Include">
+              <e p="Layered Background (Public Domain)" t="Include">
+                <e p="license.txt" t="Include" />
+              </e>
+              <e p="PlayerSprite (PublicDomain)" t="Include">
+                <e p="license.txt" t="Include" />
+              </e>
+            </e>
+            <e p="Source" t="Include">
+              <e p="PIDI_2DReflection.cs" t="Include" />
+              <e p="PIDI_2DSimpleReflection.cs" t="Include" />
+            </e>
+            <e p="Standard Version" t="Include">
+              <e p="Shaders" t="Include">
+                <e p="Internal_ParallaxBlitMix.shader" t="Include" />
+                <e p="PIDI_2DReflection_RenderBased_Distortion.shader" t="Include" />
+                <e p="PIDI_2DReflection_RenderBased_Distortion_Masked.shader" t="Include" />
+                <e p="PIDI_2DReflection_RenderBased_Distortion_OpacityFade.shader" t="Include" />
+                <e p="PIDI_2DReflection_RenderBased_Distortion_ParallaxComposite.shader" t="Include" />
+                <e p="PIDI_2DReflection_RenderBased_Distortion_Vertical.shader" t="Include" />
+                <e p="PIDI_2DReflection_RenderBased_Distortion_Water.shader" t="Include" />
+                <e p="PIDI_2DReflection_ShaderBased_Distorted_Vertical.shader" t="Include" />
+                <e p="PIDI_2DReflection_ShaderBased_Distortion.shader" t="Include" />
+                <e p="PIDI_2DReflection_ShaderBased_Distortion_OpacityFade.shader" t="Include" />
+                <e p="PIDI_2DReflection_ShaderBased_Simple.shader" t="Include" />
+                <e p="PIDI_2DReflection_ShaderBased_Simple_OpacityFade.shader" t="Include" />
+                <e p="PIDI_2DReflection_ShaderBased_Vertical.shader" t="Include" />
+              </e>
+            </e>
+          </e>
+        </e>
         <e p="Plugins" t="Include">
+          <e p="Editor" t="Include">
+            <e p="FMOD" t="Include">
+              <e p="BankRefDrawer.cs" t="Include" />
+              <e p="CreateEventPopup.cs" t="Include" />
+              <e p="EditorBankRef.cs" t="Include" />
+              <e p="EditorEventRef.cs" t="Include" />
+              <e p="EditorParamRef.cs" t="Include" />
+              <e p="EditorUtils.cs" t="Include" />
+              <e p="EventBrowser.cs" t="Include" />
+              <e p="EventCache.cs" t="Include" />
+              <e p="EventManager.cs" t="Include" />
+              <e p="EventRefDrawer.cs" t="Include" />
+              <e p="FindAndReplace.cs" t="Include" />
+              <e p="LogViewer.cs" t="Include" />
+              <e p="MigrationUtil.cs" t="Include" />
+              <e p="ParamRefDrawer.cs" t="Include" />
+              <e p="SettingsEditor.cs" t="Include" />
+              <e p="StudioBankLoaderEditor.cs" t="Include" />
+              <e p="StudioEventEmitterEditor.cs" t="Include" />
+              <e p="StudioEventEmitterGizmoDrawer.cs" t="Include" />
+              <e p="StudioListenerEditor.cs" t="Include" />
+              <e p="StudioParameterTriggerEditor.cs" t="Include" />
+              <e p="Timeline" t="Include">
+                <e p="FMODEventPlayableEditor.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="FMOD" t="Include">
+            <e p="BankRefAttribute.cs" t="Include" />
+            <e p="EventRefAttribute.cs" t="Include" />
+            <e p="FMOD_Listener.cs" t="Include" />
+            <e p="FMOD_StudioEventEmitter.cs" t="Include" />
+            <e p="FMODAsset.cs" t="Include" />
+            <e p="OneshotList.cs" t="Include" />
+            <e p="ParamRef.cs" t="Include" />
+            <e p="RuntimeManager.cs" t="Include" />
+            <e p="RuntimeUtils.cs" t="Include" />
+            <e p="Settings.cs" t="Include" />
+            <e p="StudioBankLoader.cs" t="Include" />
+            <e p="StudioEventEmitter.cs" t="Include" />
+            <e p="StudioListener.cs" t="Include" />
+            <e p="StudioParameterTrigger.cs" t="Include" />
+            <e p="Timeline" t="Include">
+              <e p="FMODEventPlayable.cs" t="Include" />
+              <e p="FMODEventTrack.cs" t="Include" />
+            </e>
+            <e p="Wrapper" t="Include">
+              <e p="fmod.cs" t="Include" />
+              <e p="fmod_dsp.cs" t="Include" />
+              <e p="fmod_errors.cs" t="Include" />
+              <e p="fmod_studio.cs" t="Include" />
+            </e>
+          </e>
           <e p="Vectrosity" t="Include">
             <e p="Editor" t="Include">
               <e p="LineMaker.cs" t="Include" />
@@ -607,6 +1020,15 @@
             </e>
           </e>
         </e>
+        <e p="ResonanceAudio" t="Include">
+          <e p="Editor" t="Include">
+            <e p="FmodResonanceAudioRoomEditor.cs" t="Include" />
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="FmodResonanceAudio.cs" t="Include" />
+            <e p="FmodResonanceAudioRoom.cs" t="Include" />
+          </e>
+        </e>
         <e p="Rope 2D Editor" t="Include">
           <e p="Editor" t="Include">
             <e p="RopeEditor.cs" t="Include" />
@@ -645,6 +1067,7 @@
           <e p="PlayerIndicator.cs" t="Include" />
           <e p="PlayerLight.cs" t="Include" />
           <e p="PortalBase.cs" t="Include" />
+          <e p="ReflectionSurfaceLevelChange.cs" t="Include" />
           <e p="RenderGroupControl.cs" t="Include" />
           <e p="RewindClass" t="Include">
             <e p="RewindBox.cs" t="Include" />
@@ -658,9 +1081,11 @@
           </e>
           <e p="RockerBase.cs" t="Include" />
           <e p="RopeBase.cs" t="Include" />
+          <e p="RuneBlink.cs" t="Include" />
           <e p="SelfDestroy.cs" t="Include" />
           <e p="SelfFloating.cs" t="Include" />
           <e p="SelfRotation.cs" t="Include" />
+          <e p="ShadowCapture.cs" t="Include" />
           <e p="SliderBase.cs" t="Include" />
           <e p="SwitchBase.cs" t="Include" />
           <e p="UnitySingleton.cs" t="Include" />

@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 1cb4e4a30690e944ea9d399a3a8c5ac2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - pidiSkin: {fileID: 11400000, guid: efc2c92be78ccc14dba82e9359251301, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

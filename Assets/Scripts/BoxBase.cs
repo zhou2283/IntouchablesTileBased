@@ -311,7 +311,7 @@ public class BoxBase : MonoBehaviour
     public bool CheckBoxDown()//used for movable block moving down
     {
         LayerMask _checkLayer;
-        _checkLayer = sideDetectableLayer;
+        _checkLayer = sideDetectableLayerIncludePlayer;
         //if it is visited, return
         if (visited)
         {
@@ -383,7 +383,22 @@ public class BoxBase : MonoBehaviour
             {
                 topleftUpHit.transform.GetComponent<BoxBase>().CheckBoxDown();
             }
+            else if(topleftUpHit.transform.gameObject.layer == 14)//if it is a player
+            {
+                topleftUpHit.transform.GetComponent<PlayerBase>().CheckPlayerDown();
+            }
         }
+        if (toprightUpHit)
+        {
+            if(toprightUpHit.transform.gameObject.layer == 11 || toprightUpHit.transform.gameObject.layer == 12)//if it is a box
+            {
+                toprightUpHit.transform.GetComponent<BoxBase>().CheckBoxDown();
+            }
+            else if(toprightUpHit.transform.gameObject.layer == 14)//if it is a player
+            {
+                toprightUpHit.transform.GetComponent<PlayerBase>().CheckPlayerDown();
+            }
+        }   
 
         return needMove;
     }

@@ -21,10 +21,7 @@ public class DynamicRope : MonoBehaviour
 				firstSegment.GetComponent<Rigidbody2D>().isKinematic=true;
 			}
 		}
-
 	}
-	
-	
 	// Update is called once per frame
 	// Update is called once per frame
 	void Update () {

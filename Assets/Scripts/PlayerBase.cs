@@ -5,12 +5,16 @@ using DG.Tweening;
 
 public class PlayerBase : MonoBehaviour {
 
+    //test var
+    public bool invincible = false;
+    
     //find part
     protected PlayerControl playerControlScript;
     protected RewindControl rewindControlScript;
     protected GoalGroup goalGroupScript;
     public GameObject deadEffect;
     public GameObject reviveEffect;
+    public GameObject juiceEffect;
 
     public bool activeSelf = true;
 
@@ -32,9 +36,14 @@ public class PlayerBase : MonoBehaviour {
     public bool isTweening = false;
     private bool _isTweeningLastFrame = false;
     public bool isFalling = false;// it is a special case of isTweening
-    public bool _isFallingLastFrame = false;
+    private bool _isFallingLastFrame = false;
     public bool isTeleporting = false;// to record if player is teleporting
+    public bool isInair = false;
+    private bool _isInairLastFrame = false;
     public bool isDead = false;
+
+    public bool isMovingLeft = false;
+    public bool isMovingRight = false;
 
     LayerMask solidBlockLayer = 1 << 9;
     LayerMask glassBlockLayer = 1 << 10;
@@ -75,6 +84,7 @@ public class PlayerBase : MonoBehaviour {
     private MeshTwister meshTwisterScript;
     private PlayerEyeControl playerEyeControlScript;
     private PlayerIndicator playerIndicatorScript;
+    private RenderGroupControl renderGroupControlScript;
 
     // Use this for initialization
     void Start () {
@@ -85,11 +95,11 @@ public class PlayerBase : MonoBehaviour {
         meshTwisterScript = transform.Find("BodyPivotVertical").GetComponent<MeshTwister>();
         playerEyeControlScript = transform.Find("EyeGroup").GetComponent<PlayerEyeControl>();
         playerIndicatorScript = GameObject.Find("PlayerIndicator").GetComponent<PlayerIndicator>();
+        renderGroupControlScript = GameObject.Find("RenderGroup").GetComponent<RenderGroupControl>();
         //layer mask part
         downDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | ladderLayer | outlineLayer;
         sideDetectableLayer = solidBlockLayer | glassBlockLayer | solidBoxLayer | glassBoxLayer | outlineLayer;
         sideDetectablePushableLayer = solidBoxLayer | glassBoxLayer;
-
         //precheck function
         CheckLadder();
     }
@@ -115,7 +125,47 @@ public class PlayerBase : MonoBehaviour {
 	    
 	    //update interact part
 	    UpdateInteractPart();
-        
+	    
+	    //check if the player is in air
+	    CheckInairUpdate();
+	    if (isInair && !_isInairLastFrame)
+	    {
+	        
+	        meshTwisterScript.FromGroundToAir();
+	        /*
+	        if (isMovingLeft)
+	        {
+	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,0));
+	        }
+	        else if (isMovingRight)
+	        {
+	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,135));
+	        }
+	        else
+	        {
+	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,0));
+	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,135));
+	        }
+	        */
+	    }
+	    else if (!isInair && _isInairLastFrame)
+	    {
+	        meshTwisterScript.FromAirToGround();
+	        if (isMovingLeft)
+	        {
+	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,0));
+	        }
+	        else if (isMovingRight)
+	        {
+	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,135));
+	        }
+	        else
+	        {
+	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,0));
+	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,135));
+	        }
+	    }
+        _isInairLastFrame = isInair;
 	    //detect update
         if (prewarmTimeCount < prewarmTime)
         {
@@ -186,29 +236,34 @@ public class PlayerBase : MonoBehaviour {
                         if (hit.transform.GetComponent<BoxBase>().CheckAndMoveBox(true))//if it can be moved to right(true)
                         {
                             isTweening = true;
+                            isMovingRight = true;
                             //!!!!!IMPORTANT!!!!!the box base will call the CheckStatus function, to make sure tweening animations are all down.
                             transform.DOMoveX(transform.position.x + GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+                            
                         }
                         else
                         {
                             //cannot push
                             Debug.Log("Cannot Push");
+                            //renderGroupControlScript.shakeDir = RenderGroupControl.SHAKE_DIR.RIGHT;
                         }
                     }
                     else
                     {
                         //cannot move
                         Debug.Log("Cannot Move");
+                        //renderGroupControlScript.shakeDir = RenderGroupControl.SHAKE_DIR.RIGHT;
                     }
                 }
                 else
                 {
                     isTweening = true;
+                    isMovingRight = true;
                     transform.DOMoveX(transform.position.x + GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                 }
             }
 
-            if (leftIsDown && !rightIsDown && !upIsDown && !downIsDown)
+            else if (leftIsDown && !rightIsDown && !upIsDown && !downIsDown)
             {
                 //meshTwisterScript.FaceLeft();
                 playerEyeControlScript.LookLeft();
@@ -224,29 +279,34 @@ public class PlayerBase : MonoBehaviour {
                         if (hit.transform.GetComponent<BoxBase>().CheckAndMoveBox(false))//if it can be moved to left(false)
                         {
                             isTweening = true;
+                            isMovingLeft = true;
                             //!!!!!IMPORTANT!!!!!the box base will call the CheckStatus function, to make sure tweening animations are all down.
                             transform.DOMoveX(transform.position.x - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+                            
                         }
                         else
                         {
                             //cannot push
                             Debug.Log("Cannot Push");
+                            //renderGroupControlScript.shakeDir = RenderGroupControl.SHAKE_DIR.LEFT;
                         }
                     }
                     else
                     {
                         //cannot move
                         Debug.Log("Cannot Move");
+                        //renderGroupControlScript.shakeDir = RenderGroupControl.SHAKE_DIR.LEFT;
                     }
                 }
                 else
                 {
                     isTweening = true;
+                    isMovingLeft = true;
                     transform.DOMoveX(transform.position.x - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                 }
             }
 
-            if (upIsDown && !downIsDown && !leftIsDown && !rightIsDown)
+            else if (upIsDown && !downIsDown && !leftIsDown && !rightIsDown)
             {
                 playerEyeControlScript.MoveUp();
                 playerEyeControlScript.LookUp();
@@ -259,6 +319,7 @@ public class PlayerBase : MonoBehaviour {
                     {
                         //collide with wall or box
                         Debug.Log("Cannot Move");
+                        //renderGroupControlScript.shakeDir = RenderGroupControl.SHAKE_DIR.UP;
                     }
                     else
                     {
@@ -266,9 +327,15 @@ public class PlayerBase : MonoBehaviour {
                         transform.DOMoveY(transform.position.y + GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                     }
                 }
+                else
+                {
+                    //collide with wall or box
+                    Debug.Log("Cannot Move");
+                    //renderGroupControlScript.shakeDir = RenderGroupControl.SHAKE_DIR.UP;
+                }
             }
 
-            if (downIsDown && !upIsDown && !leftIsDown && !rightIsDown)
+            else if (downIsDown && !upIsDown && !leftIsDown && !rightIsDown)
             {
                 playerEyeControlScript.MoveDown();
                 playerEyeControlScript.LookDown();
@@ -281,6 +348,7 @@ public class PlayerBase : MonoBehaviour {
                     {
                         //collide with wall or box
                         Debug.Log("Cannot Move");
+                        //renderGroupControlScript.shakeDir = RenderGroupControl.SHAKE_DIR.DOWN;
                     }
                     else
                     {
@@ -288,6 +356,17 @@ public class PlayerBase : MonoBehaviour {
                         transform.DOMoveY(transform.position.y - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                     }
                 }
+                else
+                {
+                    //collide with wall or box
+                    Debug.Log("Cannot Move");
+                    //renderGroupControlScript.shakeDir = RenderGroupControl.SHAKE_DIR.DOWN;
+                }
+            }
+            
+            else
+            {
+                //renderGroupControlScript.shakeDir = RenderGroupControl.SHAKE_DIR.CENTER;
             }
 
             if (!leftIsDown && _leftIsDownLastFrame ||
@@ -338,6 +417,10 @@ public class PlayerBase : MonoBehaviour {
 	    else if (isInRocker && activeSelf)
 	    {
 	        playerEyeControlScript.LookAtTarget(currentRocker.GetComponent<RockerBase>().connectedSlider.GetComponent<SliderBase>().connectedItem.transform.position);
+	    }
+	    else if (isInPortal && activeSelf)
+	    {
+	        playerEyeControlScript.LookAtTarget(currentPortal.GetComponent<PortalBase>().connectedPortal.transform.position);
 	    }
 
 	    _isTweeningLastFrame = isTweening;
@@ -396,6 +479,8 @@ public class PlayerBase : MonoBehaviour {
     public void CheckFalling()
     {
         isTeleporting = false;
+        isMovingLeft = false;
+        isMovingRight = false;
         RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position, Vector2.down, GameConst.GRID_SIZE, downDetectableLayer);//check hit
         RaycastHit2D hitLadder = Physics2D.Raycast((Vector2)transform.position + new Vector2(0,-GameConst.GRID_SIZE), Vector2.up, GameConst.GRID_SIZE, ladderLayer);//check hit
   
@@ -409,6 +494,22 @@ public class PlayerBase : MonoBehaviour {
             isFalling = true;
             isTweening = true;
             transform.DOMoveY(transform.position.y - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+        }
+    }
+    
+    public void CheckInairUpdate()
+    {
+        //isTeleporting = false;
+        RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position, Vector2.down, GameConst.GRID_SIZE/2.0f + 0.05f, sideDetectableLayer);//check hit
+        //RaycastHit2D hitLadder = Physics2D.Raycast((Vector2)transform.position + new Vector2(0,-GameConst.GRID_SIZE), Vector2.up, GameConst.GRID_SIZE, ladderLayer);//check hit
+  
+        if (hit)
+        {
+            isInair = false;
+        }
+        else
+        {
+            isInair = true;
         }
     }
 
@@ -467,47 +568,51 @@ public class PlayerBase : MonoBehaviour {
             return needMove;
         }
         
-        bool isPushable = false;
+
+        
         //renew direction
         direction = Vector2.up;
-        /*
-        RaycastHit2D upHit = Physics2D.Raycast((Vector2)transform.position, direction, GameConst.GRID_SIZE, sideDetectableLayer);
-        if (upHit)
-        {
-            if (upHit.transform.gameObject.layer == 11 || upHit.transform.gameObject.layer == 12)//if it is a box
-            {
-                isPushable = upHit.transform.GetComponent<BoxBase>().CheckBox(upHit);
-            }
-            else
-            {
-                isPushable = false;
-            }
-        }
-        else//nothing
-        {
-            isPushable = true;
-        }
-        */
-        
-        //it is always true
-        isPushable = true;
         needMove = true;
         visited = true;
-        
-        /*
-        if (isPushable)
+        return needMove;
+    }
+    
+    public bool CheckPlayerDown()//used for movable block moving down
+    {
+        if (visited && needMove)
         {
-            needMove = true;
-            visited = true;
+            return needMove;
+        }
+
+        //renew direction
+        direction = Vector2.down;
+        
+        RaycastHit2D downHit = Physics2D.Raycast((Vector2)transform.position, direction, GameConst.GRID_SIZE, sideDetectableLayer);
+        if (downHit)
+        {
+            if(downHit.transform.gameObject.layer == 11 || downHit.transform.gameObject.layer == 12)//if it is a box
+            {
+                needMove = downHit.transform.GetComponent<BoxBase>().needMove;
+            }
+            else if(downHit.transform.gameObject.CompareTag("MovableBlock"))//if it is a movable block
+            {
+                needMove = downHit.transform.GetComponent<MovableBlockBase>().needMoveDown;
+            }
+            else//it is block
+            {
+                needMove = false;
+            }
         }
         else
         {
             needMove = false;
-            visited = true;
         }
-        */
+        
+        visited = true;
         return needMove;
     }
+    
+    
 
     public void DisableNeedMoveOnNext()
     {
@@ -531,6 +636,14 @@ public class PlayerBase : MonoBehaviour {
     public void MovePlayer()
     {
         isTweening = true;
+        if (direction.x == 1f)
+        {
+            isMovingRight = true;
+        }
+        else if (direction.x == -1f)
+        {
+            isMovingLeft = true;
+        }
         transform.DOMoveX(transform.position.x + direction.x * GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
         transform.DOMoveY(transform.position.y + direction.y * GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
     }
@@ -588,6 +701,10 @@ public class PlayerBase : MonoBehaviour {
             else if (isInRocker)
             {
                 playerIndicatorScript.ChangeToGear();
+            }
+            else if (isInPortal)
+            {
+                playerIndicatorScript.ChangeToPortal();
             }
             else
             {
@@ -648,6 +765,7 @@ public class PlayerBase : MonoBehaviour {
                 var _connectedPortal = currentPortal.GetComponent<PortalBase>().connectedPortal;
                 if (_connectedPortal.GetComponent<PortalBase>().isEmpty)
                 {
+                    
                     isTeleporting = true;
                     isTweening = true;
                     var teleportSequence = DOTween.Sequence();
@@ -655,11 +773,12 @@ public class PlayerBase : MonoBehaviour {
                         .Append(transform.DOScale(0.1f, 0.2f))//if the player size is 0, OnTriggerExit will not be called
                         .Append(transform.DOMove(_connectedPortal.transform.position,
                             0f))
-                        .Append(transform.DOScale(1, 0.2f))
+                        .Append(transform.DOScale(0.9f, 0.2f))
                         .AppendCallback(CheckFalling);
                 }
                 else
                 {
+                    playerIndicatorScript.PortalBlink();
                     print("Portal is not empty");
                 }
 

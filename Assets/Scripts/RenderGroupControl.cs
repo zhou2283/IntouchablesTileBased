@@ -6,6 +6,18 @@ using UnityEngine.SceneManagement;
 
 public class RenderGroupControl : MonoBehaviour
 {
+	public enum SHAKE_DIR
+	{
+		CENTER = 0,
+		LEFT = 1,
+		RIGHT = 2,
+		UP = 3,
+		DOWN = 4
+	};
+
+	public SHAKE_DIR shakeDir = SHAKE_DIR.CENTER;
+	private SHAKE_DIR _shakeDirLastFrame = SHAKE_DIR.CENTER;
+	
 	private Transform mainCamera;
 
 	private Transform lightCaptureCameraBlur;
@@ -15,10 +27,15 @@ public class RenderGroupControl : MonoBehaviour
 	private float zoomTime = 1.5f;
 	private float moveTime = 1.5f;
 	private float sceneWidth = 12.8f;
+
+	private float shakeDistance = 0.06f;
+	private float shakeDuration = 0.4f;
 	
 	private AsyncOperation asyncOperation;
 	private int levelIndex;
 	private string levelName;
+	
+
 	
 	// Use this for initialization
 	void Start ()
@@ -31,6 +48,12 @@ public class RenderGroupControl : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
+		if (shakeDir != _shakeDirLastFrame)
+		{
+			Shake(shakeDir);
+		}
+
+		_shakeDirLastFrame = shakeDir;
 
 	}
 
@@ -91,10 +114,69 @@ public class RenderGroupControl : MonoBehaviour
 		}
 	}
 
+	public void ShakeRight()
+	{
+		mainCamera.transform.DOLocalMoveX(-shakeDistance, shakeDuration).SetEase(Ease.OutCubic);
+		outlineCamera.transform.DOLocalMoveX(-shakeDistance, shakeDuration).SetEase(Ease.OutCubic);
+	}
+	
+	public void ShakeUp()
+	{
+		mainCamera.transform.DOLocalMoveY(-shakeDistance, shakeDuration).SetEase(Ease.OutCubic);
+		outlineCamera.transform.DOLocalMoveY(-shakeDistance, shakeDuration).SetEase(Ease.OutCubic);
+	}
+	
+	public void ShakeLeft()
+	{
+		mainCamera.transform.DOLocalMoveX(shakeDistance, shakeDuration).SetEase(Ease.OutCubic);
+		outlineCamera.transform.DOLocalMoveX(shakeDistance, shakeDuration).SetEase(Ease.OutCubic);
+	}
+	
+	public void ShakeDown()
+	{
+		mainCamera.transform.DOLocalMoveY(shakeDistance, shakeDuration).SetEase(Ease.OutCubic);
+		outlineCamera.transform.DOLocalMoveY(shakeDistance, shakeDuration).SetEase(Ease.OutCubic);
+	}
+
+	public void Shake(SHAKE_DIR sd)
+	{
+		if (sd == SHAKE_DIR.UP)
+		{
+			ShakeUp();
+		}
+		else if (sd == SHAKE_DIR.DOWN)
+		{
+			ShakeDown();
+		}
+		else if (sd == SHAKE_DIR.LEFT)
+		{
+			ShakeLeft();
+		}
+		else if (sd == SHAKE_DIR.RIGHT)
+		{
+			ShakeRight();
+		}
+		else
+		{
+			ShakeBack();
+		}
+	}
+	
+	public void ShakeBack()
+	{
+		mainCamera.transform.DOLocalMoveX(0, shakeDuration).SetEase(Ease.OutCubic);
+		outlineCamera.transform.DOLocalMoveX(0, shakeDuration).SetEase(Ease.OutCubic);
+		mainCamera.transform.DOLocalMoveY(0, shakeDuration).SetEase(Ease.OutCubic);
+		outlineCamera.transform.DOLocalMoveY(0, shakeDuration).SetEase(Ease.OutCubic);
+	}
+	
+
 	void ActiveNextLevel()
 	{
 		levelIndex = int.Parse(SceneManager.GetActiveScene().name.Split('_')[1]) + 1;
 		levelName = "Level_" + levelIndex.ToString();
 		SceneManager.LoadScene(levelName);
 	}
+	
+	
 }

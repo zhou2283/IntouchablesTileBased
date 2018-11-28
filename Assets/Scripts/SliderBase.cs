@@ -203,14 +203,16 @@ public class SliderBase : MonoBehaviour
 	{
 		currentLength++;
 		isTweening = false;
-		StartCoroutine(DelayToDisableIsTweeningBuffer(0.005f));
+		isTweeningBuffer = false;
+		//StartCoroutine(DelayToDisableIsTweeningBuffer(0.005f));
 	}
 	
 	void DisableIsTweeningWhenMoveToMin()
 	{
 		currentLength--;
 		isTweening = false;
-		StartCoroutine(DelayToDisableIsTweeningBuffer(0.005f));
+		isTweeningBuffer = false;
+		//StartCoroutine(DelayToDisableIsTweeningBuffer(0.005f));
 	}
 
 	

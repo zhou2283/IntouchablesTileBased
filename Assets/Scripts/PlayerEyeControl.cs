@@ -25,11 +25,17 @@ public class PlayerEyeControl : MonoBehaviour
 		eyeball = transform.Find("EyeballPivot").Find("Eyeball");
 		oriY = transform.localPosition.y;
 		playerBaseScript = transform.parent.GetComponent<PlayerBase>();
-		print(transform.parent.name);
+		//print(transform.parent.name);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (Input.GetKeyDown(KeyCode.C))
+		{
+			ShakeEyes();
+		}
+		
 		if (!playerBaseScript.activeSelf)
 		{
 			CloseEyes();
@@ -71,6 +77,12 @@ public class PlayerEyeControl : MonoBehaviour
 		eyelid.transform.DOLocalMoveY(0, 0.2f);
 		eyelid.transform.DOLocalMoveY(0.22f, 0.2f).SetDelay(0.2f);
 	}
+	
+	public void ShakeEyes()
+	{
+		transform.DOKill();
+		transform.transform.DOShakePosition(0.5f,0.1f);
+	}
 
 	public void LookLeft()
 	{
@@ -105,7 +117,6 @@ public class PlayerEyeControl : MonoBehaviour
 	public void LookAtTarget(Vector3 targetPos)
 	{
 		eyeball.DOKill();
-
 		Vector3 dirV3 = Vector3.Normalize(targetPos - eyeball.position);
 		dirV3 = new Vector3(dirV3.x,dirV3.y,0);
 		eyeball.transform.DOLocalMove(dirV3 * 0.05f, 0.2f);

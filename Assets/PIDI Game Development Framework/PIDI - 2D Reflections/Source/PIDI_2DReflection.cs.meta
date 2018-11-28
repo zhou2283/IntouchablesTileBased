@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 193d8293dd883b44bb13ac47a5990ebb
+timeCreated: 1541101458
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - tempCamera: {instanceID: 0}
+  - rt: {instanceID: 0}
+  - mask: {instanceID: 0}
+  - parallaxInternal: {fileID: 4800000, guid: d42c9e086dcdf5542a4664c50776011d, type: 3}
+  - backgroundCam: {instanceID: 0}
+  - foregroundCam: {instanceID: 0}
+  - reflectAsLocal: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

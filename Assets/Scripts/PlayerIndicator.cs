@@ -10,6 +10,8 @@ public class PlayerIndicator : MonoBehaviour
 	private Transform basic;
 	private Transform gear;
 	private Transform gearBody;//this is used for blink
+	private Transform portal;
+	private Transform portalBody;//this is used for blink
 	private Transform arrowUp;
 	private Transform arrowDown;
 	private Transform arrowLeft;
@@ -21,6 +23,8 @@ public class PlayerIndicator : MonoBehaviour
 		basic = transform.Find("Basic");
 		gear = transform.Find("Gear");
 		gearBody = gear.Find("GearBody");
+		portal = transform.Find("Portal");
+		portalBody = portal.Find("PortalBody");
 		arrowUp = transform.Find("ArrowUp");
 		arrowDown = transform.Find("ArrowDown");
 		arrowLeft = transform.Find("ArrowLeft");
@@ -44,6 +48,20 @@ public class PlayerIndicator : MonoBehaviour
 		HideAll();
 		gear.DOKill();
 		gear.DOScale(1f, changeDuration);
+	}
+	
+	public void ChangeToPortal()
+	{
+		HideAll();
+		portal.DOKill();
+		portal.DOScale(1f, changeDuration);
+	}
+	
+	public void PortalBlink()
+	{
+		portalBody.DOKill();
+		portalBody.DOScale(0.8f, changeDuration);
+		portalBody.DOScale(1f, changeDuration).SetDelay(changeDuration);
 	}
 	
 	public void GearBlink()

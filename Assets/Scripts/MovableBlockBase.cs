@@ -118,7 +118,7 @@ public class MovableBlockBase : MonoBehaviour
 	{
 		for (int i = 0; i < width; i++)
 		{
-			downRayHitArray[i] = Physics2D.Raycast(downRayArray[i].origin + (Vector2)(transform.position), downRayArray[i].direction, gridSize, sideDetectableLayer);
+			downRayHitArray[i] = Physics2D.Raycast(downRayArray[i].origin + (Vector2)(transform.position), downRayArray[i].direction, gridSize, sideDetectableLayerIncludePlayer);
 		}
 
 		foreach (RaycastHit2D child in downRayHitArray)
@@ -136,7 +136,7 @@ public class MovableBlockBase : MonoBehaviour
 		needMoveDown = true;
 		for (int i = 0; i < width; i++)
 		{
-			upRayHitArray[i] = Physics2D.Raycast(upRayArray[i].origin + (Vector2)(transform.position), upRayArray[i].direction, gridSize, sideDetectableLayer);
+			upRayHitArray[i] = Physics2D.Raycast(upRayArray[i].origin + (Vector2)(transform.position), upRayArray[i].direction, gridSize, sideDetectableLayerIncludePlayer);
 		}
 		
 		for(int i = 0; i < width; i++)
@@ -146,6 +146,10 @@ public class MovableBlockBase : MonoBehaviour
 				if(upRayHitArray[i].transform.gameObject.layer == 11 || upRayHitArray[i].transform.gameObject.layer == 12)//if it is a box
 				{
 					upRayHitArray[i].transform.GetComponent<BoxBase>().CheckBoxDown();
+				}
+				else if(upRayHitArray[i].transform.gameObject.layer == 14)//if it is a player
+				{
+					upRayHitArray[i].transform.GetComponent<PlayerBase>().CheckPlayerDown();
 				}
 			}
 		}

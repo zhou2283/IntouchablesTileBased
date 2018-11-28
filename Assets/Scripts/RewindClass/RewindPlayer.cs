@@ -53,7 +53,7 @@ public class RewindPlayer : RewindObjectBase{
         {
             rewindSequence.Append(transform.DOScale(0.1f, rewindTime/2f))//if the player size is 0, OnTriggerExit will not be called
                 .Append(transform.DOMove(positionHistory[0], 0))
-                .Append(transform.DOScale(1, rewindTime/2f))
+                .Append(transform.DOScale(0.9f, rewindTime/2f))
                 .AppendCallback(DisableIsRewinding);
             //remove history
             positionHistory.RemoveAt(0);

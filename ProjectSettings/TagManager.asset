@@ -55,3 +55,30 @@ TagManager:
   - name: Portal
     uniqueID: 1193184961
     locked: 0
+  - name: Reflection
+    uniqueID: 744633153
+    locked: 0
+  - name: BackgroundFar
+    uniqueID: 223870187
+    locked: 0
+  - name: Background
+    uniqueID: 1732787925
+    locked: 0
+  - name: Wire
+    uniqueID: 257559789
+    locked: 0
+  - name: BackElement
+    uniqueID: 2716252631
+    locked: 0
+  - name: InteractableElement
+    uniqueID: 3676782267
+    locked: 0
+  - name: MiddleElement
+    uniqueID: 2839354407
+    locked: 0
+  - name: Player
+    uniqueID: 2001210181
+    locked: 0
+  - name: FrontElement
+    uniqueID: 124937671
+    locked: 0

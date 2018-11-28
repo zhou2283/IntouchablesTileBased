@@ -11,11 +11,22 @@ public class GoalBase : MonoBehaviour {
 		LightPlayerOnly,
 		DarkPlayerOnly
 	}
+	
+	
+	
 	public GoalType goalType;
 	private string targetTag;
 	private GoalGroup goalGroupScript;
 
 	private Transform anotherGoal;
+
+
+	public float stayTime = 0.2f;
+	float stayTimeCount = 0f;
+	private bool isStay = false;
+
+	public Transform readyEffectGroup;
+	
 
 	private void Start()
 	{
@@ -31,6 +42,7 @@ public class GoalBase : MonoBehaviour {
 		}
 
 		goalGroupScript = transform.parent.GetComponent<GoalGroup>();
+		readyEffectGroup = transform.Find("ReadyEffectGroup");
 	}
 
 
@@ -39,6 +51,8 @@ public class GoalBase : MonoBehaviour {
 		if (col.CompareTag(targetTag))
 		{
 			goalGroupScript.reachedGoalNum++;
+			stayTimeCount = 0f;
+			isStay = false;
 
 			if (goalGroupScript.reachedGoalNum == 1)
 			{
@@ -48,16 +62,46 @@ public class GoalBase : MonoBehaviour {
 		}		
 	}
 
+	private void OnTriggerStay2D(Collider2D col)
+	{
+		if (col.CompareTag(targetTag) && !isStay)
+		{
+			stayTimeCount += Time.fixedDeltaTime;
+			if (stayTimeCount >= stayTime)
+			{
+				isStay = true;
+				EnableReadyEffect();
+			}
+		}		
+	}
+
 	private void OnTriggerExit2D(Collider2D col)
 	{
 		if (col.CompareTag(targetTag))
 		{
-			//var _ps = transform.Find("BlinkEffectGroup").Find("GoalBlinkParticle").GetComponent<ParticleSystem>();
-			//var _em = _ps.emission;
-			//_em.rateOverTime = 0.0f;
-			
+			stayTimeCount = 0;
+			isStay = false;
+			DisableReadyEffect();
 			goalGroupScript.reachedGoalNum--;
 		}	
+	}
+
+	void EnableReadyEffect()
+	{
+		foreach (Transform child in readyEffectGroup)
+		{
+			var _em = child.GetComponent<ParticleSystem>().emission;
+			_em.enabled = true;
+		}
+	}
+
+	void DisableReadyEffect()
+	{
+		foreach (Transform child in readyEffectGroup)
+		{
+			var _em = child.GetComponent<ParticleSystem>().emission;
+			_em.enabled = false;
+		}
 	}
 
 	public void LevelClearBlink()
