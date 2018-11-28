@@ -330,6 +330,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dca3f045a8f4afa4aacad14b5570add6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerLight: {fileID: 0}
+  playerDark: {fileID: 0}
   isWaiting: 0
   isLightPlayerActive: 1
   isDead: 0
@@ -344,12 +346,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1291b91e46a9bc348aea118be23e5acb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invincible: 0
   deadEffect: {fileID: 1035947921181768, guid: 51b26e74224086d4aabe26bb87c91dc0, type: 2}
   reviveEffect: {fileID: 1313889235293450, guid: 1e3e5206263a889499e6161521edd108,
     type: 2}
+  juiceEffect: {fileID: 0}
   activeSelf: 1
   isTweening: 0
   isFalling: 0
+  isTeleporting: 0
+  isInair: 0
+  isDead: 0
+  isMovingLeft: 0
+  isMovingRight: 0
   visited: 0
   needMove: 0
   isRewinding: 0
@@ -376,12 +385,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84849af9cdf8b4f40b0339d0e0f1b414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invincible: 0
   deadEffect: {fileID: 1966160660460822, guid: 55c953a7a27ae4142b9a45c30315fb4a, type: 2}
   reviveEffect: {fileID: 1264650363082364, guid: f1b23b0861dcb0648b28dce97ed8989c,
     type: 2}
+  juiceEffect: {fileID: 0}
   activeSelf: 1
   isTweening: 0
   isFalling: 0
+  isTeleporting: 0
+  isInair: 0
+  isDead: 0
+  isMovingLeft: 0
+  isMovingRight: 0
   visited: 0
   needMove: 0
   isRewinding: 0

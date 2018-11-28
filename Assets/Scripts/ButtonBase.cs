@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class ButtonBase : MonoBehaviour {
 
@@ -10,9 +11,13 @@ public class ButtonBase : MonoBehaviour {
     private int _countLastFrame = 0;
 
     public bool isRewinding = false;
+
+
+	private Transform buttonCore;
 	// Use this for initialization
 	void Start () {
 	    rewindControlScript = GameObject.Find("RewindControl").GetComponent<RewindControl>();
+		buttonCore = transform.Find("ButtonCore");
 	}
 	
 	// Update is called once per frame
@@ -39,10 +44,12 @@ public class ButtonBase : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D col)
     {
         count++;
+	    buttonCore.DOLocalMoveY(-0.1f, 0.15f);
     }
 
     private void OnTriggerExit2D(Collider2D col)
     {
         count--;
+	    buttonCore.DOLocalMoveY(0f, 0.15f);
     }
 }
