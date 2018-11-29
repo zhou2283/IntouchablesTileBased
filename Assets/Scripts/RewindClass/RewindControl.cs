@@ -27,6 +27,8 @@ public class RewindControl : MonoBehaviour {
     private float rewindBufferTime = 0.01f;//this is to make sure all RewindObjectBase are done
     private float disableButtonBufferTime = 0.03f;//this is to make sure the button is not trigger when rewinding. Need to be a little bit big since it is base on FixedUpdate interval
 
+
+    private Transform postProcessing_RewindVolume;
     // Use this for initialization
     void Start () {
         //find part
@@ -42,6 +44,7 @@ public class RewindControl : MonoBehaviour {
         sliderBaseScriptArray = lightGroup.GetComponentsInChildren<SliderBase>(true);
         //script
         playerControlScript = GameObject.Find("PlayerControl").GetComponent<PlayerControl>();
+        postProcessing_RewindVolume = GameObject.Find("PostProcessing_Rewind").transform;
         //record the start state
         Record();
     }
@@ -50,11 +53,11 @@ public class RewindControl : MonoBehaviour {
 	void Update () {
 	    if (isRewinding)
 	    {
-	        mainCamera.transform.DOMoveZ(-12f, 0.5f);
+	        postProcessing_RewindVolume.DOMoveZ(-10f, 0.5f);
 	    }
 	    else
 	    {
-	        mainCamera.transform.DOMoveZ(-10f, 0.5f);
+	        postProcessing_RewindVolume.DOMoveZ(-12f, 0.5f);
 	    }
 	}
 

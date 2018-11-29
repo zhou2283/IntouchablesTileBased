@@ -25,11 +25,14 @@ public class RopeBase : MonoBehaviour {
 		//update line 
 		UpdateDrawLine();
 		//set render layer and order
+		
 		var lineObj = GameObject.Find(line.name);
+		lineObj.GetComponent<MeshRenderer>().allowOcclusionWhenDynamic = false;
 		lineObj.AddComponent<MeshSortingOrder>();
 		lineObj.GetComponent<MeshSortingOrder>().layerName = "Wire";
-		lineObj.GetComponent<MeshSortingOrder>().order = 0;
+		lineObj.GetComponent<MeshSortingOrder>().order = 10;
 		lineObj.GetComponent<MeshSortingOrder>().enabled = true;
+		
 	}
 
 	private void Update()
