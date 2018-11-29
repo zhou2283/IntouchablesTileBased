@@ -43,7 +43,7 @@ TagManager:
   - BgDarkLayerRenderTexture
   - BgLightLayerRenderTexture
   - LightBlurLayer
-  - 
+  - Sky
   - 
   - 
   - 
@@ -57,6 +57,9 @@ TagManager:
     locked: 0
   - name: Reflection
     uniqueID: 744633153
+    locked: 0
+  - name: Sky
+    uniqueID: 639275249
     locked: 0
   - name: BackgroundFar
     uniqueID: 223870187

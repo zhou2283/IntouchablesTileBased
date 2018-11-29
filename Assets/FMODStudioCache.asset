@@ -14,10 +14,11 @@ MonoBehaviour:
   EditorBanks:
   - {fileID: 114663827957565558}
   - {fileID: 114171838109662876}
-  EditorEvents: []
+  EditorEvents:
+  - {fileID: 114853083742143132}
   MasterBankRef: {fileID: 114171838109662876}
   StringsBankRef: {fileID: 114663827957565558}
-  stringsBankWriteTime: 636790150625254301
+  stringsBankWriteTime: 636790392362063254
   cacheVersion: 2
 --- !u!114 &114171838109662876
 MonoBehaviour:
@@ -32,11 +33,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: C:\Users\dongz\Desktop\GitProject\IntouchablesTileBased\FMOD\Build\Desktop\Master
     Bank.bank
-  lastModified: 636790150625184601
+  lastModified: 636790392362013367
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 12474
+    Value: 153568
   Exists: 1
 --- !u!114 &114663827957565558
 MonoBehaviour:
@@ -50,9 +51,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: FMOD\Build\Desktop\Master Bank.strings.bank
-  lastModified: 636790150625254301
+  lastModified: 636790392362063254
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 672
+    Value: 714
   Exists: 1
+--- !u!114 &114853083742143132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Test
+  guid: 51d44bf8a81f3441b7900e8f5d163d14
+  Banks:
+  - {fileID: 114171838109662876}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2400

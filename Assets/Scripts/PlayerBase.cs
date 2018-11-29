@@ -879,8 +879,8 @@ public class PlayerBase : MonoBehaviour {
     public virtual void PlayerRevive()
     {
         Instantiate(reviveEffect, transform.position, Quaternion.identity);
-        meshTwisterScript.ReviveTwist(0.5f);
-        playerEyeControlScript.ReviveEyes(0.5f);
+        meshTwisterScript.ReviveTwist(0.4f);
+        playerEyeControlScript.ReviveEyes(0.4f);
     }
 
 
