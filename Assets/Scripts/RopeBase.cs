@@ -9,6 +9,8 @@ public class RopeBase : MonoBehaviour {
 	public Material ropeMaterial;
 	List<Vector3> linePoints = new List<Vector3>();
 	private VectorLine line;
+
+	private float lineWidth = 10f;
 	
 	void Start () {
 		//initialize
@@ -17,7 +19,7 @@ public class RopeBase : MonoBehaviour {
 			linePoints.Add(child.transform.position);
 		}
 		line = VectorLine.SetLine(lineColor, linePoints.ToArray());
-		line.SetWidth(8f);
+		line.SetWidth(Screen.width/1920f*lineWidth);
 		line.material = ropeMaterial;
 		line.joins = Joins.Fill;
 		line.layer = 18;
@@ -53,6 +55,7 @@ public class RopeBase : MonoBehaviour {
 		//line.SetWidth(0.5f);
 		//line.joins = Joins.Weld;
 		line.points3 = linePoints;
+		line.SetWidth(Screen.width/1920f*lineWidth);
 		line.Draw3D();
 	}
 }

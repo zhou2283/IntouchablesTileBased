@@ -44,12 +44,18 @@ public class ButtonBase : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D col)
     {
         count++;
-	    buttonCore.DOLocalMoveY(-0.1f, 0.15f);
+	    
     }
 
-    private void OnTriggerExit2D(Collider2D col)
+	private void OnTriggerStay2D(Collider2D col)
+	{
+		buttonCore.DOLocalMoveY(-0.1f, 0.15f);
+	}
+
+	private void OnTriggerExit2D(Collider2D col)
     {
         count--;
+	    buttonCore.DOKill();
 	    buttonCore.DOLocalMoveY(0f, 0.15f);
     }
 }

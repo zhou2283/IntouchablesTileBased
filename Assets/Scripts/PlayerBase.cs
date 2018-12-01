@@ -478,6 +478,7 @@ public class PlayerBase : MonoBehaviour {
 
     public void CheckFalling()
     {
+        
         isTeleporting = false;
         isMovingLeft = false;
         isMovingRight = false;
@@ -500,7 +501,7 @@ public class PlayerBase : MonoBehaviour {
     public void CheckInairUpdate()
     {
         //isTeleporting = false;
-        RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position, Vector2.down, GameConst.GRID_SIZE/2.0f + 0.05f, sideDetectableLayer);//check hit
+        RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position, Vector2.down, GameConst.GRID_SIZE/2.0f + 0.02f, sideDetectableLayer);//check hit
         //RaycastHit2D hitLadder = Physics2D.Raycast((Vector2)transform.position + new Vector2(0,-GameConst.GRID_SIZE), Vector2.up, GameConst.GRID_SIZE, ladderLayer);//check hit
   
         if (hit)
@@ -657,20 +658,42 @@ public class PlayerBase : MonoBehaviour {
         }
         */
         //use two rays to avoid small gap
-        RaycastHit2D currentGridHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(0, GameConst.GRID_SIZE), Vector2.down, GameConst.GRID_SIZE/2f + 0.05f, downDetectableLayer);
+        RaycastHit2D currentGridHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(0, GameConst.GRID_SIZE), Vector2.down, GameConst.GRID_SIZE, downDetectableLayer);
         RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, GameConst.GRID_SIZE/2f + 0.05f, downDetectableLayer);
+        RaycastHit2D hitLadder = Physics2D.Raycast((Vector2)transform.position + new Vector2(0,-GameConst.GRID_SIZE), Vector2.up, GameConst.GRID_SIZE, ladderLayer);//check hit
+        
         //RaycastHit2D downcenterDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(0, 0), Vector2.down, gridSize / 2f + 0.01f, downDetectableLayer);
         RaycastHit2D downrightDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, GameConst.GRID_SIZE/2f + 0.05f, downDetectableLayer);
         Debug.DrawRay((Vector2)transform.position + new Vector2(0, GameConst.GRID_SIZE), Vector2.down, Color.green);
         Debug.DrawRay((Vector2)transform.position + new Vector2(-GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, Color.green);
         Debug.DrawRay((Vector2)transform.position + new Vector2(GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, Color.green);
  
+        
+        
+        
         if (downleftDownHit || downrightDownHit)
         {
-            //it is on ground
-            isFalling = false;
-            isTweening = false;
-
+            if (downleftDownHit.transform.CompareTag("Netting") && downrightDownHit.transform.CompareTag("Netting"))
+            {
+                if (hitLadder)
+                {
+                    //it is on ground
+                    isFalling = false;
+                    isTweening = false;
+                }
+                else
+                {
+                    isFalling = true;
+                    isTweening = true;
+                    transform.DOMoveY(transform.position.y - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFallingInUpdate);
+                }
+            }
+            else
+            {
+                //it is on ground
+                isFalling = false;
+                isTweening = false;
+            }
         }
         else if (currentGridHit && currentGridHit.transform.gameObject.layer == 13)//if current is on the ladder
         {
@@ -685,6 +708,7 @@ public class PlayerBase : MonoBehaviour {
             transform.DOMoveY(transform.position.y - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFallingInUpdate);
             //print(transform.position.y - gridSize);
         }
+        
     }
 
 
