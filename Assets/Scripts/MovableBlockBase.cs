@@ -269,7 +269,7 @@ public class MovableBlockBase : MonoBehaviour
 		}
 		else//some of them is pushable
 		{
-			DisableNeedMoveOnNextLeft(includePlayer);
+			DisableNeedMoveOnNext(includePlayer);
 			needMove = false;
 		}
 		return needMove;
@@ -300,7 +300,6 @@ public class MovableBlockBase : MonoBehaviour
 			{
 				sideRayHitArray[i] = Physics2D.Raycast(leftRayArray[i].origin + (Vector2)(transform.position), leftRayArray[i].direction, gridSize, _checkLayer);
 			}
-			
 		}
 		bool[] isPushableArray = new bool[height];
 		for(int i = 0; i < height; i++)
@@ -325,27 +324,7 @@ public class MovableBlockBase : MonoBehaviour
 				isPushableArray[i] = true;
 			}
 		}
-		//check boxes above
-		for (int i = 0; i < width; i++)
-		{
-			upRayHitArray[i] = Physics2D.Raycast(upRayArray[i].origin + (Vector2)(transform.position), upRayArray[i].direction, gridSize, _checkLayer);
-		}
-
-		for (int i = 0; i < width; i++)
-		{
-			if (upRayHitArray[i])
-			{
-				if (upRayHitArray[i].transform.gameObject.layer == 11 || upRayHitArray[i].transform.gameObject.layer == 12)
-				{
-					upRayHitArray[i].transform.GetComponent<BoxBase>().CheckBox(isRight, includePlayer);
-				}
-				else if (upRayHitArray[i].transform.gameObject.layer == 14)
-				{
-					upRayHitArray[i].transform.GetComponent<PlayerBase>().CheckPlayer(isRight);
-				}
-			}
-		}
-
+		
 		bool isAllPushable = true;
 		bool isNothingPushable = false;
 		foreach (bool child in isPushableArray)
@@ -364,9 +343,59 @@ public class MovableBlockBase : MonoBehaviour
 		}
 		else//some of them is pushable
 		{
-			DisableNeedMoveOnNextLeft(includePlayer);
+			DisableNeedMoveOnNext(includePlayer);
 			needMove = false;
 		}
+
+		if (needMove)
+		{
+			//check boxes above
+			for (int i = 0; i < width; i++)
+			{
+				upRayHitArray[i] = Physics2D.Raycast(upRayArray[i].origin + (Vector2)(transform.position), upRayArray[i].direction, gridSize, _checkLayer);
+			}
+
+			for (int i = 0; i < width; i++)
+			{
+				if (upRayHitArray[i])
+				{
+					if (upRayHitArray[i].transform.gameObject.layer == 11 || upRayHitArray[i].transform.gameObject.layer == 12)
+					{
+						upRayHitArray[i].transform.GetComponent<BoxBase>().CheckBox(isRight, includePlayer);
+					}
+					else if (upRayHitArray[i].transform.gameObject.layer == 14)
+					{
+						upRayHitArray[i].transform.GetComponent<PlayerBase>().CheckPlayer(isRight);
+					}
+				}
+			}
+		}
+		
+		
+
+		/*
+		bool isAllPushable = true;
+		bool isNothingPushable = false;
+		foreach (bool child in isPushableArray)
+		{
+			isAllPushable = (isAllPushable && child);
+			isNothingPushable = (isNothingPushable || child);
+		}
+
+		if (isAllPushable)//there is nothing on the way, need to move
+		{
+			needMove = true;
+		}
+		else if (isNothingPushable == false)//isNothingPushable   //this is trick since it is FALSE
+		{
+			needMove = false;
+		}
+		else//some of them is pushable
+		{
+			DisableNeedMoveOnNext(includePlayer);
+			needMove = false;
+		}
+		*/
 
 		return needMove;
 	}
@@ -376,7 +405,7 @@ public class MovableBlockBase : MonoBehaviour
 		return true;
 	}
 
-	void DisableNeedMoveOnNextLeft(bool isRight, bool includePlayer = true)
+	void DisableNeedMoveOnNext(bool isRight, bool includePlayer = true)
 	{
 		LayerMask _checkLayer;
 		if (includePlayer)

@@ -22,9 +22,9 @@ public class RewindControl : MonoBehaviour {
     //rewind state indicator
     public bool isRewinding = false;//this is used to check if we can do rewind when key is hold
     //rewind time
-    private float rewindTime = 0.1f;
+    private float rewindTime = 0.08f;
     private float reviveExtraTime = 0.4f;//this is used when it is rewind from dead player. There is an extra animation time
-    private float rewindBufferTime = 0.01f;//this is to make sure all RewindObjectBase are done
+    private float rewindBufferTime = 0.02f;//this is to make sure all RewindObjectBase are done
     private float disableButtonBufferTime = 0.03f;//this is to make sure the button is not trigger when rewinding. Need to be a little bit big since it is base on FixedUpdate interval
 
 
@@ -131,7 +131,7 @@ public class RewindControl : MonoBehaviour {
         }
         StartCoroutine(DelayToDoRewindPublicPart(reviveExtraTime));
         StartCoroutine(DelayToRevive(reviveExtraTime + rewindTime));
-        StartCoroutine(DelayToDisableIsRewinding(reviveExtraTime + rewindTime));
+        StartCoroutine(DelayToDisableIsRewinding(reviveExtraTime + rewindTime + rewindBufferTime));
     }
 
     void RewindPublicPart()

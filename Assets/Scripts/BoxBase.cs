@@ -149,32 +149,6 @@ public class BoxBase : MonoBehaviour
             downSideHitIsPushable = true;
         }
 
-
-        //check boxes above
-        if (topleftUpHit)
-        {
-            if (topleftUpHit.transform.gameObject.layer == 11 || topleftUpHit.transform.gameObject.layer == 12)
-            {
-                topleftUpHit.transform.GetComponent<BoxBase>().CheckBox(isRight, includePlayer);
-            }
-            else if (topleftUpHit.transform.gameObject.layer == 14)
-            {
-                topleftUpHit.transform.GetComponent<PlayerBase>().CheckPlayer(isRight);
-            }
-        }
-        if (toprightUpHit)
-        {
-            if (toprightUpHit.transform.gameObject.layer == 11 || toprightUpHit.transform.gameObject.layer == 12)
-            {
-                toprightUpHit.transform.GetComponent<BoxBase>().CheckBox(isRight, includePlayer);
-            }
-            else if (toprightUpHit.transform.gameObject.layer == 14)
-            {
-                toprightUpHit.transform.GetComponent<PlayerBase>().CheckPlayer(isRight);
-            }
-        }
-
-
         if (upSideHitIsPushable && !downSideHitIsPushable)
         {
             DisableNeedMoveOnNext(includePlayer);
@@ -197,6 +171,60 @@ public class BoxBase : MonoBehaviour
             needMove = false;
             visited = true;       
         }
+
+        if (needMove)
+        {
+            //check boxes above
+            if (topleftUpHit)
+            {
+                if (topleftUpHit.transform.gameObject.layer == 11 || topleftUpHit.transform.gameObject.layer == 12)
+                {
+                    topleftUpHit.transform.GetComponent<BoxBase>().CheckBox(isRight, includePlayer);
+                }
+                else if (topleftUpHit.transform.gameObject.layer == 14)
+                {
+                    topleftUpHit.transform.GetComponent<PlayerBase>().CheckPlayer(isRight);
+                }
+            }
+            if (toprightUpHit)
+            {
+                if (toprightUpHit.transform.gameObject.layer == 11 || toprightUpHit.transform.gameObject.layer == 12)
+                {
+                    toprightUpHit.transform.GetComponent<BoxBase>().CheckBox(isRight, includePlayer);
+                }
+                else if (toprightUpHit.transform.gameObject.layer == 14)
+                {
+                    toprightUpHit.transform.GetComponent<PlayerBase>().CheckPlayer(isRight);
+                }
+            }
+        }
+        
+
+
+        /*
+        if (upSideHitIsPushable && !downSideHitIsPushable)
+        {
+            DisableNeedMoveOnNext(includePlayer);
+            needMove = false;
+            visited = true;
+        }
+        else if (downSideHitIsPushable && !upSideHitIsPushable)
+        {
+            DisableNeedMoveOnNext(includePlayer);
+            needMove = false;
+            visited = true;
+        }
+        else if (upSideHitIsPushable && downSideHitIsPushable)//there is nothing on the way, need to move
+        {
+            needMove = true;
+            visited = true;
+        }
+        else
+        {
+            needMove = false;
+            visited = true;       
+        }
+        */
         return needMove;
     }
     
