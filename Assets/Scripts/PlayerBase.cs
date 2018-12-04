@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using FMODUnity;
 
 public class PlayerBase : MonoBehaviour {
 
@@ -85,6 +86,9 @@ public class PlayerBase : MonoBehaviour {
     private PlayerEyeControl playerEyeControlScript;
     private PlayerIndicator playerIndicatorScript;
     private RenderGroupControl renderGroupControlScript;
+    
+    //FMOD part
+    //private StudioEventEmitter eventEmitter;
 
     // Use this for initialization
     void Start () {
@@ -102,6 +106,9 @@ public class PlayerBase : MonoBehaviour {
         sideDetectablePushableLayer = solidBoxLayer | glassBoxLayer;
         //precheck function
         CheckLadder();
+        
+        //FMOD part
+        //eventEmitter = GetComponent<StudioEventEmitter>();
     }
 	
 	// Update is called once per frame
@@ -240,6 +247,9 @@ public class PlayerBase : MonoBehaviour {
                             //!!!!!IMPORTANT!!!!!the box base will call the CheckStatus function, to make sure tweening animations are all down.
                             transform.DOMoveX(transform.position.x + GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                             
+                            //FMOD
+                            //eventEmitter.Play();
+
                         }
                         else
                         {
@@ -260,6 +270,9 @@ public class PlayerBase : MonoBehaviour {
                     isTweening = true;
                     isMovingRight = true;
                     transform.DOMoveX(transform.position.x + GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+                    
+                    //FMOD
+                    //eventEmitter.Play();
                 }
             }
 
@@ -283,6 +296,8 @@ public class PlayerBase : MonoBehaviour {
                             //!!!!!IMPORTANT!!!!!the box base will call the CheckStatus function, to make sure tweening animations are all down.
                             transform.DOMoveX(transform.position.x - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                             
+                            //FMOD
+                            //eventEmitter.Play();
                         }
                         else
                         {
@@ -303,6 +318,9 @@ public class PlayerBase : MonoBehaviour {
                     isTweening = true;
                     isMovingLeft = true;
                     transform.DOMoveX(transform.position.x - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+                    
+                    //FMOD
+                    //eventEmitter.Play();
                 }
             }
 
@@ -325,6 +343,9 @@ public class PlayerBase : MonoBehaviour {
                     {
                         isTweening = true;
                         transform.DOMoveY(transform.position.y + GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+                        
+                        //FMOD
+                        //eventEmitter.Play();
                     }
                 }
                 else
@@ -354,6 +375,9 @@ public class PlayerBase : MonoBehaviour {
                     {
                         isTweening = true;
                         transform.DOMoveY(transform.position.y - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
+                        
+                        //FMOD
+                        //eventEmitter.Play();
                     }
                 }
                 else
@@ -942,4 +966,9 @@ public class PlayerBase : MonoBehaviour {
         playerEyeControlScript.LookCenter();
         playerEyeControlScript.CloseEyes();
     }
+    
+    
+    //FMOD SOUND PART
+    
+    
 }

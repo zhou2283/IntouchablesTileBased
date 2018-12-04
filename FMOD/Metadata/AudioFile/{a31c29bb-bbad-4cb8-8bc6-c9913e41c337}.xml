@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{a31c29bb-bbad-4cb8-8bc6-c9913e41c337}">
+        <property name="assetPath">
+            <value>PlayerMove/jelly-kick.mp3</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>48</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>2.2320000000000002</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{cb9cad80-855e-4850-b189-5cbbfb176546}</destination>
+        </relationship>
+    </object>
+</objects>

@@ -1047,6 +1047,7 @@
           <e p="BoxBase.cs" t="Include" />
           <e p="BoxGroup.cs" t="Include" />
           <e p="ButtonBase.cs" t="Include" />
+          <e p="CheckGrid.cs" t="Include" />
           <e p="DynamicRope.cs" t="Include" />
           <e p="Editor" t="Include">
             <e p="SliderBaseEditor.cs" t="Include" />

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{1721a6b8-8645-4d7b-8b8e-5e87bdd58cc9}">
+        <property name="assetPath">
+            <value>PlayerMove/bubble.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>9.4898412698412695</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{cb9cad80-855e-4850-b189-5cbbfb176546}</destination>
+        </relationship>
+    </object>
+</objects>

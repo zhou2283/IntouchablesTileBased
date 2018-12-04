@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{52393b54-789a-458f-b6bf-6599b7e87523}">
+        <property name="assetPath">
+            <value>PlayerMove/slime-death-1.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>32</value>
+        </property>
+        <property name="channelCount">
+            <value>1</value>
+        </property>
+        <property name="length">
+            <value>0.61196874999999995</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{cb9cad80-855e-4850-b189-5cbbfb176546}</destination>
+        </relationship>
+    </object>
+</objects>

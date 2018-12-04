@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.01.10.00">
-    <object class="AudioFile" id="{eed612ac-9735-40a6-bfa0-b5505e576a5c}">
+    <object class="AudioFile" id="{4e3745c3-10d6-48ad-9421-d2a78fccdbec}">
         <property name="assetPath">
-            <value>145432__soughtaftersounds__mystic-flutter-5.mp3</value>
+            <value>Slider/robot-moves-his-arm.wav</value>
         </property>
         <property name="frequencyInKHz">
             <value>44.0999985</value>
@@ -11,7 +11,7 @@
             <value>2</value>
         </property>
         <property name="length">
-            <value>1.4367346938775509</value>
+            <value>0.79507936507936505</value>
         </property>
         <relationship name="masterAssetFolder">
             <destination>{cb9cad80-855e-4850-b189-5cbbfb176546}</destination>

@@ -44,15 +44,6 @@ public class SliderBase : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-		//connectedItem.transform.position = GetConnectedItemPosition();
-		if (Input.GetKey(KeyCode.RightArrow))
-		{
-			MoveToMax();
-		}
-		else if (Input.GetKey(KeyCode.LeftArrow))
-		{
-			MoveToMin();
-		}
 
 	}
 
