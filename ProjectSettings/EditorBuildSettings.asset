@@ -6,30 +6,48 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Levels/Level_13.unity
+    path: Assets/Scenes/Levels/Level_1.unity
+    guid: f5c2030303287f040a999cd22e80bc63
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_2.unity
+    guid: 2cd0911fac07ecc418e741f057812b0f
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_3.unity
+    guid: b5915ecbab69ff24bb96171ada6faf1f
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_4.unity
+    guid: 819a5049ee126bc4c9b064be056c4b30
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_5.unity
     guid: 38b5b0d26cca764418bc91c94776a6a0
   - enabled: 1
-    path: Assets/Scenes/Levels/Level_14.unity
+    path: Assets/Scenes/Levels/Level_6.unity
+    guid: 952285e45091c9243b23e3fb16ccfe62
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_7.unity
+    guid: 62ff28e60e2b6cb45b50e809fbe1b495
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_8.unity
     guid: c27af82392eb8464abcf6d5779eb7bfa
   - enabled: 1
-    path: Assets/Scenes/Levels/Level_15.unity
-    guid: cc8f13e75c5dd344f9ebe2a340a613a2
-  - enabled: 1
-    path: Assets/Scenes/Levels/Level_16.unity
+    path: Assets/Scenes/Levels/Level_9.unity
     guid: 6164f4ea3de010947aa306358c005695
   - enabled: 1
-    path: Assets/Scenes/Levels/Level_17.unity
+    path: Assets/Scenes/Levels/Level_10.unity
+    guid: cc8f13e75c5dd344f9ebe2a340a613a2
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_11.unity
     guid: 29d6eeef40a62b7478b59297f81d70db
   - enabled: 1
-    path: Assets/Scenes/Levels/Level_18.unity
+    path: Assets/Scenes/Levels/Level_12.unity
     guid: 2f0c50747bb7d9a40a1808c46eebca69
   - enabled: 1
-    path: Assets/Scenes/Levels/Level_19.unity
+    path: Assets/Scenes/Levels/Level_13.unity
     guid: 9a4ca709fca277d489ee85fb0d578419
   - enabled: 1
-    path: Assets/Scenes/Levels/Level_20.unity
+    path: Assets/Scenes/Levels/Level_14.unity
     guid: 955e292cd65a5e048aeff43904021f0f
   - enabled: 1
-    path: Assets/Scenes/Levels/Level_21.unity
+    path: Assets/Scenes/Levels/Level_15.unity
     guid: 85f53484c9ceeed498d8ac288a71596b
   m_configObjects: {}
