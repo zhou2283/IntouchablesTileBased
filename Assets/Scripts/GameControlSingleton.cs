@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class GameControlSingleton : UnitySingleton<GameControlSingleton>
 {
@@ -56,5 +57,13 @@ public class GameControlSingleton : UnitySingleton<GameControlSingleton>
 				photoCArray[i] = photoCDefault;
 			}
 		}
+	}
+	
+	
+
+	//FMOD SOUND PART
+	public void PlayOneShotSound(string path)
+	{
+		RuntimeManager.PlayOneShot(path, transform.position);
 	}
 }

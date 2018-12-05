@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using FMODUnity;
 
 [RequireComponent(typeof(Light2D))]
 
@@ -25,6 +26,11 @@ public class Light2DBaseControl : MonoBehaviour {
     MeshFilter _meshFilter;
 
     Tweener lightExpandTweener;
+    
+    
+    //FMOD
+    public string lightOnSound = "event:/Light/LightOnSound";
+    public string lightOffSound = "event:/Light/LightOffSound";
 
     // Use this for initialization
     void Start () {
@@ -56,10 +62,14 @@ public class Light2DBaseControl : MonoBehaviour {
     {
         if (lightIsOn)
         {
+            
             lightExpandTweener.Kill();
             //lightIsOn = false;
             isTweening = true;
             lightExpandTweener = DOTween.To(() => light2DScript.Range, x => light2DScript.Range = x, minRange, duration).OnComplete(TweeningComplete);
+            
+            //FMOD
+            GameControlSingleton.Instance.PlayOneShotSound(lightOffSound);
         }
     }
 
@@ -67,14 +77,18 @@ public class Light2DBaseControl : MonoBehaviour {
     {
         if (!lightIsOn)
         {
+            
             lightExpandTweener.Kill();
             //lightIsOn = true;
             isTweening = true;
             lightExpandTweener = DOTween.To(() => light2DScript.Range, x => light2DScript.Range = x, maxRange, duration).OnComplete(TweeningComplete);
+            
+            //FMOD
+            GameControlSingleton.Instance.PlayOneShotSound(lightOnSound);
         }
     }
 
-    public void LightSwitch()
+    public bool LightSwitch()
     {
         if (!isTweening)
         {
@@ -86,7 +100,11 @@ public class Light2DBaseControl : MonoBehaviour {
             {
                 LightOn();
             }
+
+            return true;
         }
+
+        return false;
     }
 
     void TweeningComplete()
@@ -122,4 +140,6 @@ public class Light2DBaseControl : MonoBehaviour {
             lightExpandTweener = DOTween.To(() => light2DScript.Range, x => light2DScript.Range = x, maxRange, _duration);
         }
     }
+    
+    
 }

@@ -88,7 +88,10 @@ public class PlayerBase : MonoBehaviour {
     private RenderGroupControl renderGroupControlScript;
     
     //FMOD part
-    //private StudioEventEmitter eventEmitter;
+    private StudioEventEmitter eventEmitter;
+    public string moveSound = "event:/PlayerMove/MoveSound";
+    public string splashSound = "event:/PlayerMove/SplashSound";
+    public string moveOnNetSound = "event:/PlayerMove/MoveOnNetSound";
 
     // Use this for initialization
     void Start () {
@@ -108,7 +111,7 @@ public class PlayerBase : MonoBehaviour {
         CheckLadder();
         
         //FMOD part
-        //eventEmitter = GetComponent<StudioEventEmitter>();
+        eventEmitter = GetComponent<StudioEventEmitter>();
     }
 	
 	// Update is called once per frame
@@ -161,15 +164,18 @@ public class PlayerBase : MonoBehaviour {
 	        if (isMovingLeft)
 	        {
 	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,0));
+	            GameControlSingleton.Instance.PlayOneShotSound(splashSound);
 	        }
 	        else if (isMovingRight)
 	        {
 	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,135));
+	            GameControlSingleton.Instance.PlayOneShotSound(splashSound);
 	        }
 	        else
 	        {
 	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,0));
 	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,135));
+	            GameControlSingleton.Instance.PlayOneShotSound(splashSound);
 	        }
 	    }
         _isInairLastFrame = isInair;
@@ -248,7 +254,7 @@ public class PlayerBase : MonoBehaviour {
                             transform.DOMoveX(transform.position.x + GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                             
                             //FMOD
-                            //eventEmitter.Play();
+                            PlayPlayerMoveSound();
 
                         }
                         else
@@ -272,7 +278,7 @@ public class PlayerBase : MonoBehaviour {
                     transform.DOMoveX(transform.position.x + GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                     
                     //FMOD
-                    //eventEmitter.Play();
+                    PlayPlayerMoveSound();
                 }
             }
 
@@ -297,7 +303,7 @@ public class PlayerBase : MonoBehaviour {
                             transform.DOMoveX(transform.position.x - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                             
                             //FMOD
-                            //eventEmitter.Play();
+                            PlayPlayerMoveSound();
                         }
                         else
                         {
@@ -320,7 +326,7 @@ public class PlayerBase : MonoBehaviour {
                     transform.DOMoveX(transform.position.x - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                     
                     //FMOD
-                    //eventEmitter.Play();
+                    PlayPlayerMoveSound();
                 }
             }
 
@@ -345,7 +351,7 @@ public class PlayerBase : MonoBehaviour {
                         transform.DOMoveY(transform.position.y + GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                         
                         //FMOD
-                        //eventEmitter.Play();
+                        PlayPlayerMoveSound();
                     }
                 }
                 else
@@ -377,7 +383,7 @@ public class PlayerBase : MonoBehaviour {
                         transform.DOMoveY(transform.position.y - GameConst.GRID_SIZE, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckFalling);
                         
                         //FMOD
-                        //eventEmitter.Play();
+                        PlayPlayerMoveSound();
                     }
                 }
                 else
@@ -968,7 +974,24 @@ public class PlayerBase : MonoBehaviour {
     }
     
     
-    //FMOD SOUND PART
-    
+    //FMOD
+    void PlayPlayerMoveSound()
+    {
+        GameControlSingleton.Instance.PlayOneShotSound(moveSound);
+        //check terrain
+        RaycastHit2D hitLadder = Physics2D.Raycast((Vector2)transform.position + new Vector2(0,-GameConst.GRID_SIZE), Vector2.up, GameConst.GRID_SIZE, ladderLayer);//check hit
+        if (hitLadder)
+        {
+            if (hitLadder.transform.CompareTag("Netting"))
+            {
+                GameControlSingleton.Instance.PlayOneShotSound(moveOnNetSound);
+            }
+            else if (hitLadder.transform.CompareTag("Ladder"))
+            {
+                //GameControlSingleton.Instance.PlayOneShotSound(moveOnNetSound);
+            }
+        }
+        
+    }
     
 }

@@ -15,11 +15,41 @@ MonoBehaviour:
   - {fileID: 114663827957565558}
   - {fileID: 114171838109662876}
   EditorEvents:
-  - {fileID: 114854767788436392}
+  - {fileID: 114364954589794186}
+  - {fileID: 114520752560566416}
+  - {fileID: 114553485316411662}
+  - {fileID: 114941698901217640}
+  - {fileID: 114357989131314796}
+  - {fileID: 114990690627691914}
+  - {fileID: 114126660987256350}
+  - {fileID: 114192668571782634}
+  - {fileID: 114983706321678706}
   MasterBankRef: {fileID: 114171838109662876}
   StringsBankRef: {fileID: 114663827957565558}
-  stringsBankWriteTime: 636794001173831344
+  stringsBankWriteTime: 636795763502440794
   cacheVersion: 2
+--- !u!114 &114126660987256350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Light/LightOffSound
+  guid: 62c0128ff1c9f94c800e0596ce346ed5
+  Banks:
+  - {fileID: 114171838109662876}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1900
 --- !u!114 &114171838109662876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33,12 +63,122 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: C:\Users\dongz\Desktop\GitProject\IntouchablesTileBased\FMOD\Build\Desktop\Master
     Bank.bank
-  lastModified: 636794001173751550
+  lastModified: 636795763502381090
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 134368
+    Value: 446464
   Exists: 1
+--- !u!114 &114192668571782634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Interactable/SwitchSound
+  guid: 831b683d4671b6449fa46cd64999cfcd
+  Banks:
+  - {fileID: 114171838109662876}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 499
+--- !u!114 &114357989131314796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Ref/SplashClip1
+  guid: f52e48683ea9e2408972d02fb139ff78
+  Banks:
+  - {fileID: 114171838109662876}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 265
+--- !u!114 &114364954589794186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/PlayerMove/SplashSound
+  guid: 0954727a5457bd4e9aa5590e2ed4ac77
+  Banks:
+  - {fileID: 114171838109662876}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2000
+--- !u!114 &114520752560566416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Ref/SplashClip3
+  guid: 538ef1dbb1b68c4490ba910a076560ce
+  Banks:
+  - {fileID: 114171838109662876}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 260
+--- !u!114 &114553485316411662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/PlayerMove/MoveSound
+  guid: 86b866caafe7bb44bd2468ad234b6f3c
+  Banks:
+  - {fileID: 114171838109662876}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 400
 --- !u!114 &114663827957565558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51,12 +191,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: FMOD\Build\Desktop\Master Bank.strings.bank
-  lastModified: 636794001173831344
+  lastModified: 636795763502440794
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 754
+    Value: 1160
   Exists: 1
+--- !u!114 &114717746660926726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/LightOnSound
+  guid: 90a7208127e1524a81b43e60549b9dfd
+  Banks:
+  - {fileID: 114171838109662876}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 2638
 --- !u!114 &114853083742143132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,12 +253,98 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/MoveSound
   guid: 86b866caafe7bb44bd2468ad234b6f3c
-  Banks:
-  - {fileID: 114171838109662876}
+  Banks: []
   IsStream: 0
   Is3D: 0
-  IsOneShot: 0
+  IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
   Length: 400
+--- !u!114 &114937726127968410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/MoveOnNetSound
+  guid: 404629c87ed49b4f9eca4c5220cf6755
+  Banks: []
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 200
+--- !u!114 &114941698901217640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Ref/SplashClip2
+  guid: e9b1dbd248940f4d98891cd6490a571a
+  Banks:
+  - {fileID: 114171838109662876}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 240
+--- !u!114 &114983706321678706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/PlayerMove/MoveOnNetSound
+  guid: 404629c87ed49b4f9eca4c5220cf6755
+  Banks:
+  - {fileID: 114171838109662876}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 200
+--- !u!114 &114990690627691914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Light/LightOnSound
+  guid: 90a7208127e1524a81b43e60549b9dfd
+  Banks:
+  - {fileID: 114171838109662876}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1966

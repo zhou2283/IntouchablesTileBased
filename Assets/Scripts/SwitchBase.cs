@@ -5,6 +5,11 @@ using UnityEngine;
 public class SwitchBase : MonoBehaviour {
 
     public Transform connectedLight;
+	
+	
+	//FMOD
+	public string switchSound = "event:/Interactable/SwitchSound";
+	
 	// Use this for initialization
 	void Start () {
 		
@@ -17,6 +22,9 @@ public class SwitchBase : MonoBehaviour {
     
     public void Interact()
     {
-        connectedLight.GetComponent<Light2DBaseControl>().LightSwitch();
+	    if (connectedLight.GetComponent<Light2DBaseControl>().LightSwitch())
+	    {
+		    GameControlSingleton.Instance.PlayOneShotSound(switchSound);
+	    }
     }
 }

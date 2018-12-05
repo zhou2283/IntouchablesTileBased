@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="AudioFile" id="{25cf5cae-b4e0-42ac-b9fd-615b4723c3e6}">
+        <property name="assetPath">
+            <value>VEGETABLES_Dripping Splatter Long Bloody_flesh Guts_05.wav</value>
+        </property>
+        <property name="frequencyInKHz">
+            <value>192</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>2.5086614583333335</value>
+        </property>
+        <relationship name="masterAssetFolder">
+            <destination>{cb9cad80-855e-4850-b189-5cbbfb176546}</destination>
+        </relationship>
+    </object>
+</objects>
