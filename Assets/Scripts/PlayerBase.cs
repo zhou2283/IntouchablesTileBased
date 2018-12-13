@@ -62,6 +62,7 @@ public class PlayerBase : MonoBehaviour {
     bool isInRocker = false;
     bool isInPortal = false;
     bool isInteractWithRocker = false;
+    bool _isInteractWithRockerLastFrame = false;
     bool isInButton = false;
     Transform currentSwitch;
     Transform currentRocker;
@@ -88,10 +89,19 @@ public class PlayerBase : MonoBehaviour {
     private RenderGroupControl renderGroupControlScript;
     
     //FMOD part
-    private StudioEventEmitter eventEmitter;
-    public string moveSound = "event:/PlayerMove/MoveSound";
-    public string splashSound = "event:/PlayerMove/SplashSound";
-    public string moveOnNetSound = "event:/PlayerMove/MoveOnNetSound";
+    string moveSound = "event:/PlayerMove/MoveSound";
+    string splashSound = "event:/PlayerMove/SplashSound";
+    string deadSound = "event:/PlayerMove/DeadSound";
+    string moveOnNetSound = "event:/PlayerMove/MoveOnNetSound";
+    string moveOnLadderSound = "event:/PlayerMove/MoveOnLadderSound";
+    string boxMoveSound = "event:/Box/BoxMove";
+    string fallSound = "event:/PlayerMove/FallSound";
+    string rockerOnSound = "event:/Interactable/RockerOnSound";
+    private string rockerOffSound = "event:/Interactable/RockerOffSound";
+    private string portalInSound = "event:/Interactable/PortalInSound";
+    private string portalBlockedSound = "event:/Interactable/PortalBlockedSound";
+    
+    public FMOD.Studio.EventInstance fallSoundInstance;
 
     // Use this for initialization
     void Start () {
@@ -111,7 +121,7 @@ public class PlayerBase : MonoBehaviour {
         CheckLadder();
         
         //FMOD part
-        eventEmitter = GetComponent<StudioEventEmitter>();
+
     }
 	
 	// Update is called once per frame
@@ -173,9 +183,7 @@ public class PlayerBase : MonoBehaviour {
 	        }
 	        else
 	        {
-	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,0));
-	            Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,135));
-	            GameControlSingleton.Instance.PlayOneShotSound(splashSound);
+	            //this is controlled by check falling
 	        }
 	    }
         _isInairLastFrame = isInair;
@@ -255,6 +263,8 @@ public class PlayerBase : MonoBehaviour {
                             
                             //FMOD
                             PlayPlayerMoveSound();
+                            GameControlSingleton.Instance.PlayOneShotSound(boxMoveSound);
+                            
 
                         }
                         else
@@ -304,6 +314,7 @@ public class PlayerBase : MonoBehaviour {
                             
                             //FMOD
                             PlayPlayerMoveSound();
+                            GameControlSingleton.Instance.PlayOneShotSound(boxMoveSound);
                         }
                         else
                         {
@@ -435,7 +446,7 @@ public class PlayerBase : MonoBehaviour {
 	        playerEyeControlScript.LookDown();
 	    }
 
-	    if (_isFallingLastFrame && !isFalling)
+	    if (!isFalling && _isFallingLastFrame)
 	    {
 	        meshTwisterScript.MoveVerticalTwistBack();
 	    }
@@ -451,6 +462,23 @@ public class PlayerBase : MonoBehaviour {
 	    else if (isInPortal && activeSelf)
 	    {
 	        playerEyeControlScript.LookAtTarget(currentPortal.GetComponent<PortalBase>().connectedPortal.transform.position);
+	    }
+	    
+	    //FMOD
+	    if (isFalling && !_isFallingLastFrame)
+	    {
+	        print("start falling");
+	        fallSoundInstance.release();
+	        fallSoundInstance = RuntimeManager.CreateInstance(fallSound);
+	        fallSoundInstance.start();
+	    }
+	    else if (!isFalling && _isFallingLastFrame)
+	    {
+	        print("end falling");
+	        fallSoundInstance.setParameterValue("FallVolume", 0);
+	        Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,0));
+	        Instantiate(juiceEffect, transform.position + new Vector3(0,-0.2f,0), Quaternion.Euler(0,0,135));
+	        GameControlSingleton.Instance.PlayOneShotSound(splashSound);
 	    }
 
 	    _isTweeningLastFrame = isTweening;
@@ -681,12 +709,12 @@ public class PlayerBase : MonoBehaviour {
 
     void CheckFallingInUpdate()
     {
-        /*
-        if (playerControlScript.isDead)
+        
+        if (isDead)
         {
             return;
         }
-        */
+        
         //use two rays to avoid small gap
         RaycastHit2D currentGridHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(0, GameConst.GRID_SIZE), Vector2.down, GameConst.GRID_SIZE, downDetectableLayer);
         RaycastHit2D downleftDownHit = Physics2D.Raycast((Vector2)transform.position + new Vector2(-GameConst.GRID_SIZE / 2.1f, 0), Vector2.down, GameConst.GRID_SIZE/2f + 0.05f, downDetectableLayer);
@@ -810,6 +838,17 @@ public class PlayerBase : MonoBehaviour {
             {
                 playerIndicatorScript.ChangeToGear();
             }
+
+            if (!_isInteractWithRockerLastFrame && isInteractWithRocker)
+            {
+                GameControlSingleton.Instance.PlayOneShotSound(rockerOnSound);
+            }
+            else if (_isInteractWithRockerLastFrame && !isInteractWithRocker)
+            {
+                GameControlSingleton.Instance.PlayOneShotSound(rockerOffSound);
+            }
+
+            _isInteractWithRockerLastFrame = isInteractWithRocker;
         }
         else if (isInPortal)
         {
@@ -829,11 +868,16 @@ public class PlayerBase : MonoBehaviour {
                             0f))
                         .Append(transform.DOScale(0.9f, 0.2f))
                         .AppendCallback(CheckFalling);
+                    
+                    //FMOD
+                    GameControlSingleton.Instance.PlayOneShotSound(portalInSound);
                 }
                 else
                 {
                     playerIndicatorScript.PortalBlink();
                     print("Portal is not empty");
+                    //FMOD
+                    GameControlSingleton.Instance.PlayOneShotSound(portalBlockedSound);
                 }
 
             }
@@ -922,12 +966,16 @@ public class PlayerBase : MonoBehaviour {
     {
         KillTweening();
         
+        GameControlSingleton.Instance.PlayOneShotSound(deadSound);
         
         isFalling = false;
+
         isDead = true;
         meshTwisterScript.DeadTwist();
         playerEyeControlScript.DeadEyes();
         Instantiate(deadEffect, transform.position, Quaternion.identity);
+        //FMOD
+        fallSoundInstance.setParameterValue("FallVolume", 0);
     }
 
     public virtual void PlayerRevive()
@@ -988,7 +1036,7 @@ public class PlayerBase : MonoBehaviour {
             }
             else if (hitLadder.transform.CompareTag("Ladder"))
             {
-                //GameControlSingleton.Instance.PlayOneShotSound(moveOnNetSound);
+                GameControlSingleton.Instance.PlayOneShotSound(moveOnLadderSound);
             }
         }
         

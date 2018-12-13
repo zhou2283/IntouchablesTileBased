@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Serialization;
+using FMODUnity;
 
 public class SliderBase : MonoBehaviour
 {
@@ -26,9 +27,13 @@ public class SliderBase : MonoBehaviour
 	private MovableBlockBase movableBlockBaseScript;
 	private PlayerControl playerControlScript;
 	
+	private string sliderMoveSound = "event:/Interactable/SliderMoveSound";
+	public FMOD.Studio.EventInstance sliderMoveSoundInstance;
+	
 	// Use this for initialization
 	void Start ()
 	{
+		
 		playerControlScript = GameObject.Find("PlayerControl").GetComponent<PlayerControl>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		if (connectedItem.CompareTag("MovableBlock"))
@@ -40,11 +45,24 @@ public class SliderBase : MonoBehaviour
 		{
 			isBlock = false;
 		}
+		//FMOD
+		sliderMoveSoundInstance = RuntimeManager.CreateInstance(sliderMoveSound);
+		sliderMoveSoundInstance.start();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
+		if (!isRewinding)
+		{
+			if (isTweening)
+			{
+				sliderMoveSoundInstance.setParameterValue("SliderVolume", 1);
+			}
+			else
+			{
+				sliderMoveSoundInstance.setParameterValue("SliderVolume", 0);
+			}
+		}
 	}
 
 	public void UpdateInEditor()

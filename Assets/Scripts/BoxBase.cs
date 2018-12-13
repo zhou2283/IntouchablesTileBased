@@ -31,6 +31,10 @@ public class BoxBase : MonoBehaviour
     public bool visited = false;
     public bool needMove = false;
     BoxGroup boxGroupScript;
+    
+    //FMOD
+    //public string boxMoveSound = "event:/Box/BoxMove";
+    
     // Use this for initialization
     void Start()
     {
@@ -482,8 +486,11 @@ public class BoxBase : MonoBehaviour
     public void MoveBox()
     {
         isTweening = true;
+
         transform.DOMoveX(transform.position.x + direction.x * gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckStatus);
         transform.DOMoveY(transform.position.y + direction.y * gridSize, unitMoveTime).SetEase(Ease.Linear).OnComplete(CheckStatus);
+        
+
     }
 
     void DisactiveTweening()

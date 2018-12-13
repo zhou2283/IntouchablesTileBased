@@ -11,7 +11,10 @@ public class ButtonBase : MonoBehaviour {
     private int _countLastFrame = 0;
 
     public bool isRewinding = false;
-
+	
+	//FMOD
+	private string buttonDownSound = "event:/Interactable/ButtonDownSound";
+	private string buttonUpSound = "event:/Interactable/ButtonUpSound";
 
 	private Transform buttonCore;
 	// Use this for initialization
@@ -33,10 +36,13 @@ public class ButtonBase : MonoBehaviour {
 		if (_countLastFrame == 0 && count > 0)
 		{
 			connectedLight.GetComponent<Light2DBaseControl>().LightSwitch();
+			GameControlSingleton.Instance.PlayOneShotSound(buttonDownSound);
+			
 		}
 		else if (_countLastFrame > 0 && count == 0)
 		{
 			connectedLight.GetComponent<Light2DBaseControl>().LightSwitch();
+			GameControlSingleton.Instance.PlayOneShotSound(buttonUpSound);
 		}
         _countLastFrame = count;
     }

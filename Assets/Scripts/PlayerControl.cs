@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using FMODUnity;
 
 public class PlayerControl : MonoBehaviour {
 
@@ -23,6 +24,13 @@ public class PlayerControl : MonoBehaviour {
     public bool isLightPlayerActive = true;
 
     public bool isDead = false;
+
+    private bool isFirstStartRewindTrigger = true;
+    
+    //FMOD part
+    string switchPlayerSound = "event:/Interactable/SwitchPlayerSound";
+    string rewindSound = "event:/Bgm/RewindBgm";
+    FMOD.Studio.EventInstance rewindSoundInstance;
 
 	// Use this for initialization
 	void Start () {
@@ -88,7 +96,26 @@ public class PlayerControl : MonoBehaviour {
                 rewindControlScript.RewindFromDead();
             }
             
+            
+            //FMOD
+            if (isFirstStartRewindTrigger)
+            {
+                isFirstStartRewindTrigger = false;
+                //GameControlSingleton.Instance.PlayOneShotSound(rewindSound);
+                rewindSoundInstance.release();
+                rewindSoundInstance = RuntimeManager.CreateInstance(rewindSound);
+                rewindSoundInstance.start();
+                GameControlSingleton.Instance.bgmInstance.setParameterValue("IsRewind", 1);
+            }
+            
         }
+        else if(!rewindControlScript.isRewinding)
+        {
+            isFirstStartRewindTrigger = true;
+            rewindSoundInstance.setParameterValue("Volume", 0);
+            GameControlSingleton.Instance.bgmInstance.setParameterValue("IsRewind", 0);
+        }
+
 
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -102,6 +129,7 @@ public class PlayerControl : MonoBehaviour {
 
     void SwitchPlayers()
     {
+        GameControlSingleton.Instance.PlayOneShotSound(switchPlayerSound);
         if (isLightPlayerActive)
         {
             isLightPlayerActive = false;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using FMODUnity;
 
 public class GoalBase : MonoBehaviour {
 
@@ -12,7 +13,7 @@ public class GoalBase : MonoBehaviour {
 		DarkPlayerOnly
 	}
 	
-	
+	protected RewindControl rewindControlScript;
 	
 	public GoalType goalType;
 	private string targetTag;
@@ -25,11 +26,21 @@ public class GoalBase : MonoBehaviour {
 	float stayTimeCount = 0f;
 	private bool isStay = false;
 
+	
+	
 	public Transform readyEffectGroup;
 	
+	
+	//FMOD
+	private string goalBlinkSound = "event:/Interactable/GoalBlinkSound";
+	private string chargeSound = "event:/Interactable/ChargeSound";
+	
+	FMOD.Studio.EventInstance chargeSoundInstance;
 
 	private void Start()
 	{
+		
+		
 		if (goalType == GoalType.LightPlayerOnly)
 		{
 			targetTag = "PlayerLight";
@@ -41,8 +52,13 @@ public class GoalBase : MonoBehaviour {
 			anotherGoal = transform.parent.Find("GoalLight");
 		}
 
+		rewindControlScript = GameObject.Find("RewindControl").GetComponent<RewindControl>();
 		goalGroupScript = transform.parent.GetComponent<GoalGroup>();
 		readyEffectGroup = transform.Find("ReadyEffectGroup");
+		
+		//FMOD
+		chargeSoundInstance = RuntimeManager.CreateInstance("event:/Bgm/Bgm");
+		chargeSoundInstance.start();
 	}
 
 
@@ -56,8 +72,14 @@ public class GoalBase : MonoBehaviour {
 
 			if (goalGroupScript.reachedGoalNum == 1)
 			{
-				NotGotEffect();
-				anotherGoal.GetComponent<GoalBase>().NotGotEffect();
+				if (!rewindControlScript.isRewinding)
+				{
+					NotGotEffect();
+					anotherGoal.GetComponent<GoalBase>().NotGotEffect();
+					//FMOD
+					GameControlSingleton.Instance.PlayOneShotSound(goalBlinkSound);
+				}
+				
 			}
 		}		
 	}
@@ -71,6 +93,8 @@ public class GoalBase : MonoBehaviour {
 			{
 				isStay = true;
 				EnableReadyEffect();
+				chargeSoundInstance.setParameterValue("ChargeVolume", 1);
+				
 			}
 		}		
 	}
@@ -82,6 +106,7 @@ public class GoalBase : MonoBehaviour {
 			stayTimeCount = 0;
 			isStay = false;
 			DisableReadyEffect();
+			chargeSoundInstance.setParameterValue("ChargeVolume", 0);
 			goalGroupScript.reachedGoalNum--;
 		}	
 	}

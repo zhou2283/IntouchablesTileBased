@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="ParameterPreset" id="{6095148e-244c-4fd5-8c3c-e54bd28f5da2}">
+        <property name="name">
+            <value>FallVolume</value>
+        </property>
+        <relationship name="folder">
+            <destination>{9db4b073-747d-4a5e-a055-d842a6ecbd48}</destination>
+        </relationship>
+        <relationship name="parameter">
+            <destination>{a08a3af9-2e7b-45dd-962d-de06ad8066a5}</destination>
+        </relationship>
+    </object>
+    <object class="GameParameter" id="{a08a3af9-2e7b-45dd-962d-de06ad8066a5}">
+        <property name="initialValue">
+            <value>1</value>
+        </property>
+        <property name="seekSpeed">
+            <value>3</value>
+        </property>
+    </object>
+</objects>

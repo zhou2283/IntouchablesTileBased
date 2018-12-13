@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="ParameterPreset" id="{e74834b9-5e48-4d80-b2f2-5c08feb7e6bb}">
+        <property name="name">
+            <value>SliderVolume</value>
+        </property>
+        <relationship name="folder">
+            <destination>{9db4b073-747d-4a5e-a055-d842a6ecbd48}</destination>
+        </relationship>
+        <relationship name="parameter">
+            <destination>{f471ae24-df70-4ba8-8f83-1160a84a250f}</destination>
+        </relationship>
+    </object>
+    <object class="GameParameter" id="{f471ae24-df70-4ba8-8f83-1160a84a250f}">
+        <property name="initialValue">
+            <value>0</value>
+        </property>
+        <property name="seekSpeed">
+            <value>5</value>
+        </property>
+    </object>
+</objects>

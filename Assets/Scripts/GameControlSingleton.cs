@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using FMOD;
 using UnityEngine;
 using FMODUnity;
 
@@ -12,15 +13,33 @@ public class GameControlSingleton : UnitySingleton<GameControlSingleton>
 	public Sprite photoCDefault;
 	public Sprite[] photoMArray;// mono photo array
 	public Sprite[] photoCArray;// colored photo array
+
+	public FMOD.Studio.EventInstance bgmInstance;
+	
 	
 	// Use this for initialization
 	private void Awake()
 	{
 		PreLoadLevelPhotos();
+		
+		//ambience
+		PlayOneShotSound("event:/Ambience/AmbienceSound");
+		
+		//bgm
+		bgmInstance = RuntimeManager.CreateInstance("event:/Bgm/Bgm");
+		bgmInstance.start();
+		
+		
+		
+		
+		//FMOD.Channel channel = new Channel();
+		//channel.setFrequency(-1f);
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
 		
 	}
 

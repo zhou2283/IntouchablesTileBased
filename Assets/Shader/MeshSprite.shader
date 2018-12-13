@@ -49,7 +49,7 @@ Shader "Shader Forge/MeshSprite" {
             #pragma multi_compile _ PIXELSNAP_ON
             #include "UnityCG.cginc"
             #pragma multi_compile_fwdbase
-            #pragma only_renderers d3d9 d3d11 glcore gles 
+            #pragma only_renderers d3d9 d3d11 glcore gles gles3 metal 
             #pragma target 3.0
             uniform sampler2D _MainTex; uniform float4 _MainTex_ST;
             uniform float4 _Emmision;
@@ -98,7 +98,7 @@ Shader "Shader Forge/MeshSprite" {
             #include "Lighting.cginc"
             #pragma fragmentoption ARB_precision_hint_fastest
             #pragma multi_compile_shadowcaster
-            #pragma only_renderers d3d9 d3d11 glcore gles 
+            #pragma only_renderers d3d9 d3d11 glcore gles gles3 metal 
             #pragma target 3.0
             struct VertexInput {
                 float4 vertex : POSITION;

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.10.00">
+    <object class="ParameterPreset" id="{e1222446-b07e-40b9-b803-98d5a7faff51}">
+        <property name="name">
+            <value>IsRewind</value>
+        </property>
+        <relationship name="folder">
+            <destination>{9db4b073-747d-4a5e-a055-d842a6ecbd48}</destination>
+        </relationship>
+        <relationship name="parameter">
+            <destination>{f758449f-4cd4-4045-83d3-c71d95555a98}</destination>
+        </relationship>
+    </object>
+    <object class="GameParameter" id="{f758449f-4cd4-4045-83d3-c71d95555a98}">
+        <property name="initialValue">
+            <value>0</value>
+        </property>
+        <property name="seekSpeed">
+            <value>1.2999999523162842</value>
+        </property>
+    </object>
+</objects>

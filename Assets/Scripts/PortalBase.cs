@@ -10,6 +10,7 @@ public class PortalBase : MonoBehaviour {
 	private int count = 0;
 	public bool isEmpty = true;
 	
+
 	// Use this for initialization
 	void Start () {
 		rewindControlScript = GameObject.Find("RewindControl").GetComponent<RewindControl>();
