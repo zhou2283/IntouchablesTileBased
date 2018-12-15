@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.01.10.00">
     <object class="AudioFile" id="{25cf5cae-b4e0-42ac-b9fd-615b4723c3e6}">
         <property name="assetPath">
-            <value>VEGETABLES_Dripping Splatter Long Bloody_flesh Guts_05.wav</value>
+            <value>Long Bloody_flesh Guts_05.wav</value>
         </property>
         <property name="frequencyInKHz">
             <value>192</value>

@@ -34,6 +34,7 @@ public class GoalBase : MonoBehaviour {
 	//FMOD
 	private string goalBlinkSound = "event:/Interactable/GoalBlinkSound";
 	private string chargeSound = "event:/Interactable/ChargeSound";
+	private string splatterSound = "event:/PlayerMove/SplatterSound";
 	
 	FMOD.Studio.EventInstance chargeSoundInstance;
 
@@ -57,7 +58,7 @@ public class GoalBase : MonoBehaviour {
 		readyEffectGroup = transform.Find("ReadyEffectGroup");
 		
 		//FMOD
-		chargeSoundInstance = RuntimeManager.CreateInstance("event:/Bgm/Bgm");
+		chargeSoundInstance = RuntimeManager.CreateInstance(chargeSound);
 		chargeSoundInstance.start();
 	}
 
@@ -93,7 +94,7 @@ public class GoalBase : MonoBehaviour {
 			{
 				isStay = true;
 				EnableReadyEffect();
-				chargeSoundInstance.setParameterValue("ChargeVolume", 1);
+				//chargeSoundInstance.setParameterValue("ChargeVolume", 1);
 				
 			}
 		}		
@@ -106,7 +107,7 @@ public class GoalBase : MonoBehaviour {
 			stayTimeCount = 0;
 			isStay = false;
 			DisableReadyEffect();
-			chargeSoundInstance.setParameterValue("ChargeVolume", 0);
+			//chargeSoundInstance.setParameterValue("ChargeVolume", 0);
 			goalGroupScript.reachedGoalNum--;
 		}	
 	}
@@ -143,6 +144,12 @@ public class GoalBase : MonoBehaviour {
 		_mainM.startSize = 2.5f;
 		_psM.Emit(1);
 		_emM.rateOverTime = 4f;
+		
+		//FMOD
+		GameControlSingleton.Instance.PlayOneShotSound(splatterSound);
+		GameControlSingleton.Instance.FadeOutAndInBgm();
+		//chargeSoundInstance.setVolume(0);
+		isStay = false;
 	}
 
 	public void NotGotEffect()

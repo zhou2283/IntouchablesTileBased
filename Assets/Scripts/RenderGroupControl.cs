@@ -35,6 +35,9 @@ public class RenderGroupControl : MonoBehaviour
 	private int levelIndex;
 	private string levelName;
 	
+	
+	//FMOD
+	string sceneOpenSound = "event:/SceneChange/SceneOpen";
 
 	
 	// Use this for initialization
@@ -65,6 +68,8 @@ public class RenderGroupControl : MonoBehaviour
 		
 		//open photo
 		GameObject.Find("CenterGroup").transform.Find("PhotoGroup").DOMoveX(-sceneWidth, zoomTime).SetEase(Ease.InOutCubic);
+		//FMOD
+		GameControlSingleton.Instance.PlayOneShotSound(sceneOpenSound);
 	}
 
 	public void MoveToNextLevel()

@@ -8,7 +8,7 @@
             <value>1</value>
         </property>
         <relationship name="folder">
-            <destination>{5d651537-b1ed-445b-9da9-244766b67a07}</destination>
+            <destination>{8eafd53e-9a23-4947-b556-aa6a40e54225}</destination>
         </relationship>
         <relationship name="mixer">
             <destination>{2fa115a0-bf41-4511-a853-1975f701ec5a}</destination>
@@ -119,6 +119,7 @@
     <object class="MixerBusEffectChain" id="{69f17fd4-c60a-47a9-8d81-3868c4c8d507}">
         <relationship name="effects">
             <destination>{149649c7-01f3-41d3-bdab-d5139078d868}</destination>
+            <destination>{97191cf7-7178-4b75-9557-23372c7404e0}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{41e38072-0094-4806-a33b-e6683aeff713}"/>
@@ -146,6 +147,11 @@
     </object>
     <object class="MixerBusPanner" id="{18841d65-19f8-49e1-9b34-93c8aba478e3}"/>
     <object class="MixerBusFader" id="{149649c7-01f3-41d3-bdab-d5139078d868}"/>
+    <object class="ThreeEQEffect" id="{97191cf7-7178-4b75-9557-23372c7404e0}">
+        <property name="lowGain">
+            <value>-7.5</value>
+        </property>
+    </object>
     <object class="AutomationPoint" id="{987a3e28-be1b-497d-9734-7998ee2f0567}">
         <property name="position">
             <value>0</value>

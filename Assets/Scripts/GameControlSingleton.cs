@@ -48,6 +48,12 @@ public class GameControlSingleton : UnitySingleton<GameControlSingleton>
 		
 	}
 
+	public void FadeOutAndInBgm()
+	{
+		bgmInstance.setParameterValue("BgmVolume", 0);
+		StartCoroutine(DelayToActiveBgm(3f));
+	}
+
 	void PreLoadLevelPhotos()
 	{
 		photoMDefault = Resources.Load<Sprite>("LevelPhotos/Level_Default_M");
@@ -84,5 +90,11 @@ public class GameControlSingleton : UnitySingleton<GameControlSingleton>
 	public void PlayOneShotSound(string path)
 	{
 		RuntimeManager.PlayOneShot(path, transform.position);
+	}
+	
+	public IEnumerator DelayToActiveBgm(float delaySeconds)
+	{
+		yield return new WaitForSeconds(delaySeconds);
+		bgmInstance.setParameterValue("BgmVolume", 1);
 	}
 }
